@@ -5,6 +5,7 @@ const Convenio = require('../models/convenio');
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
+   
     Convenio
         .find()
         .then(convenio => {
