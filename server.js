@@ -5,7 +5,11 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 8080; // Step 1
+var server = app.listen(process.env.PORT || 8080, function () {
+    var port = server.address().port;
+    console.log("App now running on port", port);
+  });
+
 
 const routes = require('./routes/convenio');
 
@@ -25,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Step 3
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'dev') {
     app.use(express.static('client/build'));
 }
 
@@ -37,4 +41,4 @@ app.use('/convenio', routes);
 
 
 
-app.listen(PORT, console.log(`Server is starting at ${PORT}`));
+//app.listen(PORT, console.log(`Server is starting at ${PORT}`));
