@@ -5,6 +5,7 @@ var ObjectID = mongodb.ObjectID;
 var server2 = require('http').createServer(app);
 var io = require('socket.io')(server2);
 const cors = require('cors');
+const path = require('path');
 //require('./utils/mongoose')();
 
 server2.listen(4000);
@@ -34,6 +35,12 @@ var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
 });
+
+if(process.env.NODE_ENV === 'production'){
+    //set static folder
+    app.use(express.static('client/build'));
+}
+
 
 var http = require ('http');         // For serving a basic web page.
 var mongoose = require ("mongoose"); // The reason for this demo.
