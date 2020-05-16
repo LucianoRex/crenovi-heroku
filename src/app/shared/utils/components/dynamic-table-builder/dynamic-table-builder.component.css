@@ -1,0 +1,49 @@
+table {
+    width: 100%;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  table td {
+    text-align: left;
+  }
+  
+  
+  
+  
+  /* Column Widths */
+  .mat-column-number,
+  .mat-column-state {
+    max-width: 64px;
+  }
+  
+  .mat-column-created {
+    max-width: 124px;
+  }
+  
+  .example-container {
+   
+    overflow: auto;
+  }
+  
+  .mat-paginator-sticky {
+    bottom: 0px;
+    position: sticky;
+    z-index: 10;
+  }
+  
+  .example-icon {
+    padding: 0 14px;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  table tr:hover {
+    cursor: pointer;
+  }
+  
+  

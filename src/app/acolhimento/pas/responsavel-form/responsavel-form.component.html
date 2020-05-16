@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+  <div formGroupName="responsavel">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field class="example-full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" />
+        </mat-form-field>
+      </div>      
+    </div>
+    <div>
+      <button mat-button matStepperNext (click)="save()">Salvar</button>
+    </div>
+  </div>
+</form>
