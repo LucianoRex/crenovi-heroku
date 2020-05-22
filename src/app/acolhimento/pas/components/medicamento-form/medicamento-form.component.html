@@ -1,0 +1,40 @@
+<form [formGroup]="form">
+  <div formGroupName="medicamento">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Posologia</mat-label>
+          <mat-select formControlName="posologia">
+            <mat-option
+              *ngFor="let posologia of posologias"
+              value="{{ posologia._id }}"
+            >
+              {{ posologia.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" formGroupName="medicamento">
+        <mat-form-field class="example-full-width">
+          <mat-label>Medicamento</mat-label>
+          <mat-icon aria-hidden="false" (click)="getMedicamento()"
+            >search</mat-icon
+          >
+          <input matInput formControlName="PRODUTO" />
+          <input matInput formControlName="APRESENTACAO" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button
+        mat-button      
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

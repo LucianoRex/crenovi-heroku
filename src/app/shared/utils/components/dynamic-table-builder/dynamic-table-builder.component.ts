@@ -14,6 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
+import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-dynamic-table-builder',
@@ -22,7 +23,7 @@ import { Observable, Subscription } from 'rxjs';
   providers: [DatePipe],
 })
 export class DynamicTableBuilderComponent implements OnInit {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() columns: any[] = [];
@@ -39,78 +40,65 @@ export class DynamicTableBuilderComponent implements OnInit {
   resultsLength = 0;
   isLoadingResults = false;
   isRateLimitReached = false;
-
+  socket = io('http://localhost:4000');
   title: string;
 
-  constructor(
-    private _httpClient: HttpClient,
-    private datePipe: DatePipe // private dynamicFormTableControllerService: DynamicFormTableControllerService
-  ) {}
+  constructor(private datePipe: DatePipe) {}
+  
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe);
   }
 
   ngOnInit(): void {
-    this.data.subscribe((res) => {
-      this.dataSource = new MatTableDataSource(res);
-      console.log(res);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sortingDataAccessor = (data, sortHeaderId: string) => {
-        return this.getPropertyByPath(data, sortHeaderId);
-      };
-    });
-    // this.columns.push({ name: 'c', label: 'A' })
-    //  this.columns.push({ name: 'a', label: 'A' })
+    this.getData();
+    this.socket.on(
+      'update-data',
+      function (data: any) {
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        this.getData();
+      }.bind(this)
+    );
+
     this.columns.push({ name: 'acoes', label: 'Ações' });
     this.displayedColumns = this.columns.map((column) => column.name);
-    //  this.dataSource = new MatTableDataSource();
-    //    this.dataSource.sort = this.sort;
-    //    this.dataSource.paginator = this.paginator;
-    //   this.isLoadingResults = false;
-    //   this.isRateLimitReached = false;
-    console.log(this.displayedColumns)
   }
 
-  getPropertyByPath(obj: Object, pathString: string) {
-    return pathString.split('.').reduce((o, i) => o[i], obj);
+  getData() {
+    this.data.subscribe((res) => {     
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.sortingDataAccessor = (obj, property) =>
+        this.getProperty(obj, property);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
-  getProperty = (obj, path) => (
-    path.split('.').reduce((o, p) => o && o[p], obj)
-  ) 
+  getProperty = (obj, path) => path.split('.').reduce((o, p) => o && o[p], obj);
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  formatarData(data) {
-    return this.datePipe.transform(data, 'dd/MM/yyyy');
+  formatarData = (obj, path) =>
+    this.datePipe.transform(
+      path.split('.').reduce((o, p) => o && o[p], obj),
+      'dd/MM/yyyy'
+    );
+
+  formatarBoolean(obj, path) {        
+    if (path.split('.').reduce((o, p) => o && o[p], obj) == true) {
+      return `👍`;
+    } else {
+      return '👎';
+    }
   }
 
-  retornaCampo(data:any) {
-  //console.log(data.split('.'))
-    return data;
-  
-  }
-
-  refresh() {
-    this.isLoadingResults = true;
-    this.isRateLimitReached = true;
-
-    this._httpClient
-      .get(
-        /*this.fields.metadata.path, { params: { ...this.fields.metadata } }*/ 'http://localhost:3000/acolhimento'
-      )
-      .subscribe((res: any) => {
-        //this.columns.push({ name: 'acoes', label: 'Ações' })
-        //this.displayedColumns = this.columns.map(column => column.name);
-        this.dataSource = new MatTableDataSource(res);
-        //  this.dataSource.sort = this.sort;
-        // this.dataSource.paginator = this.paginator;
-        this.isLoadingResults = false;
-        this.isRateLimitReached = false;
-      });
+  createEvent(e:Event){
+    e.stopPropagation();
+    e.preventDefault()
+    this.create.emit()
   }
 }

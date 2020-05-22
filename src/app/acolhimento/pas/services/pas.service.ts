@@ -8,23 +8,55 @@ import { environment } from 'src/environments/environment';
 })
 export class PasService {
   apiBaseUrl = environment.apiBaseUrl;
+  pas_id: string;
   constructor(private _http: HttpClient) {}
 
-  read() {
-    return this._http.get(`${this.apiBaseUrl}/acolhimento`);
+  read(path = '') {
+    return this._http.get(`${this.apiBaseUrl}/acolhimento/${path}`);
   }
 
   readAcolhido() {
     return this._http.get(`${this.apiBaseUrl}/acolhimento/acolhido`);
   }
 
-  readById(_id: string) {
-    return this._http.get(`${this.apiBaseUrl}/acolhimento/${_id}`);
+  readById(document, documentId: string = '') {
+    if (this.pas_id != undefined) {
+      return this._http.get(
+        `${this.apiBaseUrl}/acolhimento/${this.pas_id}/${document}/${documentId}`
+      );
+    }
   }
 
+  /*readMedicamento(_id: string, document) {
+    return this._http.get(
+      `${this.apiBaseUrl}/acolhimento/${this.pas_id}/${document}`
+    );
+  }*/
+
   save(form): Observable<any> {
-    console.log(form);
-    console.log();
-    return //this._http.post(`${this.apiBaseUrl}/acolhimento`, form);
+    if (this.pas_id != undefined) {
+      if (form[form.path]._id && form[form.path]._id != undefined) {
+        return this._http.put(
+          `${this.apiBaseUrl}/acolhimento/${this.pas_id}/${form.path}/${
+            form[form.path]._id
+          }`,
+          form
+        );
+      } else {
+        return this._http.put(
+          `${this.apiBaseUrl}/acolhimento/${this.pas_id}/${form.path}`,
+          form
+        );
+      }
+    } else {
+      return this._http.post(
+        `${this.apiBaseUrl}/acolhimento/${form.path}`,
+        form
+      );
+    }
+  }
+
+  remove() {
+    alert('Vamos remover?');
   }
 }

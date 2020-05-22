@@ -1,0 +1,30 @@
+<form [formGroup]="form">
+  <div class="row" formGroupName="tratamento">
+    <div class="col-md-12">
+      <mat-checkbox formControlName="desintoxicacao"
+        >Desintoxicação</mat-checkbox
+      >
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="reducaoDano"
+        >Redução de danos</mat-checkbox
+      >
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="grupoApoio">Grupos de apoio</mat-checkbox>
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="ct">Comunidades terapêuticas</mat-checkbox>
+    </div>
+    <div>
+      <button
+        mat-button
+        matStepperNext
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

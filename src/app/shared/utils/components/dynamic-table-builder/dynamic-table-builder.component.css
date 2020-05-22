@@ -24,7 +24,7 @@ table {
   }
   
   .example-container {
-   
+   margin-top: 2em;
     overflow: auto;
   }
   
@@ -46,4 +46,10 @@ table {
     cursor: pointer;
   }
   
-  
+  .table-row:focus {
+    background: tomato;
+    outline: none;
+  }
+  .table-row:focus mat-cell {
+    color: white; 
+  }

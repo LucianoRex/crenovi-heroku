@@ -1,20 +1,14 @@
 <div class="example-container mat-elevation-z8">
-  <button mat-icon-button color="secondary" (click)="create.emit()">
+  <button mat-icon-button color="secondary" (click)="createEvent($event)">
     <mat-icon class="indigo-icon">add</mat-icon>
   </button>
-  <div
-    class="example-loading-shade"
-    *ngIf="isLoadingResults || isRateLimitReached"
-  >
-    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-  </div>
 
   <mat-form-field>
     <mat-label>Filtrar</mat-label>
     <input matInput (keyup)="applyFilter($event)" />
   </mat-form-field>
 
-  <table mat-table *ngIf="dataSource" [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort>
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
       <th
         mat-header-cell
@@ -30,14 +24,21 @@
         *matCellDef="let element"
         (click)="selectedRow.emit(element)"
       >
+        <!--
+         [ngClass]="
+          column.type == 'boolean'
+            ? getProperty(element, column.name) == false
+              ? 'mat-toolbar mat-warn'
+              : 'mat-toolbar mat-accent'
+            : ''
+        "
+      -->
         {{
-          column.type != "date"
-            ? column.type != "ref"
-              ? getProperty(element, column.name)
-              : element[column.referencia] != null
-              ? element[column.referencia].referencia
-              : ""
-            : formatarData(element[column.name])
+          column.type == "date"
+            ? formatarData(element, column.name)
+            : column.type == "boolean"
+            ? formatarBoolean(element, column.name)
+            : getProperty(element, column.name)
         }}
         <button
           *ngIf="column.name == 'acoes'"
@@ -71,8 +72,8 @@
   <mat-paginator
     class="mat-paginator-sticky"
     [length]="10"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 25, 100]"
+    [pageSize]="2"
+    [pageSizeOptions]="[2, 5, 10, 25, 100]"
     showFirstLastButtons
   >
   </mat-paginator>

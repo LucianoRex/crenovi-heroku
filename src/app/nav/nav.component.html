@@ -7,11 +7,14 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false"
   >
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar></mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/acolhimento/pas">P.A.S.</a>
-      <a mat-list-item routerLink="/acolhimento/pas/acolhido">Acolhido</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item routerLink="/acolhimento/pas"
+        ><span class="material-icons"> beach_access </span> P.A.S.</a
+      >
+      <a mat-list-item routerLink="/acolhimento/pas/acolhido"
+        ><span class="material-icons"> face </span> Acolhidos</a
+      >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -25,7 +28,10 @@
       >
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>crenovi-heroku</span>
+      <img src="../../assets/kindpng_3241474.png" style="/*box-shadow: 10px 10px 7px 0 #0a1450, -10px -10px 7px 0 #0a1450*/" width="120" alt="" />
+      <span style="font-family: 'Orbitron', sans-serif; font-size: xx-large;text-shadow: 10px 10px 4px #000000"
+        >CRENOVI</span
+      >
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

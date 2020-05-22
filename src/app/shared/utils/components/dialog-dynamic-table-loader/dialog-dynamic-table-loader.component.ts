@@ -23,18 +23,15 @@ export class DialogDynamicTableLoaderComponent implements OnInit {
     protected componentFactoryResolver: ComponentFactoryResolver,
     protected viewContainerRef: ViewContainerRef
   ) {}
+
   ngOnInit(): void {
     let component = this.componentFactoryResolver.resolveComponentFactory(
       this.data.component
     );
     let componentRef = this.viewContainerRef.createComponent(component);
-
     componentRef.instance['_id'] = this.data._id;
-
-    console.log(componentRef.instance);
     if (componentRef.instance['selectedRow']) {
       componentRef.instance['selectedRow'].subscribe((res) => {
-        //this.dialogRef.close(res);
         this.data = res;
       });
     }
@@ -47,6 +44,6 @@ export class DialogDynamicTableLoaderComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
   }
 }

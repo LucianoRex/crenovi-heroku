@@ -1,0 +1,118 @@
+<form [formGroup]="form">
+  <div class="row" formGroupName="historicoFamiliarSocial">
+    <div class="col-md-12">
+      <mat-checkbox formControlName="resideFamiliar"
+        >Reside com familiar</mat-checkbox
+      >
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="situacaoRua">Situação de rua</mat-checkbox>
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="empregado">Empregado</mat-checkbox>
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="casaPropria">Casa Própria</mat-checkbox>
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="beneficio">Recebe Benefício</mat-checkbox>
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="amigoUsuario"
+        >Tem amigos usuários de SPA</mat-checkbox
+      >
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field class="example-full-width">
+        <mat-label>Filhos</mat-label>
+        <input matInput formControlName="filho" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Estado Civil</mat-label>
+        <mat-select formControlName="estadoCivil">
+          <mat-option value="casado">Casado</mat-option>
+          <mat-option value="solteiro">Solteiro</mat-option>
+          <mat-option value="viuvo">Viúvo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Vínculo familiares</mat-label>
+        <mat-select formControlName="vinculoFamiliar">
+          <mat-option value="estavel">Estável</mat-option>
+          <mat-option value="conflituoso">Conflituoso</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Atividades de lazer</mat-label>
+        <mat-select formControlName="lazer">
+          <mat-option value="ler">Ler</mat-option>
+          <mat-option value="desenhar">Desenhar</mat-option>
+          <mat-option value="cozinhar">Cozinhar</mat-option>
+          <mat-option value="musica">Ouvir Música</mat-option>
+          <mat-option value="filme">Assistir filme</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Escolaridade</mat-label>
+        <mat-select formControlName="escolaridade">
+          <mat-option value="fi">Fundamental - Incompleto</mat-option>
+          <mat-option value="fc">Fundamental - Completo </mat-option>
+          <mat-option value="mi">Médio - Incompleto</mat-option>
+          <mat-option value="mc">Médio - Completo</mat-option>
+          <mat-option value="si">Superior - Incompleto</mat-option>
+          <mat-option value="sc">Superior - Completo</mat-option>
+          <mat-option value="pgi">Pós-graduação (Lato senso) - Incompleto </mat-option>
+          <mat-option value="pgc">Pós-graduação (Lato senso) - Completo</mat-option>
+          <mat-option value="pgmi"
+            >Pós-graduação (Stricto sensu, nível mestrado) -
+            Incompleto</mat-option
+          >
+          <mat-option value="pgmc"
+            >Pós-graduação (Stricto sensu, nível mestrado) -
+            Completo</mat-option
+          >
+          <mat-option value="pgdi"
+            >Pós-graduação (Stricto sensu, nível doutor) -
+            Incompleto</mat-option
+          >
+          <mat-option value="pgdc"
+            >Pós-graduação (Stricto sensu, nível doutor) - Completo</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Problemas no trabalho</mat-label>
+        <mat-select formControlName="problemaTrabalho">
+          <mat-option value="nao">Não</mat-option>
+          <mat-option value="sim">Sim</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <button
+        mat-button
+        matStepperNext
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

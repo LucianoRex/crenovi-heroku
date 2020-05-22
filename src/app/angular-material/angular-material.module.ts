@@ -36,11 +36,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 
-
-
 @NgModule({
   declarations: [],
   imports: [
+    MatCheckboxModule,
     MatMenuModule,
     CommonModule,
     MatButtonModule,
@@ -66,9 +65,10 @@ import { MatTreeModule } from '@angular/material/tree';
     MatSortModule,
     MatPaginatorModule,
     MatProgressBarModule,
-    MatStepperModule,   
+    MatStepperModule,
   ],
   exports: [
+    MatCheckboxModule,
     MatProgressBarModule,
     MatMenuModule,
     MatButtonModule,
@@ -92,10 +92,8 @@ import { MatTreeModule } from '@angular/material/tree';
     MatProgressSpinnerModule,
     MatSortModule,
     MatPaginatorModule,
-    MatStepperModule
+    MatStepperModule,
   ],
-  providers: [
-    MatDatepickerModule,
-  ]
+  providers: [MatDatepickerModule],
 })
-export class AngularMaterialModule { }
+export class AngularMaterialModule {}

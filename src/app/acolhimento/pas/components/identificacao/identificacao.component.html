@@ -1,0 +1,84 @@
+<form [formGroup]="form">
+  <div formGroupName="identificacao">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Data de Ingresso</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dataIngresso"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Convênio</mat-label>
+          <mat-select formControlName="convenio">
+            <mat-option
+              *ngFor="let convenio of convenios"
+              value="{{ convenio._id }}"
+            >
+              {{ convenio.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Encaminhado</mat-label>
+          <mat-select formControlName="encaminhado">
+            <mat-option *ngFor="let enc of encaminhado" value="{{ enc._id }}">
+              {{ enc.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Periodo</mat-label>
+          <mat-select formControlName="periodo">
+            <mat-option
+              *ngFor="let periodo of periodos"
+              value="{{ periodo._id }}"
+            >
+              {{ periodo.periodo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6" formGroupName="acolhido">
+        <mat-form-field class="example-full-width">
+          <mat-label>Acolhido</mat-label>
+          <mat-icon
+            aria-hidden="false"
+            (click)="getAcolhido()"
+            aria-label="Example home icon"
+            >search</mat-icon
+          >
+          <input matInput formControlName="nome" />
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button
+        mat-button
+        matStepperNext
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

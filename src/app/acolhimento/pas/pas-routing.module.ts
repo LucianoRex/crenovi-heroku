@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PasListComponent } from './pas-list/pas-list.component';
-import { AcolhidoListComponent } from './acolhido-list/acolhido-list.component';
+import { PasListComponent } from './components/pas-list/pas-list.component';
+import { AcolhidoListComponent } from './components/acolhido-list/acolhido-list.component';
+
 
 const routes: Routes = [
   {

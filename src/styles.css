@@ -1,4 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~material-icons/iconfont/material-icons.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+  font-family: Orbitron;
+  src: url("./assets/fonts/Orbitron/static/Orbitron-Bold.ttf");
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.app-full-bleed-dialog .mat-dialog-container {
+  padding: 0;
+  border: solid;
+}

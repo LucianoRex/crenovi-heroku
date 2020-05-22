@@ -1,0 +1,196 @@
+<form [formGroup]="form">
+  <div class="row" formGroupName="historicoPsiquico">
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Higiene Pessoal</mat-label>
+        <mat-select formControlName="higienePessoal">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.higienePessoal.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Vestimenta</mat-label>
+        <mat-select formControlName="vestimenta">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.vestimenta.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Postura</mat-label>
+        <mat-select formControlName="postura">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.postura.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Consciência</mat-label>
+        <mat-select formControlName="consciencia">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.consciencia.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Atenção</mat-label>
+        <mat-select formControlName="atencao">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.atencao.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Memória</mat-label>
+        <mat-select formControlName="memoria">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.memoria.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>pensamento</mat-label>
+        <mat-select formControlName="pensamento">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.pensamento.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Linguagem</mat-label>
+        <mat-select formControlName="linguagem">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.linguagem.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Afeto</mat-label>
+        <mat-select formControlName="afeto">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.afeto.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Humor</mat-label>
+        <mat-select formControlName="humor">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.humor.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Psicomotricidade</mat-label>
+        <mat-select formControlName="psicomotricidade">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.psicomotricidade.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Sensopercepção</mat-label>
+        <mat-select formControlName="sensopercepcao">
+          <mat-option
+            *ngFor="let item of historicoPsiquico.sensopercepcao.values"
+            [value]="item.name"
+          >
+            {{ item.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="internacaoPsiquiatrica"
+        >Internações psiquiátricas</mat-checkbox
+      >
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="ideiaSuicida"
+        >Idéias Suicidas</mat-checkbox
+      >
+    </div>
+    <div class="col-md-12">
+      <mat-checkbox formControlName="familiar"
+        >Familiares com problemas devido ao uso de S.P.A.</mat-checkbox
+      >
+    </div>
+    <div>
+      <button
+        mat-button
+        matStepperNext
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

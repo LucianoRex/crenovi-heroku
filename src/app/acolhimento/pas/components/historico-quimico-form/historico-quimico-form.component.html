@@ -1,0 +1,31 @@
+<form [formGroup]="form">
+  <div formGroupName="historicoQuimico">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Substância</mat-label>
+          <mat-select formControlName="substancia">
+            <mat-option
+              *ngFor="let substancia of substancias"
+              [value]="substancia.value"
+            >
+              {{ substancia.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Idade</mat-label>
+          <input matInput formControlName="idade" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div>
+      <button mat-button [disabled]="!form.valid" (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+  <div class="row" formGroupName="quadroClinico">
+    <h2>Sintomas de abstinência</h2>
+    <div class="row" formGroupName="abstinencia">
+      <div class="col-md-12">
+        <mat-checkbox formControlName="tremor">Tremor</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="nausea">Náusea</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="sudorese">Sudorese</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="oscilacaoHumor"
+          >Oscilação de humor</mat-checkbox
+        >
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="cefaleia">Cefaléia</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="caimbra">Câimbra</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="diarreia">Diarréia</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="irritabilidade"
+          >Irritabilidade</mat-checkbox
+        >
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="agressividade"
+          >Agressividade</mat-checkbox
+        >
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="insonia">Insônia</mat-checkbox>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="fissura">Fissura</mat-checkbox>
+      </div>
+    </div>
+
+    <div>
+      <button
+        mat-button
+        matStepperNext
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>
