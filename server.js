@@ -13,7 +13,6 @@ serverSocketIO.listen(4000);
 //var server = require("http").createServer(app);
 
 app.use(bodyParser.json());
-console.log(process)
 
 // Step 2
 mongoose.connect(process.env.MONGODB_URI || /*"mongodb://lucianor3x:Tec2019!@ds213529.mlab.com:13529/crenovi"*/"mongodb://localhost/crenovi", {
