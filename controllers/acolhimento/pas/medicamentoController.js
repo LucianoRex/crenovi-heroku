@@ -5,11 +5,14 @@ let get = (req, res, next) => {
     .populate("medicamento.medicamento")
     .then((acolhimento) => {
       res.status(200).json(acolhimento.medicamento);
+    })
+    .catch((err) => {
+    
+      res.status(500).json({message:err.message});
     });
 };
 
 let getById = (req, res, next) => {
-  console.log(req.params.medicamento);
   Acolhimento.findOne(
     { _id: req.params._id, "medicamento._id": req.params.medicamento },
     { "medicamento.$": 1 }
@@ -27,7 +30,7 @@ let put = (req, res, next) => {
   Acolhimento.findOneAndUpdate(
     { _id: req.params._id, "medicamento._id": req.params.medicamento },
     {
-      $set: {
+      $addToSet: {
         "medicamento.$": data,
       },
     }
@@ -36,14 +39,12 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+    
+      res.status(500).json({message:err.message});
     });
 };
 
 let post = (req, res, next) => {
-  console.log("Chegou no post");
-  console.log(req.body);
   let data = {
     ...req.body.medicamento,
   };
@@ -52,9 +53,10 @@ let post = (req, res, next) => {
   Acolhimento.findOneAndUpdate(
     { _id: req.params._id },
     {
-      $push: {
+      $addToSet: {
         medicamento: data,
       },
+      safe: true,
       new: true,
     }
   )

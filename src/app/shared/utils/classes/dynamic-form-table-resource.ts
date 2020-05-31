@@ -18,7 +18,7 @@ export class DynamicFormTableResource {
   protected resolver: ComponentFactoryResolver;
   protected viewContainerRef: ViewContainerRef;
   protected dialog: MatDialog;
-  @Input() public _id: string = undefined;
+ 
   @Output() selectedRow = new EventEmitter<any>();
   @Output() removeRow = new EventEmitter<any>();
   @Output() notify: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
@@ -30,9 +30,16 @@ export class DynamicFormTableResource {
     this.dialog = injector.get(MatDialog);
     this.fb = injector.get(FormBuilder);
   }
+  
   remove(): void {}
 
-  montaTabela(columns, service, component?, _id = undefined) {
+  montaTabela(
+    columns,
+    service,
+    component?,
+    _id = undefined,
+    socketiodata?: string
+  ) {
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
       DynamicTableBuilderComponent
     );
@@ -41,13 +48,14 @@ export class DynamicFormTableResource {
     );
     componentRef.instance.columns = columns;
     componentRef.instance.data = service;
+    componentRef.instance.socketiodata = socketiodata;
     componentRef.instance.selectedRow.subscribe((res) => {
       this.selectedRow.emit(res);
     });
 
     componentRef.instance.create.subscribe((res) => {
       this.dialog.open(DialogDynamicTableLoaderComponent, {
-        data: { component: component, _id: _id },
+        data: { component: component, _id: undefined },
         maxWidth: '90vw',
         width: '90vw',
         height: '90vh',

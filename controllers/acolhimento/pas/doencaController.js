@@ -4,13 +4,14 @@ let get = (req, res, next) => {
   Acolhimento.findOne({ _id: req.params._id }, { doenca: 1 })
     .populate("doenca.doenca")
     .then((acolhimento) => {
-        console.log(acolhimento.doenca)
       res.status(200).json(acolhimento.doenca);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 
 let getById = (req, res, next) => {
-  console.log(req.params.medicamento);
   Acolhimento.findOne(
     { _id: req.params._id, "doenca._id": req.params.doenca },
     { "doenca.$": 1 }
@@ -18,6 +19,9 @@ let getById = (req, res, next) => {
     .populate("doenca.doenca")
     .then((acolhimento) => {
       res.status(200).json(acolhimento.doenca[0]);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 
@@ -37,13 +41,11 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+      res.status(500).json({ message: err.message });
     });
 };
 
 let post = (req, res, next) => {
-  console.log(req.body);
   let data = {
     ...req.body.doenca,
   };
@@ -61,8 +63,8 @@ let post = (req, res, next) => {
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
     })
-    .catch((error) => {
-      res.status(500).json(error);
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 module.exports = {

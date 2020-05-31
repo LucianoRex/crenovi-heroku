@@ -19,3 +19,10 @@ body {
   padding: 0;
   border: solid;
 }
+
+form{
+  padding: .5em;
+}
+mat-form-field {
+  width: 100%;
+}

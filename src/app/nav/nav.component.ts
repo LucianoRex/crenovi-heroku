@@ -2,20 +2,106 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
+import { User } from '../models/user';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import {
+  MatTreeFlattener,
+  MatTreeFlatDataSource,
+} from '@angular/material/tree';
+
+interface FoodNode {
+  name: string;
+  link?: string;
+  children?: FoodNode[];
+}
+
+const TREE_DATA: FoodNode[] = [
+  {
+    name: 'Acolhimento',
+    children: [
+      { name: 'Prontuários', link: '/acolhimento/pas' },
+      { name: 'Acolhidos', link: '/acolhimento/pas/acolhido' },
+    //  { name: 'Grupos Terapêuticos', link: '/acolhimento/grupo-terapeutico' },
+      { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
+    ],
+  },
+  {
+    name: 'Comunidade',
+    children: [
+      {
+        name: 'Dados da Entidade',
+        link: '/comunidade/comunidade',
+      },
+      {
+        name: 'Colaboradores',
+        link: '/colaborador/colaborador',
+      },
+    ],
+  },
+];
+
+/** Flat node with expandable and level information */
+interface ExampleFlatNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrls: ['./nav.component.css'],
 })
 export class NavComponent {
+  private _transformer = (node: FoodNode, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      link: node.link,
+      level: level,
+    };
+  };
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
+  treeControl = new FlatTreeControl<ExampleFlatNode>(
+    (node) => node.level,
+    (node) => node.expandable
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    (node) => node.level,
+    (node) => node.expandable,
+    (node) => node.children
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+  currentUser: User;
+
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.authenticationService.currentUser.subscribe(
+      (x) => (this.currentUser = x)
+    );
+    this.dataSource.data = TREE_DATA;
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
     .pipe(
-      map(result => result.matches),
+      map((result) => result.matches),
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
-
+  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 }

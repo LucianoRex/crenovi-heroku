@@ -10,12 +10,15 @@ export class QuadroClinicoFormComponent extends PasResource implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
-
+  panelOpenState = false;
   ngOnInit(): void {
     this.form = this.fb.group({
       path: `quadroClinico`,
       quadroClinico: this.fb.group({
         _id: undefined,
+        familiar: [false],
+        cessarUso: [false],
+        observacoes: [''],
         abstinencia: this.fb.group({
           tremor: false,
           nausea: false,

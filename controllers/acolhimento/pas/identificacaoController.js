@@ -1,9 +1,13 @@
 const Acolhimento = require("../../../models/acolhimento");
 let get = (req, res, next) => {
-  Acolhimento.findOne({ _id: req.params._id }, { identificacao: 1 })
+  Acolhimento.findOne({ _id: req.params._id }, { identificacao: 1, ativo: 1 })
     .populate("identificacao.acolhido")
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
+    })
+    .catch((err) => {
+    
+      res.status(500).json({message:err.message});
     });
 };
 
@@ -18,20 +22,30 @@ let put = (req, res, next) => {
     {
       $set: {
         identificacao: data,
+        "criado.usuario": req.user.username,
       },
     }
   )
     .then((acolhimento) => {
-      res.status(200).json(acolhimento);
+      if (
+        acolhimento.identificacao.dataIngresso >
+        acolhimento.identificacao.dataEgresso
+      ) {
+        res.status(500).json({
+          message: "Data de Egresso não pode ser anterior à data de Ingresso",
+          success: false,
+        });
+      } else {
+        res.status(200).json(acolhimento.identificacao);
+      }
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+    
+      res.status(500).json({message:err.message});
     });
 };
 
 let post = (req, res, next) => {
-  console.log(req.body.identificacao);
   let data = {
     ...req.body,
   };
@@ -42,19 +56,11 @@ let post = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((error) => {
-      
-        for (field in error.errors) {
-          mensagem.push(error.errors[field].message);
-        }
-        if (error.name === "MongoError" && error.code === 11000) {
-            //res.status(500).json("Acolhido selecionado já está em acolhimento");
-            mensagem.push("Acolhido selecionado já está em acolhimento");
-            
-          } 
-        res.status(500).json({
-          message: mensagem,
-        });
-      
+    
+    
+      res.status(500).json({
+        message: error.message,
+      });
     });
   /**
      * for (field in error.errors) {

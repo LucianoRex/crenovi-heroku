@@ -66,8 +66,12 @@ import { MatTreeModule } from '@angular/material/tree';
     MatPaginatorModule,
     MatProgressBarModule,
     MatStepperModule,
+    MatSliderModule,
+    MatTreeModule,
+    MatExpansionModule,    
   ],
   exports: [
+    MatTreeModule,
     MatCheckboxModule,
     MatProgressBarModule,
     MatMenuModule,
@@ -93,6 +97,8 @@ import { MatTreeModule } from '@angular/material/tree';
     MatSortModule,
     MatPaginatorModule,
     MatStepperModule,
+    MatSliderModule,
+    MatExpansionModule
   ],
   providers: [MatDatepickerModule],
 })

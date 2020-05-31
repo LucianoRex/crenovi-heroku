@@ -5,6 +5,10 @@ let get = (req, res, next) => {
     .populate("identificacao.acolhido")
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
+    })
+    .catch((err) => {
+    
+      res.status(500).json({message:err.message});
     });
 };
 
@@ -13,6 +17,10 @@ let getById = (req, res, next) => {
     .populate("identificacao.acolhido")
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
+    })
+    .catch((err) => {
+    
+      res.status(500).json({message:err.message});
     });
 };
 
@@ -20,7 +28,7 @@ let put = (req, res, next) => {
   let data = {
     ...req.body.responsavel,
   };
-  console.log(data);
+
   Acolhimento.findOneAndUpdate(
     {
       _id: req.params._id,
@@ -35,18 +43,23 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      res.status(500).json(err);
+    
+      res.status(500).json({message:err.message});
     });
 };
 
 let post = (req, res, next) => {
-  console.log(req.body.identificacao);
+ 
   let data = {
     ...req.body,
   };
   delete data._id;
   Acolhimento.create(new Acolhimento(data)).then((acolhimento) => {
     res.status(200).json(acolhimento);
+  })
+  .catch((err) => {
+    
+    res.status(500).json({message:err.message});
   });
 };
 module.exports = {

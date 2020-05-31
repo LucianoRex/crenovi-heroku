@@ -16,6 +16,21 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Data de Egresso</mat-label>
+          <input
+            matInput
+            [matDatepicker]="dataEgresso"
+            formControlName="dataEgresso"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dataEgresso"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dataEgresso></mat-datepicker>
+        </mat-form-field>
+      </div>
 
       <div class="col-md-3">
         <mat-form-field>
@@ -55,21 +70,31 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6" formGroupName="acolhido">
+
+      <div class="col-md-4" formGroupName="acolhido">
         <mat-form-field class="example-full-width">
           <mat-label>Acolhido</mat-label>
-          <mat-icon
-            aria-hidden="false"
-            (click)="getAcolhido()"
-            aria-label="Example home icon"
-            >search</mat-icon
-          >
+
           <input matInput formControlName="nome" />
         </mat-form-field>
       </div>
+      <div class="col-md-2" style="align-self: center;">
+        <button mat-button (click)="getAcolhido()">
+          <mat-icon aria-hidden="false">search</mat-icon>
+        </button>
+      </div>
+      <div class="col-md-3">
+        <button
+          mat-raised-button
+          color="accent"
+          [disabled]="concluirBtn"
+          (click)="concluir()"
+        >
+          {{ !concluirBtn ? "Concluir tratamento" : "Tratamento Concluído" }}
+        </button>
+      </div>
     </div>
+    <div class="row"></div>
     <div>
       <button
         mat-button

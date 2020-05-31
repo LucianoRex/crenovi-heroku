@@ -1,7 +1,7 @@
 <form [formGroup]="form">
   <div formGroupName="saida">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-label>Saída</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="saida" />
@@ -12,7 +12,7 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-label>Retorno</mat-label>
           <input matInput [matDatepicker]="retorno" formControlName="retorno" />
@@ -21,6 +21,22 @@
             [for]="retorno"
           ></mat-datepicker-toggle>
           <mat-datepicker #retorno></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Motivo</mat-label>
+          <mat-select formControlName="motivo" placeholder="">
+            <mat-option *ngFor="let motivo of motivos" [value]="motivo">
+              {{ motivo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Responsável</mat-label>
+          <input matInput formControlName="responsavel" />
         </mat-form-field>
       </div>
     </div>

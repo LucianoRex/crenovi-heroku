@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="app-toolbar">
   <mat-toolbar-row>
     <span class="example-spacer"></span>
     <button mat-button (click)="onNoClick()">
@@ -10,7 +10,7 @@
 <div class="example-container mat-elevation-z8">
   <form [formGroup]="form">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-label>Campo</mat-label>
           <mat-select formControlName="campo">
@@ -20,7 +20,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-2">
         <mat-form-field>
           <mat-label>Comparador</mat-label>
           <mat-select formControlName="comparador">
@@ -33,25 +33,33 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4">
         <mat-form-field>
           <mat-label>Valor</mat-label>
           <input matInput formControlName="valor" />
         </mat-form-field>
       </div>
-      <div class="col-md-3" style="margin: auto;">
+      <div class="col-md-2" style="margin: auto;">
         <button
           mat-button
           [disabled]="!form.valid"
           (click)="buscar()"
           color="primary"
+          cdkFocusInitial
         >
-        <mat-icon aria-hidden="false" aria-label="Example home icon">search</mat-icon>
+          <mat-icon aria-hidden="false" aria-label="Example home icon"
+            >search</mat-icon
+          >
         </button>
       </div>
       <div class="col-md-3" style="margin: auto;">
-        <button mat-button style="align-self: center;" [mat-dialog-close]="selectedRow" cdkFocusInitial>
-            <mat-icon aria-hidden="false" aria-label="Example home icon">done_outline</mat-icon>
+        <button
+          mat-button
+          color="accent"
+          style="align-self: center;"
+          [mat-dialog-close]="selectedRow"         
+        >
+          <mat-icon aria-hidden="false">done_outline</mat-icon>
         </button>
       </div>
     </div>
@@ -82,7 +90,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr
       class="table-row"
-      tabindex="1"      
+      tabindex="1"
       mat-row
       *matRowDef="let row; columns: displayedColumns"
     ></tr>

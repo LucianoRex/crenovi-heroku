@@ -1,0 +1,79 @@
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>CNPJ</mat-label>
+        <input matInput formControlName="cnpj" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Data Fundação</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="fundacao" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Razão Social</mat-label>
+        <input matInput formControlName="razaoSocial" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field>
+        <mat-label>Localização</mat-label>
+        <input matInput formControlName="localizacao" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field>
+        <mat-label>Responsável Técnico</mat-label>
+        <input matInput formControlName="responsavelTecnico" />
+      </mat-form-field>
+    </div>
+  </div>
+  <h2>Correspondência</h2>
+  <div class="row" formGroupName="correspondencia">
+    <div class="col-md-6">
+      <mat-form-field>
+        <mat-label>Rua</mat-label>
+        <input matInput formControlName="rua" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-2">
+      <mat-form-field>
+        <mat-label>N°</mat-label>
+        <input matInput formControlName="numero" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field>
+        <mat-label>Bairro</mat-label>
+        <input matInput formControlName="bairro" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>CEP</mat-label>
+        <input matInput formControlName="cep" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field>
+        <mat-label>Cidade</mat-label>
+        <input matInput formControlName="cidade" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>UF</mat-label>
+        <input matInput formControlName="uf" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <button mat-button color="accent" [disabled]="!form.valid" (click)="save()">
+    Salvar
+  </button>
+</form>

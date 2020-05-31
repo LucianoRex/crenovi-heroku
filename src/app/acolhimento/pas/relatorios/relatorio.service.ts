@@ -5,6 +5,8 @@ import { Pas } from '../models/pas';
 import { Relatorio } from '../models/relatorio';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { DatePipe } from '@angular/common';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -41,7 +43,10 @@ export class RelatorioService {
     ].join(' ');
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authenticationService: AuthenticationService
+  ) {}
 
   usoImagem(_id: string) {
     this.http
@@ -64,7 +69,7 @@ export class RelatorioService {
                 alignment: 'justify',
                 columns: [
                   {
-                    text: `_________________________________\n\n ${acolhimento.identificacao.acolhido.nome}`,
+                    text: `_________________________________\n\n ${acolhimento[0].identificacao.acolhido.nome}`,
                     alignment: 'center',
                     fontSize: 14,
                   },
@@ -83,7 +88,7 @@ export class RelatorioService {
             new new Relatorio().titulo('TERMO DE AUTORIZAÇÃO DE USO DE IMAGEM'),
             {
               text: [
-                `Neste ato, eu, ${acolhimento.identificacao.acolhido.nome
+                `Neste ato, eu, ${acolhimento[0].identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, `,
                 { text: 'AUTORIZO', fontSize: 15, bold: true },
@@ -125,9 +130,9 @@ export class RelatorioService {
             new new Relatorio().titulo('Termo de ciência'),
             {
               text: [
-                `Neste ato, eu, ${acolhimento.identificacao.acolhido.nome
+                `Neste ato, eu, ${acolhimento[0].identificacao.acolhido.nome
                   .trim()
-                  .toLocaleUpperCase()}, voluntariamente aceito acolhimento , e concordo com as normas de convivência constantes no Regimento Interno do Centro de Reabilitação Nova Vida, e comprometo-me a cumprir o estabelecido durante o período de tratamento de 09 nove meses e máxima de 12 meses em regime de residência, podendo, em caso de descumprimento do mesmo, ser desligado do serviço. Resolução CONAND 01/2015 – RDC 29/2011.
+                  .toLocaleUpperCase()}, voluntariamente aceito acolhimento , e concordo com as normas de convivência constantes no Regimento Interno do Centro de Reabilitação Nova Vida, e comprometo-me a cumprir o estabelecido durante o período de tratamento de 09 nove meses e máxima de 12 meses em regime de residência, podendo, em caso de descumprimento do mesmo, ser desligado do serviço. Resolução CONAD 01/2015 – RDC 29/2011.
               `,
               ],
               fontSize: 14,
@@ -135,7 +140,7 @@ export class RelatorioService {
               margin: [0, 0, 0, 30],
             },
             {
-              text: `__________________________________\n\n${acolhimento.identificacao.acolhido.nome} - Acolhido`,
+              text: `__________________________________\n\n${acolhimento[0].identificacao.acolhido.nome} - Acolhido`,
               alignment: 'center',
               fontSize: 14,
               margin: [0, 0, 0, 70],
@@ -154,7 +159,7 @@ export class RelatorioService {
              fontSize: 14,
            },*/
             {
-              text: `__________________________________\n\n${acolhimento.identificacao.acolhido.nome} -  Responsável pelo acolhido`,
+              text: `__________________________________\n\n${acolhimento[0].identificacao.acolhido.nome} -  Responsável pelo acolhido`,
               alignment: 'center',
               fontSize: 14,
               margin: [0, 0, 0, 70],
@@ -183,6 +188,7 @@ export class RelatorioService {
         pdfMake.createPdf(documentDefinition).open();
       });
   }
+
   termoResponsabilidade(_id: string) {
     this.http
       .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
@@ -223,9 +229,9 @@ export class RelatorioService {
             new new Relatorio().titulo('Termo de responsabilidade'),
             {
               text: [
-                `Eu, ${acolhimento.responsavel.nome
+                `Eu, ${acolhimento[0].responsavel.nome
                   .trim()
-                  .toLocaleUpperCase()} portador(a) do CPF Nº ${acolhimento.responsavel.cpf.trim()} e do RG Nº ${acolhimento.responsavel.rg.trim()}, por meio deste instrumento declaro me responsabilizar pelo acolhido ${acolhimento.identificacao.acolhido.nome
+                  .toLocaleUpperCase()} portador(a) do CPF Nº ${acolhimento[0].responsavel.cpf.trim()} e do RG Nº ${acolhimento[0].responsavel.rg.trim()}, por meio deste instrumento declaro me responsabilizar pelo acolhido ${acolhimento[0].identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, entregue no dia ${new Date().getDate()}/${
                   new Date().getUTCMonth() + 1
@@ -236,6 +242,112 @@ export class RelatorioService {
               alignment: 'justify',
               margin: [0, 50, 0, 0],
             },
+          ],
+
+          styles: {
+            header: {
+              fontSize: 16,
+              bold: true,
+              alignment: 'justify',
+            },
+            tableHeader: {
+              bold: true,
+            },
+          },
+        };
+        pdfMake.createPdf(documentDefinition).open();
+      });
+  }
+
+  declaracaoHipossuficienciaDeRenda(_id: string, form: any[]) {
+    let user;
+    this.authenticationService.currentUser.subscribe((res) => {
+      console.log(res);
+      user = res.nome;
+    });
+
+    this.http
+      .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
+      .subscribe((acolhimento: Pas) => {
+        console.log(acolhimento);
+        const texto = this.formatarData();
+        const documentDefinition = {
+          pageSize: 'A4',
+          pageOrientation: 'portrait',
+          pageMargins: [50, 50, 50, 150],
+          footer: function () {
+            return [
+              {
+                text: [
+                  `A/C\n`,
+                  `${form[0].value}\n`,
+                  `Cidade: ${form[1].value}\n`,
+                  `Endereço: ${form[2].value}\n`,
+                  `CEP: ${form[3].value}`,
+                ],
+                margin: [50, 10, 10, 100],
+                alignment: 'justify',
+                fontSize: 14,
+              },
+            ];
+          },
+          content: [
+            new Relatorio().logo,
+            new new Relatorio().titulo(
+              'Declaração de hipossuficiência de renda'
+            ),
+            {
+              text: [
+                `Declaramos para os devidos fins, que o acolhido , Sr. ${acolhimento[0].identificacao.acolhido.nome
+                  .trim()
+                  .toLocaleUpperCase()}, nascido em ${new DatePipe(
+                  'en-US'
+                ).transform(
+                  acolhimento[0].identificacao.acolhido.dataNasc,
+                  'dd/MM/yyyy'
+                )} portador do CPF Nº ${acolhimento[0].identificacao.acolhido.cpf.trim()} e do RG Nº ${acolhimento[0].identificacao.acolhido.rg.trim()}, natural de ${
+                  acolhimento[0].identificacao.acolhido.naturalidade.municipio
+                }-${
+                  acolhimento[0].identificacao.acolhido.naturalidade.uf
+                } encontra-se acolhido na Comunidade Terapêutica Centro de Reabilitação Nova Vida, CNPJ 02.084.777, endereço Rincão Santo Cristo s/n interior Santa Rosa-RS desde
+                 ${new DatePipe('en-US').transform(
+                   acolhimento[0].identificacao.dataIngresso,
+                   'dd/MM/yyyy'
+                 )}, para tratamento terapêutico de substâncias psicoativas (álcool e outras drogas), contemplando um período de ${
+                  acolhimento[0].identificacao.periodo
+                } meses. Declaramos nos termos da lei 13.105/2015, artigo 98, que o mesmo não possui condições financeiras para custear as despesas do documento solicitado.             
+            `,
+              ],
+
+              fontSize: 14,
+              alignment: 'justify',
+              margin: [0, 30, 0, 0],
+            },
+            { text: 'Documento', style: 'header' },
+            {
+              text: [
+                `${form[4].options[form[4].selectedIndex].text} (${
+                  form[5].value
+                })\n\n`,
+              ],
+            },
+            { text: 'Enviar para:', style: 'header' },
+            {
+              text: `${acolhimento[1].correspondencia.rua}, n° ${acolhimento[1].correspondencia.numero}`,
+              alignment: 'justify',
+            },
+            {
+              text: `${acolhimento[1].correspondencia.bairro} ${acolhimento[1].correspondencia.cidade}-${acolhimento[1].correspondencia.uf}`,
+              alignment: 'justify',
+            },
+            {
+              text: `${acolhimento[1].correspondencia.cep}\n\n`,
+              alignment: 'justify',
+            },
+
+            { text: `Santa Rosa, ${texto}\n\n`, alignment: 'justify' },
+            { text: user, alignment: 'justify' },
+            //  { text: user.result.colaborador.funcao.nome, alignment: 'justify' },
           ],
 
           styles: {

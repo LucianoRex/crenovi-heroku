@@ -18,12 +18,13 @@ export class PasFormComponent extends PasResource implements OnInit {
   tratamentoForm: FormGroup;
   quadroClinicoForm: FormGroup;
 
-  _id: string;
+  //_id: string;
   constructor(protected injector: Injector, protected pasService: PasService) {
     super(injector);
   }
 
   ngOnInit() {
+    console.log(this._id)
     this.pasService.pas_id = this._id;
     this._id != undefined ? (this.isLinear = false) : (this.isLinear = true);
   }

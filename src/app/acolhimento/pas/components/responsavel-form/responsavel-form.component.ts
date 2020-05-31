@@ -14,38 +14,6 @@ import { PasResource } from '../../classes/pas-resource';
   styleUrls: ['./responsavel-form.component.css'],
 })
 export class ResponsavelFormComponent extends PasResource implements OnInit {
-  convenios: any[] = [
-    {
-      _id: 1,
-      nome: 'SUS',
-    },
-    {
-      _id: 2,
-      nome: 'SENAD',
-    },
-  ];
-
-  encaminhado: any[] = [
-    {
-      _id: 1,
-      nome: 'Hospital',
-    },
-    {
-      _id: 2,
-      nome: 'CAPS',
-    },
-  ];
-
-  periodos: any[] = [
-    {
-      _id: 1,
-      periodo: '9 meses',
-    },
-    {
-      _id: 2,
-      periodo: '12 meses',
-    },
-  ];
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -56,6 +24,10 @@ export class ResponsavelFormComponent extends PasResource implements OnInit {
       responsavel: this.fb.group({
         _id: undefined,
         nome: ['', Validators.required],
+        telefone: [''],
+        email: [''],
+        rg: [''],
+        cpf: [''],
       }),
     });
     this._id !== undefined
@@ -63,6 +35,6 @@ export class ResponsavelFormComponent extends PasResource implements OnInit {
           this.form.patchValue(res);
         })
       : null;
-    this.notify.emit(this.form);   
+    this.notify.emit(this.form);
   }
 }

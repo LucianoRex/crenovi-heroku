@@ -1,15 +1,18 @@
 export interface Pas {
-  //acolhido: Acolhido;
   identificacao: Identificacao;
   medicamento: Medicamento[];
   doenca: Doenca[];
   responsavel: Responsavel;
   pertence: Pertence[];
+  saida: Saida[];
   historicoQuimico: HistoricoQuimico[];
   historicoPsiquico: HistoricoPsiquico;
 }
 export class Identificacao {
   acolhido: Acolhido;
+  dataIngresso: Date;
+  dataEgresso: Date;
+  periodo: string;
 }
 export class Presenca {
   constructor(
@@ -24,33 +27,28 @@ export class Presenca {
 
 export interface Acolhido {
   _id: string;
-  pessoal: Pessoal;
   nome: string;
-  doenca: Doenca;
-  medicamento: Medicamento[];
-  biometria: Biometria;
-  psicoterapia: Psicoterapia;
-  comportamento: Comportamento;
-  acolhimento: Acolhimento;
-  perfil: Perfil;
-  endereco: Endereco;
-  avaliacao: Avaliacao;
-  pertence: Pertence;
-  responsavel: Responsavel;
-  quadroClinico: QuadroClinico;
-  saida: Saida;
-  familia: Familia;
-
-  //substancias = new SuResponsavelbstancia;
+  cpf: string;
+  rg: string;
+  dataNasc: string;
+  cor: string;
+  acolhidoImage: string;
+  tpsanguineo: string;
+  naturalidade: Naturalidade;
+  telefone: string;
+  tituloEleitor: string;
+  carteiratrabalho: string;
+  nameMae: string;
+  nomePai: string;
+  ocupacao: string;
+  escolaridade: string;
+  religiao: string;
+  estadoCivil: string;
 }
 
 export interface Naturalidade {
   municipio: string;
   uf: string;
-}
-interface Familia {
-  nFilhos: string;
-  nomeEsposa: string;
 }
 
 export class Saida {
@@ -187,8 +185,8 @@ export class Conceito {
 
 export class Acolhimento {
   _id: string = null;
-  dataI: string = null;
-  dataF: string = null;
+  dataIngresso: string = null;
+  dataEgresso: string = null;
   observacoes: string = null;
   motivo: string = null;
   convenio = new Convenio();

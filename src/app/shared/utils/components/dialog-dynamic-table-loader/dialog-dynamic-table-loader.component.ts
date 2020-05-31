@@ -28,7 +28,7 @@ export class DialogDynamicTableLoaderComponent implements OnInit {
     let component = this.componentFactoryResolver.resolveComponentFactory(
       this.data.component
     );
-    let componentRef = this.viewContainerRef.createComponent(component);
+    let componentRef = this.viewContainerRef.createComponent(component);    
     componentRef.instance['_id'] = this.data._id;
     if (componentRef.instance['selectedRow']) {
       componentRef.instance['selectedRow'].subscribe((res) => {

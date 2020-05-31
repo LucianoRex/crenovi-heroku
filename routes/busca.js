@@ -19,7 +19,7 @@ router.post("/:model", (req, res, next) => {
   }
 
   const Model = require(`../models/${req.params.model}`);
-  console.log(criteria)
+ 
   Model.find(criteria).then((result) => {      
     res.status(200).json(result);
   });

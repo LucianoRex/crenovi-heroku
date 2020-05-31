@@ -1,0 +1,37 @@
+mat-form-field {
+  width: 100%;
+}
+mat-icon:hover {
+    cursor: pointer;
+  }
+  mat-icon {
+    float: right;
+  }
+  
+  input[type='file'] {
+    display: none
+  }
+  
+  .input-wrapper label {
+    background-color: #3498db;
+    border-radius: 5px;
+    color: #fff;
+    margin: 10px;
+    padding: 6px 20px
+  }
+  
+  .input-wrapper label:hover {
+    background-color: #2980b9
+  }
+  
+  video {
+    width: 20%;
+    height: auto;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  
+  

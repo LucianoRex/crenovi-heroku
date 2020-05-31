@@ -38,7 +38,13 @@ export class PasListComponent extends PasResource implements OnInit {
         complemento: ' Meses',
       },
     ];
-    //this.montaTabela(columns, this.pasService.read(), PasFormComponent);
-    super.montaTabela(columns, this.pasService.read(), PasFormComponent);
+
+    this.montaTabela(
+      columns,
+      this.pasService.read(),
+      PasFormComponent,
+      undefined,
+      'pas'
+    );
   }
 }

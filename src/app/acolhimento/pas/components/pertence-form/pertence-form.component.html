@@ -1,0 +1,28 @@
+<form [formGroup]="form">
+  <div formGroupName="pertence">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Pertence</mat-label>
+          <mat-select formControlName="pertence">
+            <mat-option *ngFor="let item of itens" [value]="item">
+              {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Quantidade</mat-label>
+          <input matInput formControlName="quantidade" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div>
+      <button mat-button [disabled]="!form.valid" (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

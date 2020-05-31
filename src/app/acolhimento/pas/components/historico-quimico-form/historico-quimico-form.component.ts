@@ -11,29 +11,17 @@ export class HistoricoQuimicoFormComponent extends PasResource
   //@Output() notify = new EventEmitter();
   //apiUrl = environment.apiBaseUrl;
 
-  substancias: any[] = [
-    {
-      value: 'alcool',
-      name: 'Álcool',
-    },
-    {
-      value: 'maconha',
-      name: 'Maconha',
-    },
-    {
-      value: 'cocaina',
-      name: 'Cocaína',
-    },
-    {
-      value: 'crack',
-      name: 'Crack',
-    },
-  ];
+  substancias: any[];
   constructor(protected injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.pasService.readCollection('substancia').subscribe((res: any) => {
+      console.log(res);
+      this.substancias = res;
+    });
+
     this.form = this.fb.group({
       //_id: undefined,
       path: 'historicoQuimico',
@@ -41,13 +29,15 @@ export class HistoricoQuimicoFormComponent extends PasResource
         _id: undefined,
         idade: [''],
         substancia: [''],
+        diario: [false],
+        observacoes: [''],      
       }),
     });
     this._id !== undefined
       ? this.pasService
           .readById('historicoQuimico', this._id)
           .subscribe((res: any) => {
-            this.form.get('biometria').patchValue(res);
+            this.form.get('historicoQuimico').patchValue(res);
           })
       : null;
   }

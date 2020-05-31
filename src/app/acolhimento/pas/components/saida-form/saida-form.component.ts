@@ -15,7 +15,7 @@ export class SaidaFormComponent extends PasResource implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
-
+  motivos: any[] = ['Ressocialização', 'Consulta'];
   ngOnInit(): void {
     this.form = this.fb.group({
       //_id: undefined,
@@ -24,6 +24,8 @@ export class SaidaFormComponent extends PasResource implements OnInit {
         _id: undefined,
         saida: [''],
         retorno: [''],
+        motivo: [''],
+        responsavel: [''],
       }),
     });
     this._id !== undefined

@@ -16,8 +16,29 @@
     <div class="row">
       <div class="col-md-3">
         <mat-form-field>
+          <mat-label>Altura</mat-label>
+          <input matInput formControlName="altura" mask="0.00" placeholder="1.80">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Peso</mat-label>
+          <input matInput formControlName="peso" mask="0*" placeholder="80Kg">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
           <mat-label>P.A.</mat-label>
-          <input matInput formControlName="pa" />
+          <input matInput formControlName="pa" mask="000/00" placeholder="120/80">
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Glicemia</mat-label>
+          <input matInput formControlName="glicemia" mask="0*" placeholder="80mg/dl">
         </mat-form-field>
       </div>
     </div>

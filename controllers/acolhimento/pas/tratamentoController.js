@@ -1,11 +1,13 @@
 const Acolhimento = require("../../../models/acolhimento");
 
 let get = (req, res, next) => {
-  Acolhimento.findOne({ _id: req.params._id }, { tratamento: 1 }).then(
-    (acolhimento) => {
+  Acolhimento.findOne({ _id: req.params._id }, { tratamento: 1 })
+    .then((acolhimento) => {
       res.status(200).json(acolhimento);
-    }
-  );
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 };
 
 let put = (req, res, next) => {
@@ -26,7 +28,7 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      res.status(500).json(err);
+      res.status(500).json({ message: err.message });
     });
 };
 module.exports = {

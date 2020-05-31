@@ -6,30 +6,34 @@ let get = (req, res, next) => {
 };
 
 let getById = (req, res, next) => {
-  console.log("por id ");
-  Acolhido.findOne({ _id: req.params._id }).then((acolhido) => {
-    res.status(200).json(acolhido);
-  });
+  Acolhido.findOne({ _id: req.params._id })
+    .populate("ocupacao")
+    .then((acolhido) => {
+      res.status(200).json(acolhido);
+    });
 };
 
 let put = (req, res, next) => {
   let data = {
     ...req.body.acolhido,
   };
+  let mensagem = [];
   Acolhido.findOneAndUpdate(
     {
       _id: req.params._id,
     },
     {
       $set: data,
+    },
+    {
+      new: true,
     }
   )
     .then((acolhido) => {
       res.status(200).json(acolhido);
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
     });
 };
 
@@ -44,7 +48,7 @@ let post = (req, res, next) => {
       res.status(200).json(acolhido);
     })
     .catch((error) => {
-      res.status(500).json(error);
+      res.status(500).json({ message: error.message });
     });
 };
 module.exports = {

@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 import * as io from 'socket.io-client';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dynamic-table-builder',
@@ -36,15 +37,15 @@ export class DynamicTableBuilderComponent implements OnInit {
   private subscriptions: Subscription[] = [];
   data: Observable<any>;
   dataSource: MatTableDataSource<any>;
+  socketiodata;
   displayedColumns;
   resultsLength = 0;
   isLoadingResults = false;
   isRateLimitReached = false;
-  socket = io('http://localhost:4000');
+  socket = io(environment.SOCKET_ENDPOINT);
   title: string;
 
   constructor(private datePipe: DatePipe) {}
-  
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe);
@@ -53,7 +54,7 @@ export class DynamicTableBuilderComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.socket.on(
-      'update-data',
+     'update-data',
       function (data: any) {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -66,7 +67,7 @@ export class DynamicTableBuilderComponent implements OnInit {
   }
 
   getData() {
-    this.data.subscribe((res) => {     
+    this.data.subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.sortingDataAccessor = (obj, property) =>
         this.getProperty(obj, property);
@@ -88,7 +89,7 @@ export class DynamicTableBuilderComponent implements OnInit {
       'dd/MM/yyyy'
     );
 
-  formatarBoolean(obj, path) {        
+  formatarBoolean(obj, path) {
     if (path.split('.').reduce((o, p) => o && o[p], obj) == true) {
       return `👍`;
     } else {
@@ -96,9 +97,9 @@ export class DynamicTableBuilderComponent implements OnInit {
     }
   }
 
-  createEvent(e:Event){
+  createEvent(e: Event) {
     e.stopPropagation();
-    e.preventDefault()
-    this.create.emit()
+    e.preventDefault();
+    this.create.emit();
   }
 }

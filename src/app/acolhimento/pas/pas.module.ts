@@ -5,7 +5,10 @@ import { PasRoutingModule } from './pas-routing.module';
 import { UtilsModule } from 'src/app/shared/utils/utils.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from 'src/app/angular-material/angular-material.module';
-import { RelatorioComponent } from './relatorio/relatorio.component';
+import {
+  RelatorioComponent,
+  DialogContentExampleDialog,
+} from './components/relatorio/relatorio.component';
 
 import { WebcamModule } from 'ngx-webcam';
 import { IdentificacaoComponent } from './components/identificacao/identificacao.component';
@@ -29,6 +32,16 @@ import { TratamentoFormComponent } from './components/tratamento-form/tratamento
 import { HistoricoQuimicoListComponent } from './components/historico-quimico-list/historico-quimico-list.component';
 import { HistoricoQuimicoFormComponent } from './components/historico-quimico-form/historico-quimico-form.component';
 import { QuadroClinicoFormComponent } from './components/quadro-clinico-form/quadro-clinico-form.component';
+import { PertenceListComponent } from './components/pertence-list/pertence-list.component';
+import { PertenceFormComponent } from './components/pertence-form/pertence-form.component';
+import { MaskDirective, NgxMaskModule, IConfig } from 'ngx-mask';
+import { AvaliacaoListComponent } from './components/avaliacao-list/avaliacao-list.component';
+import { AvaliacaoFormComponent } from './components/avaliacao-form/avaliacao-form.component';
+import { Conclusao } from './classes/pas-resource';
+import { EvolucaoPsicologicaListComponent } from './components/evolucao-psicologica-list/evolucao-psicologica-list.component';
+import { EvolucaoPsicologicaFormComponent } from './components/evolucao-psicologica-form/evolucao-psicologica-form.component';
+
+export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
 @NgModule({
   declarations: [
@@ -54,15 +67,24 @@ import { QuadroClinicoFormComponent } from './components/quadro-clinico-form/qua
     HistoricoQuimicoListComponent,
     HistoricoQuimicoFormComponent,
     QuadroClinicoFormComponent,
+    PertenceListComponent,
+    PertenceFormComponent,
+    AvaliacaoListComponent,
+    AvaliacaoFormComponent,
+    DialogContentExampleDialog,
+    Conclusao,
+    EvolucaoPsicologicaListComponent,
+    EvolucaoPsicologicaFormComponent
   ],
   imports: [
     CommonModule,
     PasRoutingModule,
+    NgxMaskModule,
     UtilsModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularMaterialModule,    
-    WebcamModule
+    AngularMaterialModule,
+    WebcamModule,
   ],
   exports: [],
 })

@@ -1,5 +1,13 @@
 var express = require("express");
 var router = express.Router();
+const {
+  userRegister,
+  userLogin,
+  userAuth,
+  serializeUser,
+  chekRole,
+} = require("./../utils/auth");
+
 const Acolhimento = require("../models/acolhimento");
 const Acolhido = require("../models/acolhido");
 const identificacaoController = require("../controllers/acolhimento/pas/identificacaoController");
@@ -16,6 +24,16 @@ const tratamentoController = require("../controllers/acolhimento/pas/tratamentoC
 const quadroClinicoController = require("../controllers/acolhimento/pas/quadroClinicoController");
 const historicoQuimicoController = require("../controllers/acolhimento/pas/historicoQuimicoController");
 const acolhidoController = require("../controllers/acolhimento/pas/acolhidoController");
+const pertenceController = require("../controllers/acolhimento/pas/pertenceController");
+const avaliacaoController = require("../controllers/acolhimento/pas/avaliacaoController");
+
+const livroDiarioController = require("../controllers/acolhimento/livroDiarioController");
+
+/**Livro diario Controller */
+router.get("/livrodiario", livroDiarioController.get);
+router.get("/livrodiario/:_id", livroDiarioController.getById);
+router.post("/livrodiario", livroDiarioController.post);
+router.put("/livrodiario/:_id", livroDiarioController.put);
 
 router.get("/acolhido", function (req, res, next) {
   Acolhido.find().then((acolhido) => {
@@ -42,7 +60,12 @@ router.put("/:_id/responsavel", responsavelController.put);
 /** Identificacao*/
 router.post("/identificacao", identificacaoController.post);
 router.get("/:_id/identificacao", identificacaoController.get);
-router.put("/:_id/identificacao", identificacaoController.put);
+router.put(
+  "/:_id/identificacao",
+  userAuth,
+  // chekRole(["admin"]),
+  identificacaoController.put
+);
 
 /**HistPsiquico*/
 router.get("/:_id/historicoPsiquico", historicoPsiquicoController.get);
@@ -80,6 +103,18 @@ router.get("/:_id/biometria", biometriaController.get);
 router.put("/:_id/biometria", biometriaController.post);
 router.put("/:_id/biometria/:biometria", biometriaController.put);
 
+/**Avalicao Controller */
+router.get("/:_id/avaliacao/:avaliacao", avaliacaoController.getById);
+router.get("/:_id/avaliacao", avaliacaoController.get);
+router.put("/:_id/avaliacao", avaliacaoController.post);
+router.put("/:_id/avaliacao/:avaliacao", avaliacaoController.put);
+
+/**Pertence Controller */
+router.get("/:_id/pertence/:pertence", pertenceController.getById);
+router.get("/:_id/pertence", pertenceController.get);
+router.put("/:_id/pertence", pertenceController.post);
+router.put("/:_id/pertence/:pertence", pertenceController.put);
+
 /**HistQuimico Controller */
 router.get(
   "/:_id/historicoQuimico/:historicoQuimico",
@@ -99,10 +134,10 @@ router.put("/:_id/saida", saidaController.post);
 router.put("/:_id/saida/:saida", saidaController.put);
 
 /**Acolhido Controller */
-router.get("/:_id/acolhido/:acolhido", acolhidoController.getById);
-router.get("/:_id/acolhido", acolhidoController.getById);
-router.post("/acolhido", acolhidoController.post);
-router.put("/:_id/acolhido/:acolhido", acolhidoController.put);
+router.get("/:_id/acolhido/:acolhido", userAuth, acolhidoController.getById);
+router.get("/:_id/acolhido", userAuth, acolhidoController.getById);
+router.post("/acolhido", userAuth, acolhidoController.post);
+router.put("/:_id/acolhido/:acolhido", userAuth, acolhidoController.put);
 
 /**Quadro Clinico Controller */
 router.get("/:_id/quadroClinico", quadroClinicoController.get);
@@ -112,12 +147,38 @@ router.put("/:_id/quadroClinico", quadroClinicoController.put);
 router.get("/:_id/tratamento", tratamentoController.get);
 router.put("/:_id/tratamento/", tratamentoController.put);
 
-router.get("/relatorio/:_id", (req, res, netx) => {
-  Acolhimento.findOne({ _id: req.params._id })
-    .populate("identificacao.acolhido")
+router.post("/:_id/concluir", (req, res, next) => {
+  Acolhimento.findOneAndUpdate(
+    {
+      _id: req.params._id,
+    },
+    {
+      $set: {
+        ativo: false,
+        motivoConclusao: req.query.motivoconclusao,
+      },
+    }
+  )
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
     });
+});
+
+router.get("/relatorio/:_id", (req, res, netx) => {
+  let Comunidade = require("../models/comunidade");
+
+  Promise.all([
+    Acolhimento.findOne({ _id: req.params._id }).populate(
+      "identificacao.acolhido"
+    ),
+
+    Comunidade.findOne({}, { correspondencia: 1 }),
+  ]).then((acolhimento) => {
+    res.status(200).json(acolhimento);
+  });
 });
 
 module.exports = router;

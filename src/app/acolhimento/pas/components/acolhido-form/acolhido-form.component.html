@@ -2,9 +2,60 @@
   <div formGroupName="acolhido">
     <div class="row">
       <div class="col-md-6">
-        <mat-form-field class="example-full-width">
+        <mat-form-field>
           <mat-label>Nome Completo</mat-label>
           <input matInput formControlName="nome" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field>
+          <mat-label>Nome da Mãe</mat-label>
+          <input matInput formControlName="nomeMae" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>RG</mat-label>
+          <input matInput formControlName="rg" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>CPF</mat-label>
+          <input matInput mask="000.000.000-00" formControlName="cpf" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Título de Eleitor</mat-label>
+          <input matInput formControlName="tituloEleitor" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Carteira de trabalho</mat-label>
+          <input matInput formControlName="carteiraTrabalho" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Telefone</mat-label>
+          <input
+            matInput
+            prefix="+55 "
+            mask="(00) 0 0000 0000"
+            formControlName="telefone"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Religião </mat-label>
+          <mat-select formControlName="religiao">
+            <mat-option *ngFor="let religiao of religioes" [value]="religiao">
+              {{ religiao }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div class="col-md-3">
@@ -18,30 +69,148 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
+      <div class="col-md-9" formGroupName="ocupacao">
+        <mat-form-field>
+          <mat-label>Ocupação</mat-label>
+          <input matInput [readonly]="true" formControlName="TITULO" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-1" style="align-self: center;">
+        <button
+          color="primary"
+          mat-button
+          (click)="buscaProfissao()"
+          style="float: right;"
+        >
+          <mat-icon aria-hidden="false">search</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <h2>Endereço</h2>
+    <div class="row" formGroupName="endereco">
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>CEP</mat-label>
+          <input matInput #cep formControlName="cep" mask="00000-000" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-1" style="align-self: center;">
+        <button mat-button (click)="buscaCep(cep.value)" style="float: right;">
+          <mat-icon aria-hidden="false" aria-label="Example home icon"
+            >search</mat-icon
+          >
+        </button>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>Rua/Logradouro</mat-label>
+          <input matInput formControlName="logradouro" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>Bairro</mat-label>
+          <input matInput formControlName="bairro" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>UF</mat-label>
+          <input matInput formControlName="uf" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>Município</mat-label>
+          <input matInput formControlName="localidade" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-2">
+        <mat-form-field>
+          <mat-label>N°</mat-label>
+          <input matInput formControlName="n" />
+        </mat-form-field>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-md-12">
+          <img [src]="url" id="preview" class="img-thumbnail" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label for="selecao-arquivo" class="btn btn-block">
+            <mat-icon aria-hidden="false">photo</mat-icon></label
+          >
+        </div>
+        <div class="col-md-6">
+          <button
+            type="button"
+            class="btn btn-block"
+            (click)="openModal(template); AtivarCam()"
+          >
+            <mat-icon aria-hidden="false">camera_alt</mat-icon>
+          </button>
+          <input
+            id="selecao-arquivo"
+            accept=".png,.jpg"
+            type="file"
+            (change)="onSelectFile($event)"
+            class="f"
+          />
+        </div>
+      </div>
     </div>
     <div>
-      <button [disabled]="!form.valid" (click)="save()">
+      <button
+        mat-button
+        color="accent"
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
         Salvar
       </button>
     </div>
   </div>
 </form>
 
-<div style="text-align:center">
-    <h1>
-      Ngx-Webcam Demo
-    </h1>
-  
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide(); desativarCam()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
     <div>
-      <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
-              [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
-              [videoOptions]="videoOptions"
-              [imageQuality]="1"
-              (cameraSwitched)="cameraWasSwitched($event)"
-              (initError)="handleInitError($event)"
+      <webcam
+        [height]="400"
+        [width]="300"
+        [trigger]="triggerObservable"
+        (imageCapture)="handleImage($event)"
+        *ngIf="showWebcam"
+        [allowCameraSwitch]="allowCameraSwitch"
+        [switchCamera]="nextWebcamObservable"
+        [videoOptions]="videoOptions"
+        [imageQuality]="0.5"
+        (cameraSwitched)="cameraWasSwitched($event)"
+        (initError)="handleInitError($event)"
       ></webcam>
-      <br/>
-      <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
+      <br />
+      <button class="btn btn-primary" (click)="triggerSnapshot()">
+        Tirar uma foto
+      </button>
+      <!--
       <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button>
       <br/>
       <button class="actionBtn" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Next Webcam</button>
@@ -49,23 +218,7 @@
       <br/>
       DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
       <button (click)="showNextWebcam(deviceId);">Activate</button>
+      -->
     </div>
-  </div>
-  
-  <div class="snapshot" *ngIf="webcamImage">
-    <h2>Nice one!</h2>
-    <img [src]="webcamImage.imageAsDataUrl"/>
-  </div>
-  
-  <h4 *ngIf="errors.length > 0">Messages:</h4>
-  <ul *ngFor="let error of errors">
-    <li>{{error | json}}</li>
-  </ul>
-  
-  <h2>Like this project on GitHub:</h2>
-  <ul class="links">
-    <li>
-      <h2><a target="_blank" rel="noopener" href="https://github.com/basst314/ngx-webcam">Ngx-Webcam / GitHub</a></h2>
-    </li>
-  </ul>
-  
+  </div></ng-template
+>

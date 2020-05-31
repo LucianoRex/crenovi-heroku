@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -11,13 +11,22 @@ export class PasService {
   pas_id: string;
   constructor(private _http: HttpClient) {}
 
+  buscaApi(api): Observable<any> {
+    let headers = new HttpHeaders();
+    headers = headers.set('apiExterna', 'true');
+    return this._http.get(api);
+  }
+
   read(path = '') {
     return this._http.get(`${this.apiBaseUrl}/acolhimento/${path}`);
   }
 
-  readAcolhido() {
-    return this._http.get(`${this.apiBaseUrl}/acolhimento/acolhido`);
+  readCollection(collection) {
+    return this._http.get(`${this.apiBaseUrl}/${collection}`);
   }
+  /* readAcolhido() {
+    return this._http.get(`${this.apiBaseUrl}/acolhimento/acolhido`);
+  }*/
 
   readById(document, documentId: string = '') {
     if (this.pas_id != undefined) {
@@ -26,12 +35,6 @@ export class PasService {
       );
     }
   }
-
-  /*readMedicamento(_id: string, document) {
-    return this._http.get(
-      `${this.apiBaseUrl}/acolhimento/${this.pas_id}/${document}`
-    );
-  }*/
 
   save(form): Observable<any> {
     if (this.pas_id != undefined) {
@@ -58,5 +61,12 @@ export class PasService {
 
   remove() {
     alert('Vamos remover?');
+  }
+
+  concluirTratamento(motivo: string): Observable<any> {
+    return this._http.post(
+      `${this.apiBaseUrl}/acolhimento/${this.pas_id}/concluir?motivoconclusao=${motivo}`,
+      null
+    );
   }
 }

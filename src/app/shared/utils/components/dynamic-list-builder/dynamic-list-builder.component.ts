@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   Inject,
+  OnDestroy,
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -16,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { DynamicListService } from '../../services/dynamic-list.service';
 
 @Component({
   selector: 'app-dynamic-list-builder',
@@ -23,7 +25,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./dynamic-list-builder.component.css'],
   providers: [DatePipe],
 })
-export class DynamicListBuilderComponent implements OnInit {
+export class DynamicListBuilderComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   apiUrl = environment.apiBaseUrl;
@@ -47,10 +49,12 @@ export class DynamicListBuilderComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private datePipe: DatePipe,
     private http: HttpClient,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dynamicListService: DynamicListService
   ) {}
 
   ngOnDestroy(): void {
+    this.dynamicListService.send(this.form.value);
     this.subscriptions.forEach((s) => s.unsubscribe);
   }
 
@@ -58,10 +62,15 @@ export class DynamicListBuilderComponent implements OnInit {
     this.form = this.fb.group({
       campo: ['', Validators.required],
       comparador: ['', Validators.required],
-      valor: ['', [Validators.required,Validators.minLength(3)]],
+      valor: ['', [Validators.required, Validators.minLength(3)]],
     });
     this.columns = this.data.columns;
     this.displayedColumns = this.columns.map((column) => column.name);
+    this.dynamicListService.get().subscribe((res) => {
+      console.log(res);
+      this.form.patchValue(res);
+      this.buscar();
+    });
   }
 
   getProperty = (obj, path) => path.split('.').reduce((o, p) => o && o[p], obj);
@@ -86,6 +95,7 @@ export class DynamicListBuilderComponent implements OnInit {
   }
 
   buscar() {
+    //this.dynamicListService.send(this.form.value);
     this.http.post(this.data.api, this.form.value).subscribe((res: any) => {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.sortingDataAccessor = (obj, property) =>
@@ -98,4 +108,5 @@ export class DynamicListBuilderComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close(this.selectedRow);
   }
+
 }

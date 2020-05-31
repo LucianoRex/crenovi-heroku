@@ -25,6 +25,10 @@
     <ng-template matStepLabel>Medicamentos</ng-template>
     <app-medicamento-list [_id]="_id"></app-medicamento-list>
   </mat-step>
+  <mat-step [completed]="false" [stepControl]="">
+    <ng-template matStepLabel>Avaliação</ng-template>
+    <app-avaliacao-list [_id]="_id"></app-avaliacao-list>
+  </mat-step>
   <mat-step [completed]="false" [stepControl]="quadroClinicoForm">
     <ng-template matStepLabel>Quadro Clínico</ng-template>
     <app-quadro-clinico-form
@@ -41,7 +45,7 @@
   </mat-step>
   <mat-step [completed]="false" [stepControl]="tratamentoForm">
     <ng-template matStepLabel>Tratamento</ng-template>
-    <app-tratamento-form [_id]="_id"></app-tratamento-form>
+    <app-tratamento-form disabled="true" [_id]="_id"></app-tratamento-form>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="historicoFamiliarSocialForm">
     <ng-template matStepLabel>Histórico Familiar Social</ng-template>
@@ -57,11 +61,19 @@
       (notify)="historicoForense($event)"
     ></app-historico-forense-form>
   </mat-step>
-  <mat-step [completed]="false" [stepControl]="historicoForenseForm">
+  <mat-step [completed]="false" [stepControl]="">
+    <ng-template matStepLabel>Pertences</ng-template>
+    <app-pertence-list [_id]="_id"></app-pertence-list>
+  </mat-step>
+  <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Saídas e retornos</ng-template>
     <app-saida-list [_id]="_id"></app-saida-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
+    <ng-template matStepLabel>Evolução psicológica</ng-template>
+    <app-evolucao-psicologica-list [_id]="_id"></app-evolucao-psicologica-list>
+  </mat-step>
+  <mat-step [completed]="false" [stepControl]="" *ngIf="false">
     <ng-template matStepLabel>Biometria</ng-template>
     <app-biometria-list [_id]="_id"></app-biometria-list>
   </mat-step>

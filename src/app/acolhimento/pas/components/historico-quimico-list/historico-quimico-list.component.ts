@@ -17,17 +17,17 @@ export class HistoricoQuimicoListComponent extends PasResource
     let columns = [
       {
         name: 'idade',
-        label: 'Idade',        
+        label: 'Idade',
       },
       {
-        name: 'substancia',
+        name: 'substancia.nome',
         label: 'Substância',
       },
     ];
     super.montaTabela(
       columns,
       this.pasService.readById('historicoQuimico'),
-      HistoricoQuimicoFormComponent,      
+      HistoricoQuimicoFormComponent,
       this._id
     );
   }

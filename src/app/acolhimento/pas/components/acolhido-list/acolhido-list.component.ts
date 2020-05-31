@@ -17,16 +17,24 @@ export class AcolhidoListComponent extends PasResource implements OnInit {
   }
 
   ngOnInit(): void {
-    let columns = [      
+    let columns = [
       {
         name: 'nome',
         label: 'Nome',
       },
       {
-        name:'dataNasc',
-        label:'Data de Nasc.',
-        type:'date'
-      }
+        name: 'dataNasc',
+        label: 'Data de Nasc.',
+        type: 'date',
+      },
+      {
+        name: 'cpf',
+        label: 'CPF',
+      },
+      {
+        name: 'rg',
+        label: 'RG',
+      },
     ];
     this.montaTabela(
       columns,

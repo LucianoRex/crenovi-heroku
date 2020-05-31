@@ -53,6 +53,54 @@ const HistoricoPsiquico = new Schema({
   },
 });
 
+const Avaliacao = new Schema({
+  disciplina: {
+    type: Number,
+    default: 0,
+    //     type: mongoose.Schema.Types.ObjectId,
+    //    ref: 'Conceito',
+  },
+  autoestima: {
+    type: Number,
+    default: 0,
+    //    type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Conceito',
+  },
+  reunioes: {
+    type: Number,
+    default: 0,
+    //   type: mongoose.Schema.Types.ObjectId,
+    //    ref: 'Conceito',
+  },
+  espiritualidade: {
+    type: Number,
+    default: 0,
+
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Conceito',
+  },
+  higiene: {
+    type: Number,
+    default: 0,
+    //  type: mongoose.Schema.Types.ObjectId,
+    //  ref: 'Conceito',
+  },
+  criatividade: {
+    type: Number,
+    default: 0,
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Conceito',
+  },
+  observacoes: {
+    type: String,
+  },
+  data: {
+    type: Date,
+    default: Date.now(),
+    unique: true,
+  },
+});
+
 const HistoricoFamiliarSocial = new Schema({
   resideFamiliar: {
     type: Boolean,
@@ -133,12 +181,32 @@ const Saida = new Schema({
     type: Date,
     default: Date.now(),
   },
+  motivo: {
+    type: String,
+  },
+  responsavel: {
+    type: String,
+  },
 });
+
+const Pertence = new Schema({
+  pertence: {
+    type: String,
+    unique: true,
+  },
+  quantidade: {
+    type: String,
+  },
+});
+
 let acolhimento = new Schema(
   {
     ativo: {
       type: Boolean,
       default: true,
+    },
+    motivoConclusao: {
+      type: String,
     },
     identificacao: {
       dataIngresso: {
@@ -167,6 +235,8 @@ let acolhimento = new Schema(
     responsavel: {
       nome: {
         type: String,
+        default: "",
+        unique: true,
       },
       cpf: {
         type: String,
@@ -176,12 +246,18 @@ let acolhimento = new Schema(
         type: String,
         default: "",
       },
+      email: {
+        type: String,
+      },
+      telefone: {
+        type: String,
+      },
     },
+    avaliacao: [Avaliacao],
     medicamento: [
       {
         medicamento: {
           type: mongoose.Schema.Types.ObjectId,
-          unique: true,
           ref: "medicamento",
         },
         posologia: {
@@ -198,7 +274,6 @@ let acolhimento = new Schema(
       {
         doenca: {
           type: mongoose.Schema.Types.ObjectId,
-          unique: true,
           ref: "doenca",
         },
         observacoes: {
@@ -276,6 +351,15 @@ let acolhimento = new Schema(
           type: Boolean,
         },
       },
+      observacoes: {
+        type: String,
+      },
+      cessarUso: {
+        type: Boolean,
+      },
+      familiar: {
+        type: Boolean,
+      },
     },
 
     historicoPsiquico: HistoricoPsiquico,
@@ -289,17 +373,75 @@ let acolhimento = new Schema(
         idade: {
           type: String,
         },
+        diario: {
+          type: Boolean,
+        },
+        observacoes: {
+          type: String,
+        },
       },
     ],
     historicoForense: HistoricoForense,
     saida: [Saida],
+    pertence: [Pertence],
+    criado: {
+      usuario: {
+        type: String,
+      },
+      data: {
+        type: Date,
+        default: Date.now(),
+      },
+    },
   },
   {
     collection: "acolhimento",
   }
 );
-acolhimento.index(
+/*acolhimento.index(
   { ativo: 1, "identificacao.acolhido": 1 },
   { unique: [true, "Acolhido selecionado já está em acolhimento"] }
-);
+);*/
+
+acolhimento.pre("save", true, function (next, done) {
+  var self = this;
+  mongoose.models["acolhimento"].findOne(
+    { "acolhido.acolhido": self.acolhido, ativo: true },
+    function (err, user) {
+      if (err) {
+        console.log(err);
+        done();
+      } else if (user) {
+        console.log(user);
+        self.invalidate(
+          "Acolhimento",
+          "O acolhido selecionado está em acolhimento"
+        );
+        done(new Error("O acolhido selecionado já está em acolhimento"));
+      } else {
+        done();
+      }
+    }
+  );
+  next();
+});
+
+acolhimento.pre("findOneAndUpdate", true, function (next, done) {
+  var self = this;
+  mongoose.models["acolhimento"].findOne(
+    self.getQuery(),
+    { ativo: 1 },
+    function (err, user) {
+      if (err) {
+        done();
+      } else if (user.ativo == false) {
+        done(new Error("Acolhimento concluído, não pode ser mais alterado"));
+      } else {
+        done();
+      }
+    }
+  );
+  next();
+});
+
 module.exports = mongoose.model("acolhimento", acolhimento);

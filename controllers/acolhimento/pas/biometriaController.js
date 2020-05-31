@@ -1,25 +1,32 @@
 const Acolhimento = require("../../../models/acolhimento");
 
 let get = (req, res, next) => {
-  Acolhimento.findOne({ _id: req.params._id }, { biometria: 1 }) 
-    .then((acolhimento) => {
-        console.log(acolhimento.biometria)
+  Acolhimento.findOne({ _id: req.params._id }, { biometria: 1 }).then(
+    (acolhimento) => {
       res.status(200).json(acolhimento.biometria);
-    });
+    }
+  )
+  .catch((err) => {
+    
+    res.status(500).json({message:err.message});
+  });
 };
 
 let getById = (req, res, next) => {
-  console.log(req.params.medicamento);
   Acolhimento.findOne(
     { _id: req.params._id, "biometria._id": req.params.biometria },
     { "biometria.$": 1 }
-  )  
+  )
     .then((acolhimento) => {
       res.status(200).json(acolhimento.biometria[0]);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 
 let put = (req, res, next) => {
+  console.log(req.user);
   let data = {
     ...req.body.biometria,
   };
@@ -35,13 +42,11 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+      res.status(500).json({ message: err.message });
     });
 };
 
 let post = (req, res, next) => {
-  console.log(req.body);
   let data = {
     ...req.body.biometria,
   };
@@ -59,8 +64,8 @@ let post = (req, res, next) => {
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
     })
-    .catch((error) => {
-      res.status(500).json(error);
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 module.exports = {

@@ -1,22 +1,26 @@
 const Acolhimento = require("../../../models/acolhimento");
 
 let get = (req, res, next) => {
-  Acolhimento.findOne({ _id: req.params._id }, { saida: 1 }) 
+  Acolhimento.findOne({ _id: req.params._id }, { saida: 1 })
     .then((acolhimento) => {
-        console.log(acolhimento.saida)
       res.status(200).json(acolhimento.saida);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 
 let getById = (req, res, next) => {
-  console.log(req.params.medicamento);
   Acolhimento.findOne(
     { _id: req.params._id, "saida._id": req.params.saida },
     { "saida.$": 1 }
-  )  
-    .then((acolhimento) => {
-      res.status(200).json(acolhimento.saida[0]);
-    });
+  ).then((acolhimento) => {
+    res.status(200).json(acolhimento.saida[0]);
+  })
+  .catch((err) => {
+    
+    res.status(500).json({message:err.message});
+  });
 };
 
 let put = (req, res, next) => {
@@ -35,13 +39,12 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
+    
+      res.status(500).json({message:err.message});
     });
 };
 
 let post = (req, res, next) => {
-  console.log(req.body);
   let data = {
     ...req.body.saida,
   };
@@ -59,8 +62,9 @@ let post = (req, res, next) => {
     .then((acolhimento) => {
       res.status(200).json(acolhimento);
     })
-    .catch((error) => {
-      res.status(500).json(error);
+    .catch((err) => {
+    
+      res.status(500).json({message:err.message});
     });
 };
 module.exports = {

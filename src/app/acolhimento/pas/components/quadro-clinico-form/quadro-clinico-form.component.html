@@ -1,45 +1,74 @@
 <form [formGroup]="form">
   <div class="row" formGroupName="quadroClinico">
-    <h2>Sintomas de abstinência</h2>
-    <div class="row" formGroupName="abstinencia">
-      <div class="col-md-12">
-        <mat-checkbox formControlName="tremor">Tremor</mat-checkbox>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Sintomas de abstinência
+          </mat-panel-title>         
+        </mat-expansion-panel-header>
+    
+        <div class="row" formGroupName="abstinencia">
+          <div class="col-md-12">
+            <mat-checkbox formControlName="tremor">Tremor</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="nausea">Náusea</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="sudorese">Sudorese</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="oscilacaoHumor"
+              >Oscilação de humor</mat-checkbox
+            >
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="cefaleia">Cefaléia</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="caimbra">Câimbra</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="diarreia">Diarréia</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="irritabilidade"
+              >Irritabilidade</mat-checkbox
+            >
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="agressividade"
+              >Agressividade</mat-checkbox
+            >
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="insonia">Insônia</mat-checkbox>
+          </div>
+          <div class="col-md-12">
+            <mat-checkbox formControlName="fissura">Fissura</mat-checkbox>
+          </div>
+        </div>
+      </mat-expansion-panel>      
+    </mat-accordion>  
+  
+    <div class="row">
+     <h2></h2>
+      <div class="col-md-12" style="margin: auto;">
+        <mat-checkbox formControlName="cessarUso"
+          >Tentativa de cessar o uso por conta própria</mat-checkbox
+        >
       </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="nausea">Náusea</mat-checkbox>
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="sudorese">Sudorese</mat-checkbox>
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="oscilacaoHumor"
-          >Oscilação de humor</mat-checkbox
+      <div class="col-md-12" style="margin: auto;">
+        <mat-checkbox formControlName="familiar"
+          >Algum familiar faz uso de SPA</mat-checkbox
         >
       </div>
       <div class="col-md-12">
-        <mat-checkbox formControlName="cefaleia">Cefaléia</mat-checkbox>
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="caimbra">Câimbra</mat-checkbox>
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="diarreia">Diarréia</mat-checkbox>
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="irritabilidade"
-          >Irritabilidade</mat-checkbox
-        >
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="agressividade"
-          >Agressividade</mat-checkbox
-        >
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="insonia">Insônia</mat-checkbox>
-      </div>
-      <div class="col-md-12">
-        <mat-checkbox formControlName="fissura">Fissura</mat-checkbox>
+        <mat-form-field>
+          <mat-label>Observações</mat-label>
+          <textarea formControlName="observacoes" matInput></textarea>
+        </mat-form-field>
       </div>
     </div>
 

@@ -51,11 +51,15 @@ export class IdentificacaoComponent extends PasResource implements OnInit {
       periodo: '12 meses',
     },
   ];
+
+  concluirBtn: boolean = false;
   constructor(protected injector: Injector, private datePipe: DatePipe) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.socketdata = 'pas';
+    console.log(this._id);
     this.selectedRow.subscribe((res) => {
       console.log(res);
     });
@@ -66,20 +70,29 @@ export class IdentificacaoComponent extends PasResource implements OnInit {
         _id: undefined,
         dataIngresso: ['', Validators.required],
         dataEgresso: [''],
-        convenio: [''],
-        encaminhado: [''],
-        periodo: [''],
+        convenio: ['', Validators.required],
+        encaminhado: ['', Validators.required],
+        periodo: ['', Validators.required],
         acolhido: this.fb.group({
-          _id: [''],
+          _id: ['', Validators.required],
           nome: [''],
         }),
       }),
     });
     this._id !== undefined
       ? this.pasService.readById('identificacao').subscribe((res: any) => {
+          console.log(res);
+          /* if (res.ativo == false) {
+            this.form.disable();
+            this.concluirBtn = true;
+          } else {
+            this.concluirBtn = false;
+          }
+          */
           this.form.patchValue(res);
         })
-      : null;
+      : this.form.get('identificacao').get('dataEgresso').disable();
+
     this.notify.emit(this.form);
   }
 
@@ -92,8 +105,12 @@ export class IdentificacaoComponent extends PasResource implements OnInit {
 
     dialogRef.afterClosed().subscribe((res) => {
       console.log(res);
-     
+
       this.form.get('identificacao').get('acolhido').patchValue(res);
     });
+  }
+
+  concluir() {
+    this.concluirTratamento();
   }
 }

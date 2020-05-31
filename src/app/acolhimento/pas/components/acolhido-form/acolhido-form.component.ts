@@ -1,10 +1,22 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Injector,
+  ViewChild,
+  ViewContainerRef,
+  TemplateRef,
+  Renderer2,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 import { Validators } from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { PasResource } from '../../classes/pas-resource';
+import { MatDialog } from '@angular/material/dialog';
+import { DynamicListBuilderComponent } from 'src/app/shared/utils/components/dynamic-list-builder/dynamic-list-builder.component';
+import { environment } from 'src/environments/environment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-acolhido-form',
@@ -13,6 +25,7 @@ import { PasResource } from '../../classes/pas-resource';
   providers: [DatePipe],
 })
 export class AcolhidoFormComponent extends PasResource implements OnInit {
+  apiUrl = environment.apiBaseUrl;
   // toggle webcam on/off
   public showWebcam = true;
   public allowCameraSwitch = true;
@@ -39,43 +52,25 @@ export class AcolhidoFormComponent extends PasResource implements OnInit {
    *
    *
    */
-  convenios: any[] = [
-    {
-      _id: 'SUS',
-      nome: 'SUS',
-    },
-    {
-      _id: 'SENAD',
-      nome: 'SENAD',
-    },
-  ];
 
-  encaminhado: any[] = [
-    {
-      _id: 1,
-      nome: 'Hospital',
-    },
-    {
-      _id: 2,
-      nome: 'CAPS',
-    },
-  ];
+  @ViewChild('cam') cam: TemplateRef<any>;
+  listaProfissao;
+  religioes: any[] = ['Católico', 'Evangélico', 'Espírita', 'Muçulmano'];
+  url: any =
+    'https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg';
+  modalRef: BsModalRef;
 
-  periodos: any[] = [
-    {
-      _id: '9',
-      periodo: '9 meses',
-    },
-    {
-      _id: '12',
-      periodo: '12 meses',
-    },
-  ];
-  constructor(protected injector: Injector, private datePipe: DatePipe) {
+  constructor(
+    protected injector: Injector,
+    protected datePipe: DatePipe,
+    protected renderer: Renderer2,
+    private modalService: BsModalService
+  ) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.socketdata = 'acolhido';
     this.pasService.pas_id = this._id;
     this.form = this.fb.group({
       path: 'acolhido',
@@ -89,11 +84,18 @@ export class AcolhidoFormComponent extends PasResource implements OnInit {
         cpf: [''],
         tituloEleitor: [''],
         carteiraTrabalho: [''],
-        enderece: this.fb.group({
-          rua: [''],
+        telefone: [''],
+        acolhidoImage: [''],
+        ocupacao: this.fb.group({
+          _id: '5eca6bc7f9a0f116187451a7',
+          TITULO: ['Empregado  doméstico  nos serviços gerais'],
+        }),
+        endereco: this.fb.group({
           n: [''],
+          complemento: [''],
+          logradouro: [''],
           bairro: [''],
-          municipio: [''],
+          localidade: [''],
           uf: [''],
           cep: [''],
         }),
@@ -103,6 +105,7 @@ export class AcolhidoFormComponent extends PasResource implements OnInit {
       ? this.pasService.readById('acolhido').subscribe((res: any) => {
           console.log(res);
           this.form.get('acolhido').patchValue(res);
+          this.url = res.acolhidoImage
         })
       : null;
     this.notify.emit(this.form);
@@ -112,6 +115,85 @@ export class AcolhidoFormComponent extends PasResource implements OnInit {
         this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
       }
     );
+  }
+
+  buscaCep(cep: string) {
+    console.log(cep);
+    return this.pasService
+      .buscaApi(`https://viacep.com.br/ws/${cep}/json/`)
+      .subscribe(
+        (res) => {
+          this.form.get('acolhido').get('endereco').patchValue(res);
+          console.log(this.form.value);
+        }
+
+        // (data) => (this.resultado = this.converterRespostaParaCep(data))
+      );
+  }
+
+  buscaProfissao() {
+    let columns = [
+      {
+        name: 'CODIGO',
+        label: 'Código',
+      },
+
+      {
+        name: 'TITULO',
+        label: 'Ocupação',
+      },
+    ];
+    const dialogRef = this.dialog.open(DynamicListBuilderComponent, {
+      maxWidth: '90vw',
+      width: '90vw',
+      height: '80vh',
+      hasBackdrop: false,
+      panelClass: 'app-full-bleed-dialog',
+      data: {
+        api: `${this.apiUrl}/busca/ocupacao`,
+        columns: columns,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.form.get('acolhido').get('ocupacao').patchValue(res);
+      }
+    });
+  }
+
+  public openCam(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+    const dialogRef = this.dialog.open(this.cam, {
+      width: '100%',
+    });
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  AtivarCam() {
+    this.showWebcam = true;
+  }
+  desativarCam() {
+    this.showWebcam = false;
+  }
+
+  onSelectFile(event) {
+    // called each time file input changes
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.onload = (event) => {
+        // called once readAsDataURL is completed
+        this.url = event.target.result;
+        this.form.patchValue({
+          acolhido: { acolhidoImage: event.target.result },
+        });
+      };
+    }
   }
 
   public triggerSnapshot(): void {
@@ -134,6 +216,10 @@ export class AcolhidoFormComponent extends PasResource implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
+    this.url = webcamImage.imageAsDataUrl;
+    this.form.patchValue({
+      acolhido: { acolhidoImage: webcamImage.imageAsDataUrl },
+    });
     console.info('received webcam image', webcamImage);
     this.webcamImage = webcamImage;
   }

@@ -1,0 +1,121 @@
+<form [formGroup]="form">
+  <div class="row" formGroupName="avaliacao">
+    <div class="col-md-12">
+      <mat-form-field>
+        <mat-label>Data</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="data" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-12">
+      <mat-label>Disciplina</mat-label>
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [invert]="invert"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        formControlName="disciplina"
+        [vertical]="vertical"
+      >
+      </mat-slider>
+    </div>
+
+    <div class="col-md-12">
+      <mat-label>Autoestima</mat-label>
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [invert]="invert"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        formControlName="autoestima"
+        [vertical]="vertical"
+      >
+      </mat-slider>
+    </div>
+
+    <div class="col-md-12">
+      <mat-label>Rouniões</mat-label>
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [invert]="invert"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        formControlName="reunioes"
+        [vertical]="vertical"
+      >
+      </mat-slider>
+    </div>
+    <div class="col-md-12">
+      <mat-label>Espiritualidade</mat-label>
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [invert]="invert"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        formControlName="espiritualidade"
+        [vertical]="vertical"
+      >
+      </mat-slider>
+    </div>
+    <div class="col-md-12">
+      <mat-label>Higiene</mat-label>
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [invert]="invert"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        formControlName="higiene"
+        [vertical]="vertical"
+      >
+      </mat-slider>
+    </div>
+    <div class="col-md-12">
+      <mat-label>Criatividade</mat-label>
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [invert]="invert"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [thumbLabel]="thumbLabel"
+        [tickInterval]="getSliderTickInterval()"
+        formControlName="criatividade"
+        [vertical]="vertical"
+      >
+      </mat-slider>
+    </div>
+    <div>
+      <button
+        mat-button
+        color="accent"
+        [disabled]="!form.valid"
+        (click)="save()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

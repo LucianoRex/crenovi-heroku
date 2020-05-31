@@ -5,7 +5,11 @@ let get = (req, res, next) => {
     (acolhimento) => {
       res.status(200).json(acolhimento);
     }
-  );
+  )
+  .catch((err) => {
+    
+    res.status(500).json({message:err.message});
+  });
 };
 
 let put = (req, res, next) => {
@@ -26,7 +30,8 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-      res.status(500).json(err);
+    
+      res.status(500).json({message:err.message});
     });
 };
 module.exports = {
