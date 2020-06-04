@@ -1,0 +1,49 @@
+<form [formGroup]="form">
+  <div formGroupName="agendamentoconsulta">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Data</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="data" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Horário</mat-label>
+          <input matInput mask="00:00" formControlName="horario" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Local</mat-label>
+          <input matInput formControlName="local" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field>
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo">
+            <mat-option *ngFor="let tipo of tipos" [value]="tipo">
+              {{ tipo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-12">
+        <mat-checkbox formControlName="consultaEfetuada"
+          >Consulta efetuada</mat-checkbox
+        >
+      </div>
+    </div>
+    <div>
+      <button mat-button [disabled]="!form.valid" (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,75 @@
+<form [formGroup]="form">
+  <div formGroupName="evolucaoPsicologica">
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>Data Inicial</mat-label>
+          <input matInput [matDatepicker]="dataI" formControlName="dataI" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dataI"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dataI></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field>
+          <mat-label>Data Final</mat-label>
+          <input matInput [matDatepicker]="dataF" formControlName="dataF" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dataF"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dataF></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <button
+          mat-button
+          (click)="carregaDadosPsicoterapia()"
+          [disabled]="!form.valid"
+          color="primary"
+        >
+          Carregar dados da Psicoterapia
+        </button>
+      </div>
+    </div>
+    <h3>Procedimentos realizados no período</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-chip-list>
+          <mat-chip *ngFor="let procedimento of procedimentos; let i = index">{{
+            procedimento
+          }}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+    <h3>Consultas realizados no período</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-chip-list>
+          <mat-chip *ngFor="let consulta of consultas; let i = index">{{
+            consulta
+          }}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field class="example-full-width">
+          <mat-label>Síntese do Período</mat-label>
+          <textarea rows="10" matInput formControlName="sintese"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div>
+      <button mat-button [disabled]="!form.valid" (click)="save()">
+        Salvar
+      </button>
+
+      <button mat-button [disabled]="!form.valid" (click)="gerarRelatorio()">
+        Gerar Relatório
+      </button>
+    </div>
+  </div>
+</form>

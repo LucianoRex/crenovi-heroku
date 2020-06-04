@@ -1,4 +1,5 @@
 var express = require("express");
+const mongoose = require("mongoose");
 var router = express.Router();
 const {
   userRegister,
@@ -26,6 +27,9 @@ const historicoQuimicoController = require("../controllers/acolhimento/pas/histo
 const acolhidoController = require("../controllers/acolhimento/pas/acolhidoController");
 const pertenceController = require("../controllers/acolhimento/pas/pertenceController");
 const avaliacaoController = require("../controllers/acolhimento/pas/avaliacaoController");
+const evolucaoPsicologicaController = require("../controllers/acolhimento/pas/evolucaoPsicologicaController");
+const psicoterapiaController = require("../controllers/acolhimento/pas/psicoterapiaController");
+const agendamentoConsultaController = require("../controllers/acolhimento/pas/agendamentoConsultaController");
 
 const livroDiarioController = require("../controllers/acolhimento/livroDiarioController");
 
@@ -103,6 +107,36 @@ router.get("/:_id/biometria", biometriaController.get);
 router.put("/:_id/biometria", biometriaController.post);
 router.put("/:_id/biometria/:biometria", biometriaController.put);
 
+/**Evolucao Controller */
+router.get(
+  "/:_id/evolucaoPsicologica/acolhido",
+  evolucaoPsicologicaController.getAcolhido
+);
+router.get(
+  "/:_id/evolucaoPsicologica/:evolucaoPsicologica",
+  evolucaoPsicologicaController.getById
+);
+router.get("/:_id/evolucaoPsicologica", evolucaoPsicologicaController.get);
+router.put("/:_id/evolucaoPsicologica", evolucaoPsicologicaController.post);
+router.put(
+  "/:_id/evolucaoPsicologica/:evolucaoPsicologica",
+  evolucaoPsicologicaController.put
+);
+router.post(
+  "/:_id/evolucaoPsicologica/procedimentos",
+  evolucaoPsicologicaController.procedimentos
+);
+router.post(
+  "/:_id/evolucaoPsicologica/consultas",
+  evolucaoPsicologicaController.consultas
+);
+
+/**Psicoterapia */
+router.get("/:_id/psicoterapia/:psicoterapia", psicoterapiaController.getById);
+router.get("/:_id/psicoterapia", psicoterapiaController.get);
+router.put("/:_id/psicoterapia", psicoterapiaController.post);
+router.put("/:_id/psicoterapia/:psicoterapia", psicoterapiaController.put);
+
 /**Avalicao Controller */
 router.get("/:_id/avaliacao/:avaliacao", avaliacaoController.getById);
 router.get("/:_id/avaliacao", avaliacaoController.get);
@@ -132,6 +166,12 @@ router.get("/:_id/saida/:saida", saidaController.getById);
 router.get("/:_id/saida", saidaController.get);
 router.put("/:_id/saida", saidaController.post);
 router.put("/:_id/saida/:saida", saidaController.put);
+
+/**agendamento Controller */
+router.get("/:_id/agendamentoconsulta/:agendamentoconsulta", agendamentoConsultaController.getById);
+router.get("/:_id/agendamentoconsulta", agendamentoConsultaController.get);
+router.put("/:_id/agendamentoconsulta", agendamentoConsultaController.post);
+router.put("/:_id/agendamentoconsulta/:agendamentoconsulta", agendamentoConsultaController.put);
 
 /**Acolhido Controller */
 router.get("/:_id/acolhido/:acolhido", userAuth, acolhidoController.getById);
@@ -179,6 +219,58 @@ router.get("/relatorio/:_id", (req, res, netx) => {
   ]).then((acolhimento) => {
     res.status(200).json(acolhimento);
   });
+});
+
+router.post("/evolucaoPsicologica/:_id", (req, res, next) => {
+  console.log(req.body);
+
+  Acolhimento.aggregate([
+    { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
+    {
+      $project: {
+        _id: 1,
+        procedimento: {
+          $filter: {
+            input: "$psicoterapia",
+
+            as: "procedimento",
+            cond: {
+              /* $and: [
+                { $eq: [{ $month: "$$evolucaoPsicologica.data" }, 5] },
+                { $eq: [{ $year: "$$evolucaoPsicologica.data" }, 2020] },
+              ],
+              */
+
+              $and: [
+                { $gte: ["$$procedimento.data", new Date(req.body.dataI)] },
+                { $lte: ["$$procedimento.data", new Date(req.body.dataF)] },
+              ],
+            },
+          },
+        },
+      },
+    },
+    { $unwind: "$procedimento" },
+
+    {
+      $group: {
+        _id: "$psicoterapia",
+        allValues: { $push: "$procedimento.procedimento" },
+      },
+    },
+
+    {
+      $project: {
+        procedimentos: { $concatArrays: "$allValues" },
+      },
+    },
+  ])
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
 });
 
 module.exports = router;

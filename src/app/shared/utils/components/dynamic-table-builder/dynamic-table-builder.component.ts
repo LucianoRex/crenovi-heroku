@@ -54,7 +54,7 @@ export class DynamicTableBuilderComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.socket.on(
-     'update-data',
+      'update-data',
       function (data: any) {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -96,6 +96,19 @@ export class DynamicTableBuilderComponent implements OnInit {
       return '👎';
     }
   }
+
+  formatPhoneNumber = (obj, str) => {
+    let cleaned = (
+      '' + str.split('.').reduce((o, p) => o && o[p], obj)
+    ).replace(/\D/g, '');
+    console.log(cleaned);
+    let match = cleaned.match(/^(\d{2})(\d{1})(\d{4})(\d{4})$/);
+
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + ' ' + match[3] + ' ' + match[4];
+    }
+    return null;
+  };
 
   createEvent(e: Event) {
     e.stopPropagation();

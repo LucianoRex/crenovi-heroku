@@ -361,6 +361,55 @@ let acolhimento = new Schema(
         type: Boolean,
       },
     },
+    evolucaoPsicologica: [
+      {
+        dataI: {
+          type: Date,
+        },
+        dataF: {
+          type: Date,
+        },
+        sintese: {
+          type: String,
+        },
+        procedimentos: {
+          type: Array,
+        },
+      },
+    ],
+    agendamentoConsulta: [
+      {
+        data: {
+          type: Date,
+        },
+        horario: {
+          type: String,
+        },
+        tipo: {
+          type: String,
+          default: "",
+        },
+        local: {
+          type: String,
+        },
+        consultaEfetuada: {
+          type: Boolean,
+        },
+      },
+    ],
+    psicoterapia: [
+      {
+        data: {
+          type: Date,
+        },
+        procedimento: {
+          type: [String],
+        },
+        observacoes: {
+          type: String,
+        },
+      },
+    ],
 
     historicoPsiquico: HistoricoPsiquico,
     historicoFamiliarSocial: HistoricoFamiliarSocial,

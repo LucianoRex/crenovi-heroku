@@ -22,6 +22,7 @@ export class ColaboradorListComponent extends ColaboradorResource
       {
         name: 'telefone',
         label: 'Telefone',
+        type: 'phone',
       },
       {
         name: 'funcao',

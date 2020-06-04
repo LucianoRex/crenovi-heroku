@@ -15,9 +15,9 @@ let colaborador = new Schema(
     email: {
       type: String,
     },
-    funcao:{
-      type:String
-    }
+    funcao: {
+      type: String,
+    },
   },
   {
     collection: "colaborador",

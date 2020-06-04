@@ -19,12 +19,14 @@ interface FoodNode {
 
 const TREE_DATA: FoodNode[] = [
   {
-    name: 'Acolhimento',
+    name: 'Programa de Acolhimento',
     children: [
-      { name: 'Prontuários', link: '/acolhimento/pas' },
-      { name: 'Acolhidos', link: '/acolhimento/pas/acolhido' },
-    //  { name: 'Grupos Terapêuticos', link: '/acolhimento/grupo-terapeutico' },
+      { name: 'Prontuários - PAS', link: '/acolhimento/prontuario' },
+      { name: 'Acolhidos', link: '/acolhimento/prontuario/acolhido' },
+      { name: 'Grupos Terapêuticos', link: '/acolhimento/grupo-terapeutico' },
       { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
+      { name: 'Normas', link: '/acolhimento/norma' },
+      { name: 'Rotina Diária', link: '/acolhimento/norma' },
     ],
   },
   {

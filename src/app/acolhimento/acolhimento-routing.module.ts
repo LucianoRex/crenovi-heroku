@@ -7,14 +7,15 @@ const routes: Routes = [
   {
     path: '',
     component: AcolhimentoComponent,
-  },  
-  {
-    path: 'pas',
-    loadChildren: () => import('./pas/pas.module').then((m) => m.PasModule),
   },
   {
-    path:'livro-diario',
-    component:LivroDiarioListComponent
+    path: 'prontuario',
+    loadChildren: () =>
+      import('./prontuario/prontuario.module').then((m) => m.ProntuarioModule),
+  },
+  {
+    path: 'livro-diario',
+    component: LivroDiarioListComponent,
   },
   {
     path: 'grupo-terapeutico',

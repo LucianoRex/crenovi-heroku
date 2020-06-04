@@ -38,6 +38,8 @@
             ? formatarData(element, column.name)
             : column.type == "boolean"
             ? formatarBoolean(element, column.name)
+            : column.type == "phone"
+            ? formatPhoneNumber(element, column.name)
             : getProperty(element, column.name)
         }}
         <button
