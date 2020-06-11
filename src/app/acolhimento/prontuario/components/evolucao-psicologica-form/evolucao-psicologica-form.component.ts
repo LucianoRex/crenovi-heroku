@@ -12,7 +12,7 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
   implements OnInit {
   procedimentos;
   consultas;
-
+  maxTextLineLength: number = 50;
   constructor(
     protected injector: Injector,
     private relatorioServie: RelatorioService
@@ -46,7 +46,10 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
   carregaDadosPsicoterapia() {
     console.log(this.form.get('evolucaoPsicologica').value);
     this.prontuarioService
-      .carregaDadosPsicoterapia(this.concatenatedPath,this.form.get('evolucaoPsicologica').value)
+      .carregaDadosPsicoterapia(
+        this.concatenatedPath,
+        this.form.get('evolucaoPsicologica').value
+      )
       .subscribe((res) => {
         if (res[0]) {
           this.procedimentos = new Set(...res[0].procedimentos[0]);
@@ -86,5 +89,22 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
       this.concatenatedPath,
       this.form.get('evolucaoPsicologica').value
     );
+  }
+
+  onKeyAction(control) {
+    var limit = 10;
+    var v = control; //var v = $(this).val();
+    //var lines = v.split(/(\r\n|\n|\r)/);
+    var lines = v.split('');
+    var newtext = '';
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (line.length > limit) {
+        line = line.substr(0, limit);
+      }
+      newtext += '\n'+line;
+    }
+    control = newtext;
+    console.log(control);
   }
 }

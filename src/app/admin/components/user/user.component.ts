@@ -29,6 +29,7 @@ export class UserComponent implements OnInit {
       username: [''],
       email: [''],
       role: [''],
+      password: [''],
     });
     this.adminService.readUsers().subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);

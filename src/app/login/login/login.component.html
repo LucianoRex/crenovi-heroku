@@ -1,7 +1,7 @@
 <div class="col-md-6 offset-md-3 mt-5">
   <div class="alert alert-info">
-    Username: test<br />
-    Password: test
+    Usuário: teste<br />
+    Senha: teste
   </div>
   <div class="card">
     <h4 class="card-header">Login</h4>
@@ -44,4 +44,44 @@
       </form>
     </div>
   </div>
+</div>
+
+<div class="col-md-6 offset-md-3 mt-5">
+  <div class="card">
+    <div class="card-body">
+      <div class="panel panel-default">
+        <h2 class="text-center">Esqueceu a senha?</h2>
+        <p>Você pode retoma-la através do seu e-mail.</p>
+        <form class="form" [formGroup]="resetForm" (ngSubmit)="resetPassword()">
+          <div class="form-group">
+            <div class="input-group">
+              <span class="input-group-addon"
+                ><i class="glyphicon glyphicon-envelope color-blue"></i
+              ></span>
+              <input
+                placeholder="seu e-mail"
+                class="form-control"
+                type="email"
+                formControlName="email"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <input
+              class="btn btn-lg btn-primary btn-block"
+              value="Renovar Senha"
+              type="submit"
+            />
+          </div>
+
+          <input type="hidden" class="hide" name="token" id="token" value="" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="load" class="spinner">
+  <h1>Processando...</h1>
+  <mat-spinner></mat-spinner>
+ 
 </div>

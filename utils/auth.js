@@ -200,7 +200,7 @@ const chekRole = (roles) => (req, res, next) =>
     : next();
 
 const chekRoles = (roles) => (req, res, next) =>
-  !roles.includes(req.user.role)
+  !roles.indexOf(req.user.role) == -1
     ? res.status(401).json({ message: "Não Autorizado", success: false })
     : next();
 

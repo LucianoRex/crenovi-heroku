@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -17,4 +18,6 @@ export class AdminService {
   saveUser(form): Observable<any> {
     return this._http.post(`${this.apiUrl}/users/register`, form);
   }
+
+  
 }

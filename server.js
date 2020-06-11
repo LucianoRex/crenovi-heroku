@@ -6,18 +6,21 @@ const cors = require("cors");
 const passport = require("passport");
 var bodyParser = require("body-parser");
 const path = require("path");
-const url = require("url");
-//require("./config");
-
 const app = express();
-//var serverSocketIO = require("http").createServer(app);
 
-//var server = require("http").createServer(app);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "ejs");
 
+app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
+
+
 app.use(passport.initialize());
 
 require("./middlewares/passport")(passport);
+//app.use(flash());
 
 // Step 2
 mongoose.connect(
@@ -42,6 +45,7 @@ require("./models/grupoTerapeutico");
 require("./models/livroDiario");
 require("./models/rotinaDiaria");
 require("./models/norma");
+require("./seed");
 
 var server = app.listen(process.env.PORT || 8080, function () {
   var port = server.address().port;
@@ -62,12 +66,6 @@ const comunidade = require("./routes/comunidade");
 const substancia = require("./routes/substancia");
 //const doenca = require("./routes/");
 const busca = require("./routes/busca");
-
-// Data parsing
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// Step 3
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
