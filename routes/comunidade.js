@@ -11,12 +11,8 @@ router.get("/comunidade", function (req, res, next) {
 router.post("/comunidade", async (req, res, next) => {
   let data = {
     ...req.body,
-  };
-  console.log(!comunidade.exists);
-  console.log(req.body);
-
-  let c = await comunidade.find();
-  console.log(c);
+  }; 
+  let c = await comunidade.find();  
   if (c.length == 0) {
     comunidade
       .create(new comunidade(data))

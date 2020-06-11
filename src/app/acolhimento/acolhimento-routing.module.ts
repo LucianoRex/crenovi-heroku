@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AcolhimentoComponent } from './acolhimento/acolhimento.component';
 import { LivroDiarioListComponent } from './livro-diario/livro-diario-list/livro-diario-list.component';
+import { NormaFormComponent } from './norma-form/norma-form.component';
+import { RotinaDiariaListComponent } from './rotina-diaria/rotina-diaria-list/rotina-diaria-list.component';
 
 const routes: Routes = [
   {
@@ -16,6 +18,14 @@ const routes: Routes = [
   {
     path: 'livro-diario',
     component: LivroDiarioListComponent,
+  },
+  {
+    path: 'rotina-diaria',
+    component: RotinaDiariaListComponent,
+  },
+  {
+    path: 'norma',
+    component: NormaFormComponent,
   },
   {
     path: 'grupo-terapeutico',

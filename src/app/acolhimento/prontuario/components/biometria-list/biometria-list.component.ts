@@ -3,13 +3,13 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { BiometriaFormComponent } from '../biometria-form/biometria-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 
-
 @Component({
   selector: 'app-biometria-list',
   templateUrl: './biometria-list.component.html',
   styleUrls: ['./biometria-list.component.css'],
 })
-export class BiometriaListComponent extends ProntuarioResource implements OnInit {
+export class BiometriaListComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -26,11 +26,18 @@ export class BiometriaListComponent extends ProntuarioResource implements OnInit
         label: 'P.A.',
       },
     ];
-    super.montaTabela(
+
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('biometria'),
-      BiometriaFormComponent,   
-      this._id
-    );
+      service: this.prontuarioService.readById(
+        this.concatenatedPath,
+        'biometria'
+      ),
+      component: BiometriaFormComponent,
+      _id: this._id,
+      socketioPath: 'biometria',
+      caminho: this.concatenatedPath + '/biometria',
+    });
+    
   }
 }

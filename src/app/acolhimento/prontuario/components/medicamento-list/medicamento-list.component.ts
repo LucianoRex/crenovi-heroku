@@ -7,7 +7,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   templateUrl: './medicamento-list.component.html',
   styleUrls: ['./medicamento-list.component.css'],
 })
-export class MedicamentoListComponent extends ProntuarioResource implements OnInit {
+export class MedicamentoListComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -23,11 +24,13 @@ export class MedicamentoListComponent extends ProntuarioResource implements OnIn
         label: 'Posologia',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('medicamento'),
-      MedicamentoFormComponent,      
-      this._id
-    );
+      service: this.prontuarioService.readById(this.concatenatedPath,'medicamento'),
+      component: MedicamentoFormComponent,
+      _id: this._id,
+      socketioPath: 'medicamento',
+      caminho: this.concatenatedPath + '/medicamento',
+    });
   }
 }

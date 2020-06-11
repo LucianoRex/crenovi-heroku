@@ -236,7 +236,6 @@ let acolhimento = new Schema(
       nome: {
         type: String,
         default: "",
-        unique: true,
       },
       cpf: {
         type: String,
@@ -452,38 +451,35 @@ let acolhimento = new Schema(
   { unique: [true, "Acolhido selecionado já está em acolhimento"] }
 );*/
 
-acolhimento.pre("save", true, function (next, done) {
+/*acolhimento.pre("save", true, async function (next, done) {
   var self = this;
+  
   mongoose.models["acolhimento"].findOne(
-    { "acolhido.acolhido": self.acolhido, ativo: true },
+    { "acolhido.acolhido": self.acolhido, ativo: false },
     function (err, user) {
+      console.log(self);
       if (err) {
-        console.log(err);
-        done();
-      } else if (user) {
-        console.log(user);
-        self.invalidate(
-          "Acolhimento",
-          "O acolhido selecionado está em acolhimento"
-        );
+        done(new Error("Erro"));
+      } else if (!user) {
         done(new Error("O acolhido selecionado já está em acolhimento"));
       } else {
-        done();
+       done()
       }
     }
   );
   next();
 });
-
+*/
 acolhimento.pre("findOneAndUpdate", true, function (next, done) {
   var self = this;
   mongoose.models["acolhimento"].findOne(
     self.getQuery(),
     { ativo: 1 },
     function (err, user) {
+      console.log(self.getQuery());
       if (err) {
         done();
-      } else if (user.ativo == false) {
+      } else if (user && user.ativo == false) {
         done(new Error("Acolhimento concluído, não pode ser mais alterado"));
       } else {
         done();

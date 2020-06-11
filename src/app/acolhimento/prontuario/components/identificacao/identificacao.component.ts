@@ -80,13 +80,16 @@ export class IdentificacaoComponent extends ProntuarioResource
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('identificacao')
+          .readById(this.concatenatedPath,'identificacao')
           .subscribe((res: any) => {
             this.form.patchValue(res);
           })
       : this.form.get('identificacao').get('dataEgresso').disable();
 
     this.notify.emit(this.form);
+
+   // super(this.injector)
+
   }
 
   getAcolhido() {

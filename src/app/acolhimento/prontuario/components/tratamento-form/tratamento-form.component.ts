@@ -6,7 +6,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   templateUrl: './tratamento-form.component.html',
   styleUrls: ['./tratamento-form.component.css'],
 })
-export class TratamentoFormComponent extends ProntuarioResource implements OnInit {
+export class TratamentoFormComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -18,13 +19,15 @@ export class TratamentoFormComponent extends ProntuarioResource implements OnIni
         desintoxicacao: [false],
         reducaoDano: [false],
         grupoApoio: [false],
-        ct: [false],      
+        ct: [false],
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('tratamento').subscribe((res) => {
-          this.form.patchValue(res);
-        })
+      ? this.prontuarioService
+          .readById(this.concatenatedPath, 'tratamento')
+          .subscribe((res) => {
+            this.form.patchValue(res);
+          })
       : null;
     this.notify.emit(this.form);
   }

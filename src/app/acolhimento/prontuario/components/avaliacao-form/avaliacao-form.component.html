@@ -107,15 +107,8 @@
       >
       </mat-slider>
     </div>
-    <div>
-      <button
-        mat-button
-        color="accent"
-        [disabled]="!form.valid"
-        (click)="save()"
-      >
-        Salvar
-      </button>
+    <div>     
     </div>
+    <app-button-save [form]="form" (save)="save()"></app-button-save>
   </div>
 </form>

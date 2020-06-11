@@ -25,8 +25,7 @@ let getById = (req, res, next) => {
     });
 };
 
-let put = (req, res, next) => {
-  console.log(req.user);
+let put = (req, res, next) => {  
   let data = {
     ...req.body.biometria,
   };
@@ -39,7 +38,7 @@ let put = (req, res, next) => {
     }
   )
     .then((acolhimento) => {
-      res.status(200).json(acolhimento);
+      res.status(200).json(acolhimento.biometria);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });

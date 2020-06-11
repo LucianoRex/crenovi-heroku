@@ -22,10 +22,14 @@ export class LivroDiarioListComponent extends AcolhimentoResource
         type: 'date',
       },
     ];
-    this.montaTabela(
+    this.montaTabela({
       columns,
-      this.acolhimentoService.read('livrodiario'),
-      LivroDiarioFormComponent
-    );
+      service: this.acolhimentoService.read('livrodiario'),
+      component: LivroDiarioFormComponent,
+      _id: undefined,
+      socketioPath: 'livrodiario',
+     // caminho: 'prontuario',
+    });
+    //this.socketioPath = 'livroDiario';
   }
 }

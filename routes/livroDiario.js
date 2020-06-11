@@ -1,5 +1,10 @@
 var express = require("express");
 var router = express.Router();
+const app = express();
+var server = app.listen();
+
+var io = require("socket.io");
+
 const LivroDiario = require("../models/livroDiario");
 
 router.get("/", function (req, res, next) {
@@ -20,6 +25,10 @@ router.post("/", (req, res, next) => {
   };
   delete data._id;
   LivroDiario.create(new LivroDiario(data)).then((livroDiario) => {
+    console.log(req.socket)
+  //  console.log(res.socket)
+  //  res.socket.emit("livrodiario", { data: res })
+  //  io.emit("livrodiario", { data: res });
     res.status(200).json(livroDiario);
   });
 });
@@ -28,7 +37,7 @@ router.put("/:_id", (req, res, next) => {
   let data = {
     ...req.body,
   };
-
+  console.log(req.body)
   LivroDiario.findOneAndUpdate(
     {
       _id: req.params._id,
@@ -38,6 +47,8 @@ router.put("/:_id", (req, res, next) => {
     }
   )
     .then((livroDiario) => {
+     
+   //   io.emit("livrodiario", { data: res });
       res.status(200).json(livroDiario);
     })
     .catch((err) => {

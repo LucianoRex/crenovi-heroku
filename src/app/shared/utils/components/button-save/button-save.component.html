@@ -1,0 +1,11 @@
+<div>
+  <button
+    mat-button
+    color="accent"
+    [disabled]="!form.valid"
+    (click)="save.emit()"
+    appSaveButton
+  >
+    Salvar
+  </button>
+</div>

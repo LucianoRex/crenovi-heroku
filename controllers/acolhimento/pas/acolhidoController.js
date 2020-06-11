@@ -6,7 +6,7 @@ let get = (req, res, next) => {
 };
 
 let getById = (req, res, next) => {
-  Acolhido.findOne({ _id: req.params._id })
+  Acolhido.findOne({ _id: req.params.acolhido })
     .populate("ocupacao")
     .then((acolhido) => {
       res.status(200).json(acolhido);
@@ -14,19 +14,22 @@ let getById = (req, res, next) => {
 };
 
 let put = (req, res, next) => {
+  console.log('AtualizandoAcolhido')
   let data = {
     ...req.body.acolhido,
   };
+  console.log(req.params)
   let mensagem = [];
   Acolhido.findOneAndUpdate(
     {
-      _id: req.params._id,
+      _id: req.params.acolhido,
     },
     {
       $set: data,
     },
     {
-      new: true,
+     // new: true,
+      //upsert: true,
     }
   )
     .then((acolhido) => {

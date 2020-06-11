@@ -25,7 +25,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   styleUrls: ['./acolhido-form.component.css'],
   providers: [DatePipe],
 })
-export class AcolhidoFormComponent extends ProntuarioResource implements OnInit {
+export class AcolhidoFormComponent extends ProntuarioResource
+  implements OnInit {
   apiUrl = environment.apiBaseUrl;
   // toggle webcam on/off
   public showWebcam = true;
@@ -71,8 +72,6 @@ export class AcolhidoFormComponent extends ProntuarioResource implements OnInit 
   }
 
   ngOnInit(): void {
-    this.socketdata = 'acolhido';
-    this.prontuarioService.pas_id = this._id;
     this.form = this.fb.group({
       path: 'acolhido',
       acolhido: this.fb.group({
@@ -103,11 +102,12 @@ export class AcolhidoFormComponent extends ProntuarioResource implements OnInit 
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('acolhido').subscribe((res: any) => {
-          console.log(res);
-          this.form.get('acolhido').patchValue(res);
-          this.url = res.acolhidoImage
-        })
+      ? this.prontuarioService
+          .readById('acolhimento/acolhido', this._id)
+          .subscribe((res: any) => {            
+            this.form.get('acolhido').patchValue(res);
+            this.url = res.acolhidoImage;
+          })
       : null;
     this.notify.emit(this.form);
 

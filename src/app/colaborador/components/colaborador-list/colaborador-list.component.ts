@@ -29,10 +29,11 @@ export class ColaboradorListComponent extends ColaboradorResource
         label: 'Função',
       },
     ];
-    this.montaTabela(
-      columns,
-      this.colaboradorService.read('colaborador'),
-      ColaboradorFormComponent
-    );
+    this.montaTabela({
+      columns:columns,
+      service: this.colaboradorService.read('colaborador'),
+      component: ColaboradorFormComponent,
+      socketioPath: 'colaborador',
+    });
   }
 }

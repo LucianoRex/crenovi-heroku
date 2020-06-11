@@ -37,7 +37,7 @@ export class HistoricoFamiliarSocialFormComponent extends ProntuarioResource
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('historicoFamiliarSocial')
+          .readById(this.concatenatedPath,'historicoFamiliarSocial')
           .subscribe((res) => {
             this.form.patchValue(res);
           })

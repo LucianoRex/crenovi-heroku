@@ -8,7 +8,8 @@ import { ProntuarioService } from '../../services/prontuario.service';
   templateUrl: './prontuario-form.component.html',
   styleUrls: ['./prontuario-form.component.css'],
 })
-export class ProntuarioFormComponent extends ProntuarioResource implements OnInit {
+export class ProntuarioFormComponent extends ProntuarioResource
+  implements OnInit {
   isLinear = false;
   identificacaoForm: FormGroup;
   responsavelForm: FormGroup;
@@ -19,13 +20,16 @@ export class ProntuarioFormComponent extends ProntuarioResource implements OnIni
   quadroClinicoForm: FormGroup;
 
   //_id: string;
-  constructor(protected injector: Injector, protected prontuarioService: ProntuarioService) {
+  constructor(
+    protected injector: Injector,
+    protected prontuarioService: ProntuarioService
+  ) {
     super(injector);
   }
 
   ngOnInit() {
-    console.log(this._id)
-    this.prontuarioService.pas_id = this._id;
+    this.concatenatedPath = 'acolhimento';
+    console.log(this._id);    
     this._id != undefined ? (this.isLinear = false) : (this.isLinear = true);
   }
 
@@ -38,12 +42,21 @@ export class ProntuarioFormComponent extends ProntuarioResource implements OnIni
   }
   responsavel(formGroup: FormGroup): void {
     this.responsavelForm = formGroup;
+    this.responsavelForm.valueChanges.subscribe(() => {
+      this.formChange.emit(true);
+    });
+    console.log(this.responsavelForm);
+    // this.formChange.emit(true);
+    //this.responsavelForm.patchValue({}, { emitEvent: false, onlySelf: true });
   }
   historicoFamiliarSocial(formGroup: FormGroup): void {
     this.historicoFamiliarSocialForm = formGroup;
   }
   historicoForense(formGroup: FormGroup): void {
     this.historicoForenseForm = formGroup;
+    this.historicoForenseForm.valueChanges.subscribe(() => {
+      this.formChange.emit(true);
+    });
   }
   tratamento(formGroup: FormGroup): void {
     this.tratamentoForm = formGroup;

@@ -34,7 +34,7 @@ ngOnInit(): void {
   });
   this._id !== undefined
     ? this.prontuarioService
-        .readById('psicoterapia', this._id)
+        .readById(this.concatenatedPath,this._id)
         .subscribe((res: any) => {
           this.form.get('psicoterapia').patchValue(res);
         })

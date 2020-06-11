@@ -13,7 +13,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   templateUrl: './responsavel-form.component.html',
   styleUrls: ['./responsavel-form.component.css'],
 })
-export class ResponsavelFormComponent extends ProntuarioResource implements OnInit {
+export class ResponsavelFormComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -30,11 +31,17 @@ export class ResponsavelFormComponent extends ProntuarioResource implements OnIn
         cpf: [''],
       }),
     });
+    this.form.valueChanges.subscribe((e) => {
+     // this.mudouForm = true;
+      this.formChange.emit(true);
+      this.notify.emit(this.form);
+    });
     this._id !== undefined
-      ? this.prontuarioService.readById('responsavel').subscribe((res) => {
-          this.form.patchValue(res);
+      ? this.prontuarioService.readById(this.concatenatedPath,'responsavel').subscribe((res) => {
+          this.form.patchValue(res, { emitEvent: false, onlySelf: true });
         })
       : null;
+
     this.notify.emit(this.form);
   }
 }

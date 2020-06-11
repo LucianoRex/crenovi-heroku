@@ -7,12 +7,14 @@ import { ProntuarioFormComponent } from '../prontuario-form/prontuario-form.comp
   templateUrl: './prontuario-list.component.html',
   styleUrls: ['./prontuario-list.component.css'],
 })
-export class ProntuarioListComponent extends ProntuarioResource implements OnInit {
+export class ProntuarioListComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.concatenatedPath = 'prontuario';
     let columns = [
       {
         name: 'ativo',
@@ -39,12 +41,13 @@ export class ProntuarioListComponent extends ProntuarioResource implements OnIni
       },
     ];
 
-    this.montaTabela(
-      columns,
-      this.prontuarioService.read(),
-      ProntuarioFormComponent,
-      undefined,
-      'pas'
-    );
+    this.montaTabela({
+      columns: columns,
+      service: this.prontuarioService.read(),
+      component: ProntuarioFormComponent,
+      _id: undefined,
+      socketioPath: 'identificacao',
+      caminho: 'prontuario',
+    });
   }
 }

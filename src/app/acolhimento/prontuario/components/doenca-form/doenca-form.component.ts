@@ -42,7 +42,7 @@ export class DoencaFormComponent extends ProntuarioResource implements OnInit {
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('doenca', this._id).subscribe((res: any) => {
+      ? this.prontuarioService.readById(this.concatenatedPath, this._id).subscribe((res: any) => {
           console.log(res);
           this.form.get('doenca').patchValue(res);
         })

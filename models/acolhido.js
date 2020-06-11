@@ -76,8 +76,7 @@ let acolhido = new Schema(
 );
 
 acolhido.pre("save", true, function (next, done) {
-  var self = this;
-  console.log(self);
+  var self = this;  
   mongoose.models["acolhido"].findOne({ cpf: self.cpf }, function (err, user) {
     if (err) {
       done(err);

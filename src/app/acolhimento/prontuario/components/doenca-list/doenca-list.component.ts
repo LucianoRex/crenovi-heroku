@@ -3,7 +3,6 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { DoencaFormComponent } from '../doenca-form/doenca-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 
-
 @Component({
   selector: 'app-doenca-list',
   templateUrl: './doenca-list.component.html',
@@ -25,11 +24,13 @@ export class DoencaListComponent extends ProntuarioResource implements OnInit {
         label: 'Nome',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('doenca'),
-      DoencaFormComponent,    
-      this._id
-    );
+      service: this.prontuarioService.readById(this.concatenatedPath,'doenca'),
+      component: DoencaFormComponent,
+      _id: this._id,
+      socketioPath: 'doenca',
+      caminho: this.concatenatedPath + '/doenca',
+    });
   }
 }

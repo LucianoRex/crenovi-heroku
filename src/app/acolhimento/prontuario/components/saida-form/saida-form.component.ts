@@ -29,7 +29,7 @@ export class SaidaFormComponent extends ProntuarioResource implements OnInit {
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('saida', this._id).subscribe((res: any) => {
+      ? this.prontuarioService.readById(this.concatenatedPath, this._id).subscribe((res: any) => {
           this.form.get('saida').patchValue(res);
         })
       : null;

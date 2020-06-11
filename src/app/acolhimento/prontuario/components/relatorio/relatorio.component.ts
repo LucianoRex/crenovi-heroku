@@ -19,6 +19,24 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./relatorio.component.css'],
 })
 export class RelatorioComponent implements OnInit {
+  relatorios: any[] = [
+    {
+      titulo: 'Termo uso de Imagem ',
+      function: this.usoImagem.bind(this),
+    },
+    {
+      titulo: 'Termo de Ciência ',
+      function: this.termoCiencia.bind(this),
+    },
+    {
+      titulo: 'Hipossuficiência ',
+      function: this.declaracaoHipossuficiencia.bind(this),
+    },
+    {
+      titulo: 'Responsabilidade ',
+      function: this.termoResponsabilidade.bind(this),
+    },   
+  ];
   constructor(
     private relatorioService: RelatorioService,
     public dialog: MatDialog,
@@ -30,6 +48,11 @@ export class RelatorioComponent implements OnInit {
   ngOnInit(): void {}
   subscription: Subscription;
   subscription2: Subscription;
+
+  open(relatorio) {
+    relatorio();
+  }
+
   usoImagem() {
     this.relatorioService.usoImagem(this._id);
   }
@@ -92,7 +115,7 @@ export class RelatorioComponent implements OnInit {
     });
   }
 
-  evolucaoPsicologica(){
+  evolucaoPsicologica() {
     //this.relatorioService.evolucaoPsicologica(this._id,this.fo);
   }
 }

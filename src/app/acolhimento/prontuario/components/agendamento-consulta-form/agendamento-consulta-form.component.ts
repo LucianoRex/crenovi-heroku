@@ -37,7 +37,7 @@ export class AgendamentoConsultaFormComponent extends ProntuarioResource
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('agendamentoconsulta', this._id)
+          .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
             this.form.get('agendamentoconsulta').patchValue(res);
           })

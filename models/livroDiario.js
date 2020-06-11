@@ -19,8 +19,7 @@ let livroDiario = new Schema(
 );
 
 livroDiario.pre("save", true, function (next, done) {
-  var self = this;
-  console.log(self);
+  var self = this;  
   mongoose.models["livroDiario"].findOne({ data: self.data }, function (
     err,
     user

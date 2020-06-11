@@ -66,8 +66,7 @@ export class DynamicListBuilderComponent implements OnInit, OnDestroy {
     });
     this.columns = this.data.columns;
     this.displayedColumns = this.columns.map((column) => column.name);
-    this.dynamicListService.get().subscribe((res) => {
-      console.log(res);
+    this.dynamicListService.get().subscribe((res) => {      
       this.form.patchValue(res);
       this.buscar();
     });

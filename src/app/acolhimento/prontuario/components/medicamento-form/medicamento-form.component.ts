@@ -43,7 +43,7 @@ export class MedicamentoFormComponent extends ProntuarioResource implements OnIn
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('medicamento', this._id)
+          .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
             this.form.get('medicamento').patchValue(res);
           })

@@ -26,11 +26,16 @@ export class EvolucaoPsicologicaListComponent extends ProntuarioResource
         type: 'date',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('evolucaoPsicologica'),
-      EvolucaoPsicologicaFormComponent,
-      this._id
-    );
+      service: this.prontuarioService.readById(
+        this.concatenatedPath,
+        'evolucaoPsicologica'
+      ),
+      component: EvolucaoPsicologicaFormComponent,
+      _id: this._id,
+      socketioPath: 'evolucaoPsicologica',
+      caminho: this.concatenatedPath + '/evolucaoPsicologica',
+    });
   }
 }

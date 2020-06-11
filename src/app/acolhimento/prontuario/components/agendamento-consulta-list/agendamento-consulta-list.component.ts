@@ -30,11 +30,13 @@ export class AgendamentoConsultaListaComponent extends ProntuarioResource
         type: 'boolean',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('agendamentoconsulta'),
-      AgendamentoConsultaFormComponent,
-      this._id
-    );
+      service: this.prontuarioService.readById(this.concatenatedPath,'agendamentoconsulta'),
+      component: AgendamentoConsultaFormComponent,
+      _id: this._id,
+      socketioPath: 'agendamentoconsulta',
+      caminho: this.concatenatedPath + '/agendamentoconsulta',
+    });
   }
 }

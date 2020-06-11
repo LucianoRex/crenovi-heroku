@@ -1,5 +1,20 @@
-.card {
-  border: solid;
-  height: 33vh;
-  display: contents;
+*,
+*::before,
+*::after {
+  box-sizing: content-box !important;
 }
+mat-card-header-text,
+mat-card-header,
+.mat-card-header-text {
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+.mat-card-title {
+  font-size: 1.5em !important;
+  margin: 0 auto !important;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0px;
+}
+

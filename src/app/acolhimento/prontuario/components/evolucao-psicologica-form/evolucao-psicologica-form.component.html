@@ -63,9 +63,7 @@
       </div>
     </div>
     <div>
-      <button mat-button [disabled]="!form.valid" (click)="save()">
-        Salvar
-      </button>
+      <app-button-save [form]="form" (save)="save()"></app-button-save>
 
       <button mat-button [disabled]="!form.valid" (click)="gerarRelatorio()">
         Gerar Relatório

@@ -1,0 +1,38 @@
+<form [formGroup]="form">
+  <div class="row">
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>Horario Inicial</mat-label>
+        <input matInput mask="00:00" formControlName="horarioInicial" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>Horario Final</mat-label>
+        <input matInput mask="00:00" formControlName="horarioFinal" />
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>Atividade</mat-label>
+        <input matInput formControlName="atividade" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label>Dias da Semana</mat-label>
+        <mat-select formControlName="diaSemana" multiple>
+          <mat-option *ngFor="let dia of diaSemana" [value]="dia.key">{{
+            dia.value
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <button mat-button color="accent" [disabled]="!form.valid" (click)="save()">
+    Salvar
+  </button>
+</form>

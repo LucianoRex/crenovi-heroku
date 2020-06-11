@@ -45,8 +45,7 @@ router.post("/login-admin", async (req, res) => {
   await userLogin(req.body, "admin", res);
 });
 
-router.get("/profile", userAuth, async (req, res) => {
-  console.log(req.user.username);
+router.get("/profile", userAuth, async (req, res) => {  
   return res.json(serializeUser(req.user));
 });
 

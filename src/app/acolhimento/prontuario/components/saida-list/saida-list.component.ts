@@ -25,11 +25,13 @@ export class SaidaListComponent extends ProntuarioResource implements OnInit {
         type: 'date',
       },
     ];
-    super.montaTabela(
-      columns,
-      this.prontuarioService.readById('saida'),
-      SaidaFormComponent,      
-      this._id
-    );
+    super.montaTabela({
+      columns: columns,
+      service: this.prontuarioService.readById(this.concatenatedPath,'saida'),
+      component: SaidaFormComponent,
+      _id: this._id,
+      socketioPath: 'saida',
+      caminho: this.concatenatedPath + '/saida',
+    });
   }
 }

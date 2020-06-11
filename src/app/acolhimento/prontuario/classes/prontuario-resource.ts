@@ -1,15 +1,27 @@
 import { DynamicFormTableResource } from 'src/app/shared/utils/classes/dynamic-form-table-resource';
 import { ProntuarioService } from '../services/prontuario.service';
-import { Injector, Input, Inject, Component } from '@angular/core';
+import {
+  Injector,
+  Input,
+  Inject,
+  Component,
+  OnDestroy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import * as io from 'socket.io-client';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
+import { Subject } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 export class ProntuarioResource extends DynamicFormTableResource {
-  socket = io(environment.SOCKET_ENDPOINT);
+  socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
+  @Input() concatenatedPath:string;
   socketdata: string;
   @Input() _id: string = undefined;
+  @Output() saved = new EventEmitter<boolean>();
   protected prontuarioService: ProntuarioService;
   private toastr: ToastrService;
   constructor(protected injector: Injector) {
@@ -17,34 +29,44 @@ export class ProntuarioResource extends DynamicFormTableResource {
     this.prontuarioService = injector.get(ProntuarioService);
     this.toastr = injector.get(ToastrService);
   }
+
   save() {
-    console.log(this.form.value);
-    this.prontuarioService.save(this.form.value).subscribe(
-      (res) => {
-        this.toastr.success('Salvo');
-        console.log(res);
-        this.selectedRow.emit(res);
-        this.socket.emit('updatedata', res);
-      },
-      (err) => {
-        this.toastr.error(err);
-      }
-    );
+    this.prontuarioService
+      .save(this.form.value, this._id, this.concatenatedPath)
+      .subscribe(
+        (res) => {
+          this.toastr.success('Salvo');          
+          this.selectedRow.emit(res);
+          this.socket.emit(
+            this.form.get('path').value,
+            this.form.get('path').value,
+            res
+          );
+          this.saved.emit(true);
+        },
+        (err) => {
+          this.toastr.error(err);
+          this.saved.emit(false);
+        }
+      );
   }
 
   concluirTratamento() {
     const dialogRef = this.dialog.open(Conclusao, {
-      width: '250px',      
+      width: '250px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result) => {      
       if (result) {
-        this.prontuarioService.concluirTratamento(result).subscribe(
+        this.prontuarioService.concluirTratamento(this.concatenatedPath,result).subscribe(
           (res) => {
             this.toastr.success('Tratamento concluído');
-            console.log(res);
             this.selectedRow.emit(res);
-            this.socket.emit('updatedata', res);
+            this.socket.emit(
+              this.form.get('path').value,
+              this.form.get('path').value,
+              res
+            );
           },
           (err) => {
             this.toastr.error(err);
@@ -62,10 +84,15 @@ export class ProntuarioResource extends DynamicFormTableResource {
   selector: 'app-conclusao',
   template: `
     <div mat-dialog-content>
-      <p>Motivo da conclusão</p>
+      <mat-form-field>
+        <mat-label>Data da Conclusão</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="dataEgresso" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
       <mat-form-field>
         <mat-label>Motivo</mat-label>
-        <mat-select [(ngModel)]="data">
+        <mat-select [(ngModel)]="motivo">
           <mat-option *ngFor="let motivo of motivos" [value]="motivo">
             {{ motivo }}
           </mat-option>
@@ -74,13 +101,19 @@ export class ProntuarioResource extends DynamicFormTableResource {
     </div>
     <div mat-dialog-actions>
       <button mat-button (click)="onNoClick()">Cancelar</button>
-      <button mat-button [mat-dialog-close]="data" cdkFocusInitial>
+      <button
+        mat-button
+        [mat-dialog-close]="{ dataEgresso: dataEgresso, motivo: motivo }"
+        cdkFocusInitial
+      >
         Ok
       </button>
     </div>
   `,
 })
 export class Conclusao {
+  dataEgresso: string;
+  motivo: string;
   motivos: any[] = [
     'Alta terapêutica',
     'Abandono',
@@ -90,7 +123,7 @@ export class Conclusao {
   ];
   constructor(
     public dialogRef: MatDialogRef<Conclusao>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { data: string; motivo: string }
   ) {}
 
   onNoClick(): void {

@@ -33,20 +33,20 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('evolucaoPsicologica', this._id)
+          .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
             this.form.get('evolucaoPsicologica').patchValue(res);
             this.carregaDadosPsicoterapia();
           })
       : null;
 
-    this.form.statusChanges.subscribe(()=>this.carregaDadosPsicoterapia())
+    this.form.statusChanges.subscribe(() => this.carregaDadosPsicoterapia());
   }
 
   carregaDadosPsicoterapia() {
     console.log(this.form.get('evolucaoPsicologica').value);
     this.prontuarioService
-      .carregaDadosPsicoterapia(this.form.get('evolucaoPsicologica').value)
+      .carregaDadosPsicoterapia(this.concatenatedPath,this.form.get('evolucaoPsicologica').value)
       .subscribe((res) => {
         if (res[0]) {
           this.procedimentos = new Set(...res[0].procedimentos[0]);
@@ -83,7 +83,7 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
   }
   gerarRelatorio() {
     this.relatorioServie.evolucaoPsicologica(
-      this.prontuarioService.pas_id,
+      this.concatenatedPath,
       this.form.get('evolucaoPsicologica').value
     );
   }

@@ -27,8 +27,7 @@ let getById = (req, res, next) => {
     });
 };
 
-let put = (req, res, next) => {
-  console.log(req.user);
+let put = (req, res, next) => {  
   let data = {
     ...req.body.evolucaoPsicologica,
   };
@@ -193,8 +192,7 @@ let consultas = (req, res, next) => {
     });
 };
 
-let getAcolhido = (req, res, next) => {
-  console.log("Chegou no acolhido");
+let getAcolhido = (req, res, next) => {  
   Acolhimento.findOne(
     {
       _id: req.params._id,

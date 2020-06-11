@@ -7,7 +7,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   templateUrl: './pertence-list.component.html',
   styleUrls: ['./pertence-list.component.css'],
 })
-export class PertenceListComponent extends ProntuarioResource implements OnInit {
+export class PertenceListComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -23,11 +24,13 @@ export class PertenceListComponent extends ProntuarioResource implements OnInit 
         label: 'Quantidade',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('pertence'),
-      PertenceFormComponent,
-      this._id
-    );
+      service: this.prontuarioService.readById(this.concatenatedPath,'pertence'),
+      component: PertenceFormComponent,
+      _id: this._id,
+      socketioPath: 'pertence',
+      caminho: this.concatenatedPath + '/pertence',
+    });
   }
 }

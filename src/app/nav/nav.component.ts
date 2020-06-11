@@ -26,7 +26,7 @@ const TREE_DATA: FoodNode[] = [
       { name: 'Grupos Terapêuticos', link: '/acolhimento/grupo-terapeutico' },
       { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
       { name: 'Normas', link: '/acolhimento/norma' },
-      { name: 'Rotina Diária', link: '/acolhimento/norma' },
+      { name: 'Rotina Diária', link: '/acolhimento/rotina-diaria' },
     ],
   },
   {

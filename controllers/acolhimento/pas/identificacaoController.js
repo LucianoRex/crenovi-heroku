@@ -6,8 +6,7 @@ let get = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-    
-      res.status(500).json({message:err.message});
+      res.status(500).json({ message: err.message });
     });
 };
 
@@ -27,21 +26,10 @@ let put = (req, res, next) => {
     }
   )
     .then((acolhimento) => {
-      if (
-        acolhimento.identificacao.dataIngresso >
-        acolhimento.identificacao.dataEgresso
-      ) {
-        res.status(500).json({
-          message: "Data de Egresso não pode ser anterior à data de Ingresso",
-          success: false,
-        });
-      } else {
-        res.status(200).json(acolhimento.identificacao);
-      }
+      res.status(200).json(acolhimento.identificacao);
     })
     .catch((err) => {
-    
-      res.status(500).json({message:err.message});
+      res.status(500).json({ message: err.message });
     });
 };
 
@@ -56,8 +44,6 @@ let post = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((error) => {
-    
-    
       res.status(500).json({
         message: error.message,
       });

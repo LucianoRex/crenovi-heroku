@@ -1,10 +1,7 @@
 const LivroDiario = require("../../models/livroDiario");
 
-let get = (req, res, next) => {
-    console.log('Chegou')
-    LivroDiario.find().then((livroDiario) => {
-      console.log(livroDiario)
-
+let get = (req, res, next) => {    
+    LivroDiario.find().then((livroDiario) => {      
     res.status(200).json(livroDiario);
   });
 };

@@ -35,7 +35,7 @@ export class QuadroClinicoFormComponent extends ProntuarioResource implements On
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('quadroClinico').subscribe((res) => {
+      ? this.prontuarioService.readById(this.concatenatedPath,'quadroClinico').subscribe((res) => {
           this.form.patchValue(res);
         })
       : null;

@@ -4,22 +4,23 @@ import {
   Injector,
   Output,
   EventEmitter,
-  ComponentRef,
-  TemplateRef,
-  Input,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicTableBuilderComponent } from '../components/dynamic-table-builder/dynamic-table-builder.component';
 import { DialogDynamicTableLoaderComponent } from '../components/dialog-dynamic-table-loader/dialog-dynamic-table-loader.component';
-import { DynamicListBuilderComponent } from '../components/dynamic-list-builder/dynamic-list-builder.component';
 
 export class DynamicFormTableResource {
   protected resolver: ComponentFactoryResolver;
   protected viewContainerRef: ViewContainerRef;
   protected dialog: MatDialog;
- 
+  // saved: boolean = false;
+  //componentOpened;
+  //isDirty: boolean = false;
+  //mudouForm: boolean = false;
+  //socketioPath;
   @Output() selectedRow = new EventEmitter<any>();
+  @Output() formChange = new EventEmitter<any>();
   @Output() removeRow = new EventEmitter<any>();
   @Output() notify: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
   public fb: FormBuilder;
@@ -30,16 +31,23 @@ export class DynamicFormTableResource {
     this.dialog = injector.get(MatDialog);
     this.fb = injector.get(FormBuilder);
   }
-  
+
   remove(): void {}
 
-  montaTabela(
+  montaTabela({
     columns,
     service,
-    component?,
-    _id = undefined,
-    socketiodata?: string
-  ) {
+    component,
+    socketioPath,
+    caminho,
+  }: {
+    columns: Array<any>;
+    service: any;
+    component?;
+    _id?: any;
+    socketioPath: string;
+    caminho?: string;
+  }) {    
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
       DynamicTableBuilderComponent
     );
@@ -48,14 +56,14 @@ export class DynamicFormTableResource {
     );
     componentRef.instance.columns = columns;
     componentRef.instance.data = service;
-    componentRef.instance.socketiodata = socketiodata;
+    componentRef.instance.socketioPath = socketioPath;
     componentRef.instance.selectedRow.subscribe((res) => {
       this.selectedRow.emit(res);
     });
 
-    componentRef.instance.create.subscribe((res) => {
+    componentRef.instance.create.subscribe(() => {
       this.dialog.open(DialogDynamicTableLoaderComponent, {
-        data: { component: component, _id: undefined },
+        data: { component: component, _id: undefined ,caminho: caminho},
         maxWidth: '90vw',
         width: '90vw',
         height: '90vh',
@@ -65,8 +73,9 @@ export class DynamicFormTableResource {
     });
 
     componentRef.instance.update.subscribe((res) => {
+      this.formChange.emit(false);      
       this.dialog.open(DialogDynamicTableLoaderComponent, {
-        data: { component: component, _id: res._id },
+        data: { component: component, _id: res._id, caminho: caminho },
         maxWidth: '90vw',
         width: '90vw',
         height: '90vh',
@@ -75,7 +84,7 @@ export class DynamicFormTableResource {
       });
     });
 
-    componentRef.instance.delete.subscribe((res) => {
+    componentRef.instance.delete.subscribe(() => {
       this.remove();
     });
   }

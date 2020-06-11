@@ -7,12 +7,13 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   templateUrl: './avaliacao-list.component.html',
   styleUrls: ['./avaliacao-list.component.css'],
 })
-export class AvaliacaoListComponent extends ProntuarioResource implements OnInit {
+export class AvaliacaoListComponent extends ProntuarioResource
+  implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {   
     let columns = [
       {
         name: 'data',
@@ -44,11 +45,16 @@ export class AvaliacaoListComponent extends ProntuarioResource implements OnInit
         label: 'Criatividade',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('avaliacao'),
-      AvaliacaoFormComponent,
-      this._id
-    );
+      service: this.prontuarioService.readById(
+        this.concatenatedPath,
+        'avaliacao',       
+      ),
+      component: AvaliacaoFormComponent,
+      _id: this._id,
+      socketioPath: 'avaliacao',
+      caminho: this.concatenatedPath + '/avaliacao',
+    });
   }
 }

@@ -25,8 +25,7 @@ let getById = (req, res, next) => {
     });
 };
 
-let put = (req, res, next) => {
-  console.log(req.user);
+let put = (req, res, next) => {  
   let data = {
     ...req.body.psicoterapia,
   };

@@ -3,6 +3,10 @@
     <mat-icon class="indigo-icon">add</mat-icon>
   </button>
 
+  <button mat-icon-button color="secondary" (click)="load()">
+    <mat-icon class="indigo-icon">sync</mat-icon>
+  </button>
+
   <mat-form-field>
     <mat-label>Filtrar</mat-label>
     <input matInput (keyup)="applyFilter($event)" />
@@ -40,6 +44,8 @@
             ? formatarBoolean(element, column.name)
             : column.type == "phone"
             ? formatPhoneNumber(element, column.name)
+            : column.type == "time"
+            ? formataHora(element, column.name)
             : getProperty(element, column.name)
         }}
         <button
@@ -72,6 +78,7 @@
   </table>
 
   <mat-paginator
+    fixed
     class="mat-paginator-sticky"
     [length]="10"
     [pageSize]="5"

@@ -32,12 +32,28 @@ const psicoterapiaController = require("../controllers/acolhimento/pas/psicotera
 const agendamentoConsultaController = require("../controllers/acolhimento/pas/agendamentoConsultaController");
 
 const livroDiarioController = require("../controllers/acolhimento/livroDiarioController");
+const rotinaDiariaController = require("../controllers/acolhimento/rotinaDiariaController");
+const normaController = require("../controllers/acolhimento/normaController");
+
+/**Normas */
+
+router.get("/norma", normaController.get);
+router.post("/norma", normaController.post);
 
 /**Livro diario Controller */
 router.get("/livrodiario", livroDiarioController.get);
 router.get("/livrodiario/:_id", livroDiarioController.getById);
 router.post("/livrodiario", livroDiarioController.post);
 router.put("/livrodiario/:_id", livroDiarioController.put);
+
+
+/**rotins diario Controller */
+router.get("/rotinadiaria", rotinaDiariaController.get);
+router.get("/rotinadiaria/:_id", rotinaDiariaController.getById);
+router.post("/rotinadiaria", rotinaDiariaController.post);
+router.put("/rotinadiaria/:_id", rotinaDiariaController.put);
+
+
 
 router.get("/acolhido", function (req, res, next) {
   Acolhido.find().then((acolhido) => {
@@ -168,16 +184,22 @@ router.put("/:_id/saida", saidaController.post);
 router.put("/:_id/saida/:saida", saidaController.put);
 
 /**agendamento Controller */
-router.get("/:_id/agendamentoconsulta/:agendamentoconsulta", agendamentoConsultaController.getById);
+router.get(
+  "/:_id/agendamentoconsulta/:agendamentoconsulta",
+  agendamentoConsultaController.getById
+);
 router.get("/:_id/agendamentoconsulta", agendamentoConsultaController.get);
 router.put("/:_id/agendamentoconsulta", agendamentoConsultaController.post);
-router.put("/:_id/agendamentoconsulta/:agendamentoconsulta", agendamentoConsultaController.put);
+router.put(
+  "/:_id/agendamentoconsulta/:agendamentoconsulta",
+  agendamentoConsultaController.put
+);
 
 /**Acolhido Controller */
 router.get("/:_id/acolhido/:acolhido", userAuth, acolhidoController.getById);
-router.get("/:_id/acolhido", userAuth, acolhidoController.getById);
-router.post("/acolhido", userAuth, acolhidoController.post);
-router.put("/:_id/acolhido/:acolhido", userAuth, acolhidoController.put);
+router.get("/acolhido/:acolhido", userAuth, acolhidoController.getById);
+router.post("/acolhido/acolhido", userAuth, acolhidoController.post);
+router.put("/acolhido/:acolhido", userAuth, acolhidoController.put);
 
 /**Quadro Clinico Controller */
 router.get("/:_id/quadroClinico", quadroClinicoController.get);
@@ -187,24 +209,46 @@ router.put("/:_id/quadroClinico", quadroClinicoController.put);
 router.get("/:_id/tratamento", tratamentoController.get);
 router.put("/:_id/tratamento/", tratamentoController.put);
 
-router.post("/:_id/concluir", (req, res, next) => {
-  Acolhimento.findOneAndUpdate(
-    {
-      _id: req.params._id,
-    },
-    {
-      $set: {
-        ativo: false,
-        motivoConclusao: req.query.motivoconclusao,
-      },
+router.post("/:_id/concluir", async (req, res, next) => {
+  try {
+    let acolhimento = await Acolhimento.findOne(
+      { _id: req.params._id },
+      { identificacao: 1 }
+    );
+    if (
+      new Date(req.body.dataEgresso) <
+      new Date(acolhimento.identificacao.dataIngresso)
+    ) {
+      res.status(500).json({
+        message: "Data de Egresso não pode ser anterior à data de Ingresso",
+        success: false,
+      });
+    } else {
+      Acolhimento.findOneAndUpdate(
+        {
+          _id: req.params._id,
+        },
+        {
+          $set: {
+            ativo: false,
+            motivoConclusao: req.body.motivo,
+            "identificacao.dataEgresso": new Date(req.body.dataEgresso),
+          },
+        },
+        {
+          upsert: true,
+        }
+      )
+        .then((acolhimento) => {
+          res.status(200).json(acolhimento);
+        })
+        .catch((error) => {
+          res.status(500).json({ message: error.message });
+        });
     }
-  )
-    .then((acolhimento) => {
-      res.status(200).json(acolhimento);
-    })
-    .catch((error) => {
-      res.status(500).json({ message: error.message });
-    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.get("/relatorio/:_id", (req, res, netx) => {
@@ -222,8 +266,6 @@ router.get("/relatorio/:_id", (req, res, netx) => {
 });
 
 router.post("/evolucaoPsicologica/:_id", (req, res, next) => {
-  console.log(req.body);
-
   Acolhimento.aggregate([
     { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
     {

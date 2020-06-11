@@ -7,8 +7,6 @@ var opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken() ,
 opts.secretOrKey = cfg.jwtSecret;
 
-
-console.log(opts.jwtFromRequest)
 module.exports = passport => {
     passport.use(
       new JwtStrategy(opts, async (payload, done) => {

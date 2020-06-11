@@ -17,10 +17,12 @@ export class HistoricoQuimicoFormComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    this.prontuarioService.readCollection('substancia').subscribe((res: any) => {
-      console.log(res);
-      this.substancias = res;
-    });
+    this.prontuarioService
+      .readCollection('substancia')
+      .subscribe((res: any) => {
+        console.log(res);
+        this.substancias = res;
+      });
 
     this.form = this.fb.group({
       //_id: undefined,
@@ -30,12 +32,12 @@ export class HistoricoQuimicoFormComponent extends ProntuarioResource
         idade: [''],
         substancia: [''],
         diario: [false],
-        observacoes: [''],      
+        observacoes: [''],
       }),
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('historicoQuimico', this._id)
+          .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
             this.form.get('historicoQuimico').patchValue(res);
           })

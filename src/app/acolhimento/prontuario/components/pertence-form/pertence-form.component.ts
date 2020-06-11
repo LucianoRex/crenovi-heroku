@@ -6,7 +6,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
   templateUrl: './pertence-form.component.html',
   styleUrls: ['./pertence-form.component.css'],
 })
-export class PertenceFormComponent extends ProntuarioResource implements OnInit {
+export class PertenceFormComponent extends ProntuarioResource
+  implements OnInit {
   @Input() _id: string;
   itens: any[] = [
     'RG',
@@ -37,9 +38,11 @@ export class PertenceFormComponent extends ProntuarioResource implements OnInit 
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('pertence', this._id).subscribe((res: any) => {
-          this.form.get('pertence').patchValue(res);
-        })
+      ? this.prontuarioService
+          .readById(this.concatenatedPath, this._id)
+          .subscribe((res: any) => {
+            this.form.get('pertence').patchValue(res);
+          })
       : null;
   }
 }

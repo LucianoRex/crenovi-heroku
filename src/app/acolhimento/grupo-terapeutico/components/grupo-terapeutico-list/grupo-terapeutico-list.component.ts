@@ -22,11 +22,6 @@ export class GrupoTerapeuticoListComponent extends GrupoTerapeuticoResource
     ];
 
     this.montaTabela(
-      columns,
-      this.grupoTerapeuticoService.read(),
-      GrupoTerapeuticoFormComponent,
-      undefined,
-      'pas'
-    );
+      { columns, service: this.grupoTerapeuticoService.read(), component: GrupoTerapeuticoFormComponent, _id: undefined, socketioPath: 'pas' }    );
   }
 }

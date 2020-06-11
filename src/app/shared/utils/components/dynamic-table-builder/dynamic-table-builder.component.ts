@@ -32,12 +32,12 @@ export class DynamicTableBuilderComponent implements OnInit {
   @Output() create = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() selectedRow = new EventEmitter<any>();
-
+  dados;
   observer$: Observable<any>;
   private subscriptions: Subscription[] = [];
   data: Observable<any>;
   dataSource: MatTableDataSource<any>;
-  socketiodata;
+  socketioPath;
   displayedColumns;
   resultsLength = 0;
   isLoadingResults = false;
@@ -49,15 +49,14 @@ export class DynamicTableBuilderComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe);
+    // this.socket.emit('disconnect', {});
   }
 
   ngOnInit(): void {
-    this.getData();
+    console.log(this.socketioPath);
     this.socket.on(
-      'update-data',
+      this.socketioPath,
       function (data: any) {
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
         this.getData();
       }.bind(this)
     );
@@ -65,9 +64,12 @@ export class DynamicTableBuilderComponent implements OnInit {
     this.columns.push({ name: 'acoes', label: 'Ações' });
     this.displayedColumns = this.columns.map((column) => column.name);
   }
-
+  load() {
+    this.getData();
+  }
   getData() {
     this.data.subscribe((res) => {
+      this.dados = res;
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.sortingDataAccessor = (obj, property) =>
         this.getProperty(obj, property);
@@ -109,6 +111,11 @@ export class DynamicTableBuilderComponent implements OnInit {
     }
     return null;
   };
+
+  formataHora(obj, path) {
+    let hora = new String(path.split('.').reduce((o, p) => o && o[p], obj));
+    return hora.substring(0, 2) + ':' + hora.substring(2);
+  }
 
   createEvent(e: Event) {
     e.stopPropagation();

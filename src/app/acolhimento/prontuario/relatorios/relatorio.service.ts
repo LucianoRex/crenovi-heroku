@@ -84,7 +84,7 @@ export class RelatorioService {
             ];
           },
           content: [
-            new Relatorio().logo,
+            new new Relatorio().logo(500, 'center', 50).image,
             new new Relatorio().titulo('TERMO DE AUTORIZAÇÃO DE USO DE IMAGEM'),
             {
               text: [
@@ -126,7 +126,7 @@ export class RelatorioService {
           pageMargins: [50, 50, 50, 100],
 
           content: [
-            new Relatorio().logo,
+            new new Relatorio().logo(500, 'center', 50).image,
             new new Relatorio().titulo('Termo de ciência'),
             {
               text: [
@@ -225,7 +225,7 @@ export class RelatorioService {
             ];
           },
           content: [
-            new Relatorio().logo,
+            new new Relatorio().logo(500, 'center', 50).image,
             new new Relatorio().titulo('Termo de responsabilidade'),
             {
               text: [
@@ -261,6 +261,7 @@ export class RelatorioService {
 
   declaracaoHipossuficienciaDeRenda(_id: string, form: any[]) {
     let user;
+
     this.authenticationService.currentUser.subscribe((res) => {
       console.log(res);
       user = res.nome;
@@ -291,8 +292,9 @@ export class RelatorioService {
               },
             ];
           },
+
           content: [
-            new Relatorio().logo,
+            new new Relatorio().logo(500, 'center', 50).image,
             new new Relatorio().titulo(
               'Declaração de hipossuficiência de renda'
             ),
@@ -366,23 +368,23 @@ export class RelatorioService {
   }
 
   evolucaoPsicologica(_id: string, form) {
-    let user;        
+    console.log(_id);
+    let user;
     this.authenticationService.currentUser.subscribe((res) => {
       console.log(res);
       user = res.nome;
     });
 
     this.http
-      .get(`${this.apiBaseUrl}/acolhimento/${_id}/evolucaoPsicologica/acolhido`)
+      .get(`${this.apiBaseUrl}/${_id}/acolhido`)
       .subscribe((acolhido: any) => {
         let ac = acolhido.identificacao.acolhido.nome;
         this.http
           .post(
-            `${this.apiBaseUrl}/acolhimento/${_id}/evolucaoPsicologica/procedimentos`,
+            `${this.apiBaseUrl}/${_id}/procedimentos`,
             form
           )
           .subscribe((acolhimento: Pas) => {
-            console.log(acolhimento);
             let procedimentos = [];
             acolhimento[0]
               ? (procedimentos = acolhimento[0].procedimentos)
@@ -392,7 +394,6 @@ export class RelatorioService {
             acolhimento[0]
               ? (consultas = acolhimento[0].consultas)
               : (consultas = []);
-            console.log(consultas);
             let p: [] = [];
             let p2: [] = [];
             procedimentos.forEach((e: []) => {
@@ -401,8 +402,6 @@ export class RelatorioService {
             consultas.forEach((e: []) => {
               p2.push(...e);
             });
-            // p = [...new Set([...um,...dois])]
-            console.log(p2);
             let counts = [];
             p.forEach(function (x) {
               counts[x] = (counts[x] || 0) + 1;
@@ -415,9 +414,6 @@ export class RelatorioService {
             n2.forEach(function (x) {
               counts2[x] = (counts2[x] || 0) + 1;
             });
-            console.log(n2);
-            console.log(counts2);
-            console.log(Object.entries(counts2));
             const texto = this.formatarData();
             let consultas2 = '';
             for (let a of Object.entries(counts2)) {
@@ -451,7 +447,7 @@ export class RelatorioService {
               },
 
               content: [
-                new Relatorio().logo,
+                new new Relatorio().logo(575, 'center', 100).image,
                 new new Relatorio().titulo('Evolução Psicológica'),
 
                 {

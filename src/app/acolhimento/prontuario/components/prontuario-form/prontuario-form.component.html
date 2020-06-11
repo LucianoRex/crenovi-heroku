@@ -2,6 +2,7 @@
   <mat-step [completed]="false" [stepControl]="identificacaoForm">
     <ng-template matStepLabel>Identificação</ng-template>
     <app-identificacao
+      [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
       (notify)="identificacao($event)"
     ></app-identificacao>
@@ -9,29 +10,43 @@
   <mat-step [completed]="false" [stepControl]="responsavelForm">
     <ng-template matStepLabel>Responsável</ng-template>
     <app-responsavel-form
+      [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
       (notify)="responsavel($event)"
     ></app-responsavel-form>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Doenças</ng-template>
-    <app-doenca-list [_id]="_id"></app-doenca-list>
+    <app-doenca-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-doenca-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Histórico Químico</ng-template>
-    <app-historico-quimico-list [_id]="_id"></app-historico-quimico-list>
+    <app-historico-quimico-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-historico-quimico-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Medicamentos</ng-template>
-    <app-medicamento-list [_id]="_id"></app-medicamento-list>
+    <app-medicamento-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-medicamento-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Avaliação</ng-template>
-    <app-avaliacao-list [_id]="_id"></app-avaliacao-list>
+    <app-avaliacao-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-avaliacao-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="quadroClinicoForm">
     <ng-template matStepLabel>Quadro Clínico</ng-template>
     <app-quadro-clinico-form
+      [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
       (notify)="quadroClinico($event)"
     ></app-quadro-clinico-form>
@@ -39,17 +54,23 @@
   <mat-step [completed]="false" [stepControl]="historicoPsiquicoForm">
     <ng-template matStepLabel>Histórico Psiquico</ng-template>
     <app-historico-psiquico-form
+      [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
       (notify)="historicoPsiquico($event)"
     ></app-historico-psiquico-form>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="tratamentoForm">
-    <ng-template matStepLabel>Tratamento</ng-template>
-    <app-tratamento-form disabled="true" [_id]="_id"></app-tratamento-form>
+    <ng-template matStepLabel>Tratamentos anteriores</ng-template>
+    <app-tratamento-form
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      disabled="true"
+      [_id]="_id"
+    ></app-tratamento-form>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="historicoFamiliarSocialForm">
     <ng-template matStepLabel>Histórico Familiar Social</ng-template>
     <app-historico-familiar-social-form
+      [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
       (notify)="historicoFamiliarSocial($event)"
     ></app-historico-familiar-social-form>
@@ -57,33 +78,52 @@
   <mat-step [completed]="false" [stepControl]="historicoForenseForm">
     <ng-template matStepLabel>Histórico Forense</ng-template>
     <app-historico-forense-form
+      [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
       (notify)="historicoForense($event)"
     ></app-historico-forense-form>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Pertences</ng-template>
-    <app-pertence-list [_id]="_id"></app-pertence-list>
+    <app-pertence-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-pertence-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Saídas e retornos</ng-template>
-    <app-saida-list [_id]="_id"></app-saida-list>
+    <app-saida-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-saida-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Agendamentos e Consultas</ng-template>
-    <app-agendamento-consulta-list [_id]="_id"></app-agendamento-consulta-list>
+    <app-agendamento-consulta-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-agendamento-consulta-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Evolução psicológica</ng-template>
-    <app-evolucao-psicologica-list [_id]="_id"></app-evolucao-psicologica-list>
+    <app-evolucao-psicologica-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-evolucao-psicologica-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Psicoterapia</ng-template>
-    <app-psicoterapia-list [_id]="_id"></app-psicoterapia-list>
+    <app-psicoterapia-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-psicoterapia-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Biometria</ng-template>
-    <app-biometria-list [_id]="_id"></app-biometria-list>
+    <app-biometria-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-biometria-list>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Relatórios</ng-template>

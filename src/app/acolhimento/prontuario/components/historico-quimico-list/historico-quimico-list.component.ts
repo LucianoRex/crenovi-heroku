@@ -24,11 +24,13 @@ export class HistoricoQuimicoListComponent extends ProntuarioResource
         label: 'Substância',
       },
     ];
-    super.montaTabela(
+    super.montaTabela({
       columns,
-      this.prontuarioService.readById('historicoQuimico'),
-      HistoricoQuimicoFormComponent,
-      this._id
-    );
+      service: this.prontuarioService.readById(this.concatenatedPath,'historicoQuimico'),
+      component: HistoricoQuimicoFormComponent,
+      _id: this._id,
+      socketioPath: 'historicoQuimico',
+      caminho: this.concatenatedPath + '/historicoQuimico',
+    });
   }
 }

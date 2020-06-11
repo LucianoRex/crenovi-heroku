@@ -24,7 +24,7 @@ export class HistoricoForenseFormComponent extends ProntuarioResource
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById('historicoForense').subscribe((res) => {
+      ? this.prontuarioService.readById(this.concatenatedPath,'historicoForense').subscribe((res) => {
           this.form.patchValue(res);
         })
       : null;

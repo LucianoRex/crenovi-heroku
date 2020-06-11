@@ -1,13 +1,14 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
-
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-avaliacao-form',
   templateUrl: './avaliacao-form.component.html',
   styleUrls: ['./avaliacao-form.component.css'],
 })
-export class AvaliacaoFormComponent extends ProntuarioResource implements OnInit {
+export class AvaliacaoFormComponent extends ProntuarioResource
+  implements OnInit {
   autoTicks = false;
   disabled = false;
   invert = false;
@@ -26,27 +27,29 @@ export class AvaliacaoFormComponent extends ProntuarioResource implements OnInit
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      //_id: undefined,
       path: 'avaliacao',
       avaliacao: this.fb.group({
         _id: undefined,
-        data: [''],
-        disciplina: [''],
-        autoestima: [''],
-        reunioes: [''],
-        espiritualidade: [''],
-        higiene: [''],
-        criatividade: [''],
-        observacoes: [''],
+        data: ['', Validators.required],
+        disciplina: ['', Validators.required],
+        autoestima: ['', Validators.required],
+        reunioes: ['', Validators.required],
+        espiritualidade: ['', Validators.required],
+        higiene: ['', Validators.required],
+        criatividade: ['', Validators.required],
+        observacoes: ['', Validators.required],
       }),
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById('avaliacao', this._id)
+          .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
             this.form.get('avaliacao').patchValue(res);
           })
       : null;
+    this.form.valueChanges.subscribe((e) => {
+      this.formChange.emit(true);
+    });
   }
 
   getSliderTickInterval(): number | 'auto' {
