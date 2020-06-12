@@ -19,7 +19,7 @@ import { ProntuarioSocketService } from '../services/prontuario-socket.service';
 import { DynamicListService } from 'src/app/shared/utils/services/dynamic-list.service';
 
 export class ProntuarioResource extends DynamicFormTableResource implements OnDestroy {
-  socket = io(environment.SOCKET_ENDPOINT);
+  //socket = io(environment.SOCKET_ENDPOINT);
   @Input() concatenatedPath: string;
   socketdata: string;
   @Input() _id: string = undefined;
@@ -34,7 +34,7 @@ export class ProntuarioResource extends DynamicFormTableResource implements OnDe
     this.toastr = injector.get(ToastrService);
   }
   ngOnDestroy(): void {
-   this.socket.disconnect()
+  // this.socket.disconnect()
   }
 
   save() {
@@ -44,8 +44,8 @@ export class ProntuarioResource extends DynamicFormTableResource implements OnDe
         (res) => {
           this.toastr.success('Salvo');
           this.selectedRow.emit(res);
-          this.socket.emit(this.form.get('path').value, res);
-          this.socket.disconnect();
+       //   this.socket.emit(this.form.get('path').value, res);
+       //   this.socket.disconnect();
           this.saved.emit(true);
         },
         (err) => {

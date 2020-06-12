@@ -30,7 +30,7 @@ let put = (req, res, next) => {
   Acolhimento.findOneAndUpdate(
     { _id: req.params._id, "medicamento._id": req.params.medicamento },
     {
-      $addToSet: {
+      $set: {
         "medicamento.$": data,
       },
     }
