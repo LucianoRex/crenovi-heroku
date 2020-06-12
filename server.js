@@ -77,7 +77,7 @@ app.use(
     methods: ["GET", "PUT", "POST"],
   })
 );
-
+/*
 io.of("/acolhimento").on("connection", (socket) => {
   console.log("Cheou acolhimento");
   socket.on("livrodiario", (data) => {
@@ -119,10 +119,10 @@ io.of("/prontuario").on("connection", (socket) => {
   socket.on("identificacao", (data) => {
     console.log("IDe");
     io.emit("identificacao", { data: data });
-    // socket.off = socket.removeAllListeners("identificacao");
+     socket.off = socket.removeAllListeners("identificacao");
   });
 });
-
+*/
 /*io.on("disconnect", () => {
   console.log("saiu");
 });
@@ -140,22 +140,6 @@ app.use("/api/acolhimento/rotinadiaria", rotinaDiaria);
 app.use("/api/comunidade", comunidade);
 //app.use("/api/medicamento", medicamento);
 app.use("/api/busca", busca);
-
-const prontuarioDocs = ["biometria", "avalicao"];
-
-/*io.on("connection", function (socket) {
-  
-  socket.on("acolhimento", function (data) {
-    console.log("Data" + data);
-    io.emit("acolhimento", { data: data });
-    // socket.disconnect();
-  });
-  socket.on("disconnect", function (data) {
-    console.log("Desconnectar");
-    socket.disconnect();
-  });
-});
-*/
 
 var distDir = __dirname + "/dist/";
 app.use(express.static(distDir));
