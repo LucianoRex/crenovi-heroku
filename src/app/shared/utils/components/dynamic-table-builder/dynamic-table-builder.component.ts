@@ -53,13 +53,13 @@ export class DynamicTableBuilderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.socketioPath);
+   /* console.log(this.socketioPath);
     this.socket.on(
       this.socketioPath,
       function (data: any) {
         this.getData();
       }.bind(this)
-    );
+    );*/
 
     this.columns.push({ name: 'acoes', label: 'Ações' });
     this.displayedColumns = this.columns.map((column) => column.name);
