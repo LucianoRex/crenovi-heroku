@@ -10,13 +10,13 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.set('views', path.join(__dirname, 'views'));
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 
-app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
+app.use(cors({ credentials: true, origin: "http://localhost:4200" }));
 app.use(passport.initialize());
 
 require("./middlewares/passport")(passport);
@@ -70,26 +70,13 @@ const busca = require("./routes/busca");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-console.log(process);
 
-
-io.of("/acolhimento").on("connection", (socket) => {
-  console.log("Cheou acolhimento");
-  socket.on("livrodiario", (data) => {
-    console.log("Cheou Livro");
-    io.emit("livrodiario", { data: data });
-    socket.off = socket.removeAllListeners("livrodiario");
-  });
-  socket.on("rotinadiaria", (data) => {
-    io.emit("rotinadiaria", { data: data });
-    socket.off = socket.removeAllListeners("rotinadiaria");
-  });
-});
-
-io.of("/prontuario").on("connection", (socket) => { 
+io.on("connection", function (socket) {
+  console.log("a user connected");
   socket.on("avaliacao", (data) => {
+    console.log("Cheou avaliacao");
     io.emit("avaliacao", { data: data });
-  //  socket.off = socket.removeAllListeners("avaliacao");
+    io.removeListener('avaliacao',()=>this)
   });
   socket.on("biometria", (data) => {
     io.emit("biometria", { data: data });
@@ -103,6 +90,10 @@ io.of("/prontuario").on("connection", (socket) => {
     io.emit("saida", { data: data });
     socket.off = socket.removeAllListeners("saida");
   });
+  socket.on("pertence", (data) => {
+    io.emit("pertence", { data: data });
+    socket.off = socket.removeAllListeners("pertence");
+  });
   socket.on("agendamentoconsulta", (data) => {
     io.emit("agendamentoconsulta", { data: data });
     socket.off = socket.removeAllListeners("agendamentoconsulta");
@@ -110,18 +101,20 @@ io.of("/prontuario").on("connection", (socket) => {
   socket.on("identificacao", (data) => {
     console.log("IDe");
     io.emit("identificacao", { data: data });
-     socket.off = socket.removeAllListeners("identificacao");
+    socket.off = socket.removeAllListeners("identificacao");
   });
   socket.on("livrodiario", (data) => {
     io.emit("livrodiario", { data: data });
-    // socket.off = socket.removeAllListeners("livrodiario");
+    socket.off = socket.removeAllListeners("livrodiario");
+  });
+ 
+
+  socket.on("disconnect", function () {
+    console.log("user disconnected");    
+    
   });
 });
 
-/*io.on("disconnect", () => {
-  console.log("saiu");
-});
-*/
 // HTTP request logger
 app.use(morgan("tiny"));
 app.use("/api/convenio", routes);

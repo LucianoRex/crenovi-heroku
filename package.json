@@ -45,6 +45,7 @@
     "ng2-charts": "^2.3.2",
     "ngx-bootstrap": "^5.6.1",
     "ngx-mask": "^9.0.2",
+    "ngx-socket-io": "^3.0.1",
     "ngx-toastr": "^12.0.1",
     "ngx-webcam": "^0.3.0",
     "nodemailer": "^6.4.8",

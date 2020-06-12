@@ -36,6 +36,7 @@
       [_id]="_id"
     ></app-medicamento-list>
   </mat-step>
+
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Avaliação</ng-template>
     <app-avaliacao-list
@@ -43,6 +44,7 @@
       [_id]="_id"
     ></app-avaliacao-list>
   </mat-step>
+
   <mat-step [completed]="false" [stepControl]="quadroClinicoForm">
     <ng-template matStepLabel>Quadro Clínico</ng-template>
     <app-quadro-clinico-form
@@ -96,6 +98,13 @@
       [concatenatedPath]="concatenatedPath + '/' + _id"
       [_id]="_id"
     ></app-saida-list>
+  </mat-step>
+  <mat-step [completed]="false" [stepControl]="">
+    <ng-template matStepLabel>Agendamentos e Consultas</ng-template>
+    <app-agendamento-consulta-list
+      [concatenatedPath]="concatenatedPath + '/' + _id"
+      [_id]="_id"
+    ></app-agendamento-consulta-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Agendamentos e Consultas</ng-template>

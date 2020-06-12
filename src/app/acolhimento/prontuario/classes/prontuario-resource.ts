@@ -15,19 +15,26 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
+import { ProntuarioSocketService } from '../services/prontuario-socket.service';
+import { DynamicListService } from 'src/app/shared/utils/services/dynamic-list.service';
 
-export class ProntuarioResource extends DynamicFormTableResource {
-  //socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
+export class ProntuarioResource extends DynamicFormTableResource implements OnDestroy {
+  socket = io(environment.SOCKET_ENDPOINT);
   @Input() concatenatedPath: string;
   socketdata: string;
   @Input() _id: string = undefined;
   @Output() saved = new EventEmitter<boolean>();
   protected prontuarioService: ProntuarioService;
+  protected dynamicListService: DynamicListService;
   private toastr: ToastrService;
   constructor(protected injector: Injector) {
     super(injector);
     this.prontuarioService = injector.get(ProntuarioService);
+    this.dynamicListService = injector.get(DynamicListService);
     this.toastr = injector.get(ToastrService);
+  }
+  ngOnDestroy(): void {
+   this.socket.disconnect()
   }
 
   save() {
@@ -37,13 +44,8 @@ export class ProntuarioResource extends DynamicFormTableResource {
         (res) => {
           this.toastr.success('Salvo');
           this.selectedRow.emit(res);
-          /* this.socket.emit(
-            this.form.get('path').value,
-            this.form.get('path').value,
-            res
-          );
-*/
-          this.prontuarioService.emitSocket(this.form.value, res);
+          this.socket.emit(this.form.get('path').value, res);
+          this.socket.disconnect();
           this.saved.emit(true);
         },
         (err) => {

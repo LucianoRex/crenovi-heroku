@@ -9,11 +9,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicTableBuilderComponent } from '../components/dynamic-table-builder/dynamic-table-builder.component';
 import { DialogDynamicTableLoaderComponent } from '../components/dialog-dynamic-table-loader/dialog-dynamic-table-loader.component';
+import { ProntuarioSocketService } from 'src/app/acolhimento/prontuario/services/prontuario-socket.service';
+import { environment } from 'src/environments/environment';
+import * as io from 'socket.io-client';
+import { take } from 'rxjs/operators';
+import { DynamicListService } from '../services/dynamic-list.service';
 
 export class DynamicFormTableResource {
   protected resolver: ComponentFactoryResolver;
   protected viewContainerRef: ViewContainerRef;
+  protected dynamicListService: DynamicListService;
   protected dialog: MatDialog;
+  //socket = io(environment.SOCKET_ENDPOINT);
   // saved: boolean = false;
   //componentOpened;
   //isDirty: boolean = false;
@@ -30,6 +37,7 @@ export class DynamicFormTableResource {
     this.viewContainerRef = injector.get(ViewContainerRef);
     this.dialog = injector.get(MatDialog);
     this.fb = injector.get(FormBuilder);
+    this.dynamicListService = injector.get(DynamicListService);
   }
 
   remove(): void {}
@@ -47,7 +55,7 @@ export class DynamicFormTableResource {
     _id?: any;
     socketioPath: string;
     caminho?: string;
-  }) {    
+  }) {
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
       DynamicTableBuilderComponent
     );
@@ -61,9 +69,10 @@ export class DynamicFormTableResource {
       this.selectedRow.emit(res);
     });
 
+   
     componentRef.instance.create.subscribe(() => {
       this.dialog.open(DialogDynamicTableLoaderComponent, {
-        data: { component: component, _id: undefined ,caminho: caminho},
+        data: { component: component, _id: undefined, caminho: caminho },
         maxWidth: '90vw',
         width: '90vw',
         height: '90vh',
@@ -73,7 +82,7 @@ export class DynamicFormTableResource {
     });
 
     componentRef.instance.update.subscribe((res) => {
-      this.formChange.emit(false);      
+      this.formChange.emit(false);
       this.dialog.open(DialogDynamicTableLoaderComponent, {
         data: { component: component, _id: res._id, caminho: caminho },
         maxWidth: '90vw',

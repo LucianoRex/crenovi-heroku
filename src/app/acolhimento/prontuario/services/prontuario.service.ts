@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import * as io from 'socket.io-client';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProntuarioService {
   apiBaseUrl = environment.apiBaseUrl;
-  socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
+  
   // pas_id: string;
   constructor(private _http: HttpClient) {}
 
@@ -57,11 +57,7 @@ export class ProntuarioService {
     alert('Vamos remover?');
   }
 
-  emitSocket(form, value) {
-    console.log(form);
-    console.log(value);
-    this.socket.emit(form.path, form.path, value);
-  }
+ 
 
   concluirTratamento(
     path,

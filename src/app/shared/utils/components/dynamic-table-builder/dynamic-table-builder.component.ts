@@ -16,6 +16,8 @@ import { DatePipe } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
 import * as io from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { ProntuarioSocketService } from 'src/app/acolhimento/prontuario/services/prontuario-socket.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dynamic-table-builder',
@@ -45,22 +47,24 @@ export class DynamicTableBuilderComponent implements OnInit {
   socket = io(environment.SOCKET_ENDPOINT);
   title: string;
 
-  constructor(private datePipe: DatePipe) {}
+  constructor(
+    private datePipe: DatePipe
+  ) // private socketService: ProntuarioSocketService
+  {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe);
-     this.socket.emit('disconnect', {});
+    this.socket.disconnect();
   }
 
   ngOnInit(): void {
-   // console.log(this.socketioPath);
-   this.socket.on(
+    // console.log(this.socketioPath);
+    this.socket.on(
       this.socketioPath,
       function (data: any) {
         this.getData();
       }.bind(this)
     );
-    
 
     this.columns.push({ name: 'acoes', label: 'Ações' });
     this.displayedColumns = this.columns.map((column) => column.name);

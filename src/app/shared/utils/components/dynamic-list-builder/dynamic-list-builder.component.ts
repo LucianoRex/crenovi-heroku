@@ -54,7 +54,7 @@ export class DynamicListBuilderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    this.dynamicListService.send(this.form.value);
+   // this.dynamicListService.send(this.form.value);
     this.subscriptions.forEach((s) => s.unsubscribe);
   }
 
