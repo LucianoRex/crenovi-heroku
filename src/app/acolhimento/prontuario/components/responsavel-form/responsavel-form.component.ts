@@ -38,7 +38,7 @@ export class ResponsavelFormComponent extends ProntuarioResource
     });
     this._id !== undefined
       ? this.prontuarioService.readById(this.concatenatedPath,'responsavel').subscribe((res) => {
-          this.form.patchValue(res, { emitEvent: false, onlySelf: true });
+          this.form.patchValue(res);
         })
       : null;
 

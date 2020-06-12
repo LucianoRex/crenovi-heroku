@@ -18,7 +18,7 @@ import { FormGroup } from '@angular/forms';
 
 export class ProntuarioResource extends DynamicFormTableResource {
   //socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
-  @Input() concatenatedPath:string;
+  @Input() concatenatedPath: string;
   socketdata: string;
   @Input() _id: string = undefined;
   @Output() saved = new EventEmitter<boolean>();
@@ -35,13 +35,15 @@ export class ProntuarioResource extends DynamicFormTableResource {
       .save(this.form.value, this._id, this.concatenatedPath)
       .subscribe(
         (res) => {
-          this.toastr.success('Salvo');          
+          this.toastr.success('Salvo');
           this.selectedRow.emit(res);
-       /*   this.socket.emit(
+          /* this.socket.emit(
             this.form.get('path').value,
             this.form.get('path').value,
             res
-          );*/
+          );
+*/
+          this.prontuarioService.emitSocket(this.form.value, res);
           this.saved.emit(true);
         },
         (err) => {
@@ -56,23 +58,25 @@ export class ProntuarioResource extends DynamicFormTableResource {
       width: '250px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {      
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.prontuarioService.concluirTratamento(this.concatenatedPath,result).subscribe(
-          (res) => {
-            this.toastr.success('Tratamento concluído');
-            this.selectedRow.emit(res);
-/*            this.socket.emit(
+        this.prontuarioService
+          .concluirTratamento(this.concatenatedPath, result)
+          .subscribe(
+            (res) => {
+              this.toastr.success('Tratamento concluído');
+              this.selectedRow.emit(res);
+              /*            this.socket.emit(
               this.form.get('path').value,
               this.form.get('path').value,
               res
             );
             */
-          },
-          (err) => {
-            this.toastr.error(err);
-          }
-        );
+            },
+            (err) => {
+              this.toastr.error(err);
+            }
+          );
       }
     });
   }

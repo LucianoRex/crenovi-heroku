@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import * as io from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProntuarioService {
   apiBaseUrl = environment.apiBaseUrl;
+  socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
   // pas_id: string;
   constructor(private _http: HttpClient) {}
 
@@ -29,8 +31,7 @@ export class ProntuarioService {
     return this._http.get(`${this.apiBaseUrl}/${path}/${document}`);
   }
 
-  save(form, _id, path: string): Observable<any> {
-    console.log(!path.includes('undefined'));
+  save(form, _id, path: string): Observable<any> {   
     if (!path.includes('undefined')) {
       if (form[form.path]._id && form[form.path]._id != undefined) {
         return this._http.put(
@@ -38,6 +39,7 @@ export class ProntuarioService {
           `${this.apiBaseUrl}/${path}/${form[form.path]._id}`,
           form
         );
+       
       } else {
         alert('Novo subDoc');
         return this._http.put(
@@ -55,10 +57,21 @@ export class ProntuarioService {
         form
       );
     }
+    
   }
 
   remove() {
     alert('Vamos remover?');
+  }
+
+  emitSocket(form,value){
+    console.log(form);
+    console.log(value)
+    this.socket.emit(
+      form.path,
+      form.path,
+      value
+    );
   }
 
   concluirTratamento(

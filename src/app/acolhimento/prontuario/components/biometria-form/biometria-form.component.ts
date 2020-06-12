@@ -37,7 +37,7 @@ export class BiometriaFormComponent extends ProntuarioResource
           .subscribe((res: any) => {
             this.form
               .get('biometria')
-              .patchValue(res, { emitEvent: false, onlySelf: true });
+              .patchValue(res);
           })
       : null;
   }

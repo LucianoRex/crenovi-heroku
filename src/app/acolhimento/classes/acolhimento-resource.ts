@@ -1,12 +1,19 @@
 import { DynamicFormTableResource } from 'src/app/shared/utils/classes/dynamic-form-table-resource';
-import { Injector, Input, Inject, Component, Output, EventEmitter } from '@angular/core';
+import {
+  Injector,
+  Input,
+  Inject,
+  Component,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import * as io from 'socket.io-client';
 import { ToastrService } from 'ngx-toastr';
 import { AcolhimentoService } from '../services/acolhimento.service';
 import { environment } from 'src/environments/environment';
 
 export class AcolhimentoResource extends DynamicFormTableResource {
-  socket = io(environment.SOCKET_ENDPOINT + '/acolhimento');
+  //socket = io(environment.SOCKET_ENDPOINT + '/acolhimento');
   socketdata: string;
   @Input() _id: string = undefined;
   @Output() saved = new EventEmitter<boolean>();
@@ -24,11 +31,12 @@ export class AcolhimentoResource extends DynamicFormTableResource {
         this.toastr.success('Salvo');
         console.log(res);
         this.selectedRow.emit(res);
-      /*  this.socket.emit(
+        /*  this.socket.emit(
           this.form.get('path').value,
           this.form.get('path').value,
           res
         );*/
+      //  this.acolhimentoService.emitSocket(this.form.value, res);
         this.saved.emit(true);
       },
       (err) => {

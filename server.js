@@ -52,7 +52,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
   console.log("App now running on port", port);
 });
 
-//var io = require("socket.io")(server);
+var io = require("socket.io")(server);
 
 const routes = require("./routes/convenio");
 const acolhimento = require("./routes/acolhimento");
@@ -72,7 +72,7 @@ if (process.env.NODE_ENV === "production") {
 }
 console.log(process);
 
-/*
+
 io.of("/acolhimento").on("connection", (socket) => {
   console.log("Cheou acolhimento");
   socket.on("livrodiario", (data) => {
@@ -117,7 +117,7 @@ io.of("/prontuario").on("connection", (socket) => {
      socket.off = socket.removeAllListeners("identificacao");
   });
 });
-*/
+
 /*io.on("disconnect", () => {
   console.log("saiu");
 });

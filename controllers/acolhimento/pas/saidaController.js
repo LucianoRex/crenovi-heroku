@@ -36,7 +36,7 @@ let put = (req, res, next) => {
     }
   )
     .then((acolhimento) => {
-      res.status(200).json(acolhimento);
+      res.status(200).json(acolhimento.saida);
     })
     .catch((err) => {
     
@@ -60,7 +60,7 @@ let post = (req, res, next) => {
     }
   )
     .then((acolhimento) => {
-      res.status(200).json(acolhimento);
+      res.status(200).json(acolhimento.saida);
     })
     .catch((err) => {
     
