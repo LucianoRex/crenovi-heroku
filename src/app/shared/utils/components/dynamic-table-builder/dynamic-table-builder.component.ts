@@ -42,7 +42,7 @@ export class DynamicTableBuilderComponent implements OnInit {
   resultsLength = 0;
   isLoadingResults = false;
   isRateLimitReached = false;
-  socket = io(environment.SOCKET_ENDPOINT);
+  //socket = io(environment.SOCKET_ENDPOINT);
   title: string;
 
   constructor(private datePipe: DatePipe) {}

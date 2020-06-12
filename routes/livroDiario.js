@@ -1,10 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const app = express();
-var server = app.listen();
-
-var io = require("socket.io");
-
 const LivroDiario = require("../models/livroDiario");
 
 router.get("/", function (req, res, next) {
@@ -24,11 +19,7 @@ router.post("/", (req, res, next) => {
     ...req.body,
   };
   delete data._id;
-  LivroDiario.create(new LivroDiario(data)).then((livroDiario) => {
-    console.log(req.socket)
-  //  console.log(res.socket)
-  //  res.socket.emit("livrodiario", { data: res })
-  //  io.emit("livrodiario", { data: res });
+  LivroDiario.create(new LivroDiario(data)).then((livroDiario) => {   
     res.status(200).json(livroDiario);
   });
 });

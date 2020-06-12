@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 
 export class ProntuarioResource extends DynamicFormTableResource {
-  socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
+  //socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
   @Input() concatenatedPath:string;
   socketdata: string;
   @Input() _id: string = undefined;

@@ -24,11 +24,11 @@ export class AcolhimentoResource extends DynamicFormTableResource {
         this.toastr.success('Salvo');
         console.log(res);
         this.selectedRow.emit(res);
-        this.socket.emit(
+      /*  this.socket.emit(
           this.form.get('path').value,
           this.form.get('path').value,
           res
-        );
+        );*/
         this.saved.emit(true);
       },
       (err) => {

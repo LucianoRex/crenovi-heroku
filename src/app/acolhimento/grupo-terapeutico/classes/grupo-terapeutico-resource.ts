@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as io from 'socket.io-client';
 
 export class GrupoTerapeuticoResource extends DynamicFormTableResource {
-  socket = io('http://localhost:8080');
+  //socket = io('http://localhost:8080');
   protected grupoTerapeuticoService: GrupoTerapeuticoService;
   protected toastr: ToastrService;
   @Input() _id: string = undefined;
@@ -22,7 +22,7 @@ export class GrupoTerapeuticoResource extends DynamicFormTableResource {
         this.toastr.success('Salvo');
         console.log(res);
         this.selectedRow.emit(res);
-        this.socket.emit('updatedata', res);
+      //  this.socket.emit('updatedata', res);
       },
       (err) => {
         this.toastr.error(err, 'Erro ao salvar');

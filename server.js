@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 
-
+app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
 app.use(passport.initialize());
 
 require("./middlewares/passport")(passport);
@@ -52,7 +52,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
   console.log("App now running on port", port);
 });
 
-var io = require("socket.io")(server);
+//var io = require("socket.io")(server);
 
 const routes = require("./routes/convenio");
 const acolhimento = require("./routes/acolhimento");
@@ -71,12 +71,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 console.log(process);
-app.use(
-  cors({
-    origin: "*", //process.env.BASE_URL || "http://localhost:4200",
-    methods: ["GET", "PUT", "POST"],
-  })
-);
+
 /*
 io.of("/acolhimento").on("connection", (socket) => {
   console.log("Cheou acolhimento");

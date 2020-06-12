@@ -21,7 +21,7 @@ import * as io from 'socket.io-client';
 })
 export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
   isDirty: boolean = false;
-  socket = io(environment.SOCKET_ENDPOINT);
+  //socket = io(environment.SOCKET_ENDPOINT);
   constructor(
     public dialogRef: MatDialogRef<DialogDynamicTableLoaderComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -30,7 +30,7 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {}
   ngOnDestroy(): void {
-    this.socket.emit('disconnect', {});
+    //this.socket.emit('disconnect', {});
   }
 
   ngOnInit(): void {
