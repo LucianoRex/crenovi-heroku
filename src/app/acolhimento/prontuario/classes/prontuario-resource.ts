@@ -37,11 +37,11 @@ export class ProntuarioResource extends DynamicFormTableResource {
         (res) => {
           this.toastr.success('Salvo');          
           this.selectedRow.emit(res);
-          this.socket.emit(
+       /*   this.socket.emit(
             this.form.get('path').value,
             this.form.get('path').value,
             res
-          );
+          );*/
           this.saved.emit(true);
         },
         (err) => {
@@ -62,11 +62,12 @@ export class ProntuarioResource extends DynamicFormTableResource {
           (res) => {
             this.toastr.success('Tratamento concluído');
             this.selectedRow.emit(res);
-            this.socket.emit(
+/*            this.socket.emit(
               this.form.get('path').value,
               this.form.get('path').value,
               res
             );
+            */
           },
           (err) => {
             this.toastr.error(err);
