@@ -16,6 +16,7 @@ export class TratamentoFormComponent extends ProntuarioResource
     this.form = this.fb.group({
       path: `tratamento`,
       tratamento: this.fb.group({
+        _id:'tratamento',
         desintoxicacao: [false],
         reducaoDano: [false],
         grupoApoio: [false],

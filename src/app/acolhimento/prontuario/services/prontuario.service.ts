@@ -31,47 +31,36 @@ export class ProntuarioService {
     return this._http.get(`${this.apiBaseUrl}/${path}/${document}`);
   }
 
-  save(form, _id, path: string): Observable<any> {   
+  save(form, _id, path: string): Observable<any> {
+    console.log(form[form.path]._id);
+    console.log(path);
     if (!path.includes('undefined')) {
       if (form[form.path]._id && form[form.path]._id != undefined) {
         return this._http.put(
-          //   `${this.apiBaseUrl}/acolhimento/${_id}/${form.path}/${
           `${this.apiBaseUrl}/${path}/${form[form.path]._id}`,
           form
         );
-       
       } else {
-        alert('Novo subDoc');
-        return this._http.put(
-          //  `${this.apiBaseUrl}/acolhimento/${_id}/${form.path}`,
-          `${this.apiBaseUrl}/${path}`,
-          form
-        );
+        return this._http.put(`${this.apiBaseUrl}/${path}`, form);
       }
     } else {
       return this._http.post(
-        //`${this.apiBaseUrl}/acolhimento/${form.path}`,
         `${this.apiBaseUrl}/${path.slice(0, path.lastIndexOf('/'))}/${
           form.path
         }`,
         form
       );
     }
-    
   }
 
   remove() {
     alert('Vamos remover?');
   }
 
-  emitSocket(form,value){
+  emitSocket(form, value) {
     console.log(form);
-    console.log(value)
-    this.socket.emit(
-      form.path,
-      form.path,
-      value
-    );
+    console.log(value);
+    this.socket.emit(form.path, form.path, value);
   }
 
   concluirTratamento(

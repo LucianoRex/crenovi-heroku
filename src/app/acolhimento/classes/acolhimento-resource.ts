@@ -25,11 +25,11 @@ export class AcolhimentoResource extends DynamicFormTableResource {
     this.toastr = injector.get(ToastrService);
   }
   save() {
-    console.log(this.form.value);
+    //console.log(this.form.value);
     this.acolhimentoService.save(this.form.value).subscribe(
       (res) => {
         this.toastr.success('Salvo');
-        console.log(res);
+      //  console.log(res);
         this.selectedRow.emit(res);
         /*  this.socket.emit(
           this.form.get('path').value,

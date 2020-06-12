@@ -25,7 +25,7 @@ let put = (req, res, next) => {
     }
   )
     .then((acolhimento) => {
-      res.status(200).json(acolhimento);
+      res.status(200).json(acolhimento.tratamento);
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });

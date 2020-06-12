@@ -263,14 +263,14 @@ export class RelatorioService {
     let user;
 
     this.authenticationService.currentUser.subscribe((res) => {
-      console.log(res);
+    //  console.log(res);
       user = res.nome;
     });
 
     this.http
       .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
       .subscribe((acolhimento: Pas) => {
-        console.log(acolhimento);
+     //   console.log(acolhimento);
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -368,7 +368,7 @@ export class RelatorioService {
   }
 
   evolucaoPsicologica(_id: string, form) {
-    console.log(_id);
+   // console.log(_id);
     let user;
     this.authenticationService.currentUser.subscribe((res) => {
       console.log(res);

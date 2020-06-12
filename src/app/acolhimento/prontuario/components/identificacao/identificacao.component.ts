@@ -58,15 +58,15 @@ export class IdentificacaoComponent extends ProntuarioResource
 
   ngOnInit(): void {
     this.socketdata = 'pas';
-    console.log(this._id);
+  //  console.log(this._id);
     this.selectedRow.subscribe((res) => {
-      console.log(res);
+  //    console.log(res);
     });
-    console.log(this.selectedRow);
+  //  console.log(this.selectedRow);
     this.form = this.fb.group({
       path: 'identificacao',
       identificacao: this.fb.group({
-        _id: undefined,
+        _id: 'identificacao',
         dataIngresso: ['', Validators.required],
         dataEgresso: [''],
         convenio: ['', Validators.required],

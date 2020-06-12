@@ -15,7 +15,7 @@ export class QuadroClinicoFormComponent extends ProntuarioResource implements On
     this.form = this.fb.group({
       path: `quadroClinico`,
       quadroClinico: this.fb.group({
-        _id: undefined,
+        _id: 'quadroClinico',
         familiar: [false],
         cessarUso: [false],
         observacoes: [''],

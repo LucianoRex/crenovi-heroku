@@ -19,11 +19,11 @@ export class ResponsavelFormComponent extends ProntuarioResource
     super(injector);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.form = this.fb.group({
       path: `responsavel`,
       responsavel: this.fb.group({
-        _id: undefined,
+        _id: 'responsavel',
         nome: ['', Validators.required],
         telefone: [''],
         email: [''],
@@ -32,14 +32,16 @@ export class ResponsavelFormComponent extends ProntuarioResource
       }),
     });
     this.form.valueChanges.subscribe((e) => {
-     // this.mudouForm = true;
+      // this.mudouForm = true;
       this.formChange.emit(true);
       this.notify.emit(this.form);
     });
     this._id !== undefined
-      ? this.prontuarioService.readById(this.concatenatedPath,'responsavel').subscribe((res) => {
-          this.form.patchValue(res);
-        })
+      ? this.prontuarioService
+          .readById(this.concatenatedPath, 'responsavel')
+          .subscribe((res) => {
+            this.form.patchValue(res);
+          })
       : null;
 
     this.notify.emit(this.form);

@@ -86,14 +86,10 @@ io.of("/acolhimento").on("connection", (socket) => {
   });
 });
 
-io.of("/prontuario").on("connection", (socket) => {
-  socket.on("livrodiario", (data) => {
-    io.emit("livrodiario", { data: data });
-    // socket.off = socket.removeAllListeners("livrodiario");
-  });
+io.of("/prontuario").on("connection", (socket) => { 
   socket.on("avaliacao", (data) => {
     io.emit("avaliacao", { data: data });
-    socket.off = socket.removeAllListeners("avaliacao");
+  //  socket.off = socket.removeAllListeners("avaliacao");
   });
   socket.on("biometria", (data) => {
     io.emit("biometria", { data: data });
@@ -115,6 +111,10 @@ io.of("/prontuario").on("connection", (socket) => {
     console.log("IDe");
     io.emit("identificacao", { data: data });
      socket.off = socket.removeAllListeners("identificacao");
+  });
+  socket.on("livrodiario", (data) => {
+    io.emit("livrodiario", { data: data });
+    // socket.off = socket.removeAllListeners("livrodiario");
   });
 });
 

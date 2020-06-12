@@ -16,11 +16,11 @@ export class GrupoTerapeuticoResource extends DynamicFormTableResource {
   }
 
   save() {
-    console.log(this.form.value);
+    //console.log(this.form.value);
     this.grupoTerapeuticoService.save(this.form.value).subscribe(
       (res) => {
         this.toastr.success('Salvo');
-        console.log(res);
+       // console.log(res);
         this.selectedRow.emit(res);
       //  this.socket.emit('updatedata', res);
       },

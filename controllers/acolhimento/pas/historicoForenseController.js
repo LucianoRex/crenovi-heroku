@@ -14,7 +14,7 @@ let get = (req, res, next) => {
 
 let put = (req, res, next) => {
   let data = {
-    ...req.body.historicoForense,
+    ...req.body._id,
   };
  
   Acolhimento.findOneAndUpdate(

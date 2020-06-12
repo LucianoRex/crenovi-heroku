@@ -29,7 +29,7 @@ export class ProntuarioFormComponent extends ProntuarioResource
 
   ngOnInit() {
     this.concatenatedPath = 'acolhimento';
-    console.log(this._id);    
+   // console.log(this._id);    
     this._id != undefined ? (this.isLinear = false) : (this.isLinear = true);
   }
 

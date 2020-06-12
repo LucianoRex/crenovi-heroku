@@ -16,7 +16,7 @@ export class HistoricoForenseFormComponent extends ProntuarioResource
     this.form = this.fb.group({
       path: `historicoForense`,
       historicoForense: this.fb.group({
-        _id: undefined,
+        _id: 'historicoForense',
         cometeuDelito: [false],
         foiDetido: [false],
         respondeProcessoJudicial: [false],

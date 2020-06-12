@@ -53,7 +53,7 @@ export class DynamicTableBuilderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.socketioPath);
+   // console.log(this.socketioPath);
    this.socket.on(
       this.socketioPath,
       function (data: any) {

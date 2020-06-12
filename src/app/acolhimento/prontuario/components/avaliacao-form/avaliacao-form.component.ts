@@ -31,13 +31,13 @@ export class AvaliacaoFormComponent extends ProntuarioResource
       avaliacao: this.fb.group({
         _id: undefined,
         data: ['', Validators.required],
-        disciplina: ['', Validators.required],
-        autoestima: ['', Validators.required],
-        reunioes: ['', Validators.required],
-        espiritualidade: ['', Validators.required],
-        higiene: ['', Validators.required],
-        criatividade: ['', Validators.required],
-        observacoes: ['', Validators.required],
+        disciplina: ['', Validators.minLength(0)],
+        autoestima: ['', Validators.minLength(0)],
+        reunioes: ['', Validators.minLength(0)],
+        espiritualidade: ['', Validators.minLength(0)],
+        higiene: ['', Validators.minLength(0)],
+        criatividade: ['', Validators.minLength(0)],
+        observacoes: ['', Validators.minLength(0)],
       }),
     });
     this._id !== undefined

@@ -285,7 +285,7 @@ export class HistoricoPsiquicoFormComponent extends ProntuarioResource
     this.form = this.fb.group({
       path: `historicoPsiquico`,
       historicoPsiquico: this.fb.group({
-        _id: undefined,
+        _id: 'historicoPsiquico',
         higienePessoal: [''],
         vestimenta: [''],
         postura: [''],

@@ -20,7 +20,7 @@ export class HistoricoQuimicoFormComponent extends ProntuarioResource
     this.prontuarioService
       .readCollection('substancia')
       .subscribe((res: any) => {
-        console.log(res);
+     //   console.log(res);
         this.substancias = res;
       });
 
