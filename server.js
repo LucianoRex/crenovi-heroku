@@ -70,7 +70,7 @@ const busca = require("./routes/busca");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-
+/*
 io.on("connection", function (socket) {
   console.log("a user connected");
   socket.on("avaliacao", (data) => {
@@ -114,6 +114,7 @@ io.on("connection", function (socket) {
     
   });
 });
+*/
 
 // HTTP request logger
 app.use(morgan("tiny"));

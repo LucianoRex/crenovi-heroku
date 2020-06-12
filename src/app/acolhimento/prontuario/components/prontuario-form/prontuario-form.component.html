@@ -107,13 +107,6 @@
     ></app-agendamento-consulta-list>
   </mat-step>
   <mat-step [completed]="false" [stepControl]="">
-    <ng-template matStepLabel>Agendamentos e Consultas</ng-template>
-    <app-agendamento-consulta-list
-      [concatenatedPath]="concatenatedPath + '/' + _id"
-      [_id]="_id"
-    ></app-agendamento-consulta-list>
-  </mat-step>
-  <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Evolução psicológica</ng-template>
     <app-evolucao-psicologica-list
       [concatenatedPath]="concatenatedPath + '/' + _id"
