@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { SaidaFormComponent } from '../saida-form/saida-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { IDynamicTableBuilder, FieldType } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-saida-list',
@@ -13,16 +14,16 @@ export class SaidaListComponent extends ProntuarioResource implements OnInit {
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns:IDynamicTableBuilder[] = [
       {
         name: 'saida',
         label: 'Saída',
-        type: 'date',
+        type: FieldType.date,
       },
       {
         name: 'retorno',
         label: 'Retorno',
-        type: 'date',
+        type: FieldType.date,
       },
     ];
     super.montaTabela({

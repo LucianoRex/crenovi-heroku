@@ -3,13 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-
 @Injectable({
   providedIn: 'root',
 })
 export class ProntuarioService {
   apiBaseUrl = environment.apiBaseUrl;
-  
+
   // pas_id: string;
   constructor(private _http: HttpClient) {}
 
@@ -32,8 +31,6 @@ export class ProntuarioService {
   }
 
   save(form, _id, path: string): Observable<any> {
-    console.log(form[form.path]._id);
-    console.log(path);
     if (!path.includes('undefined')) {
       if (form[form.path]._id && form[form.path]._id != undefined) {
         return this._http.put(
@@ -53,11 +50,11 @@ export class ProntuarioService {
     }
   }
 
-  remove() {
-    alert('Vamos remover?');
+  remove(path) {
+    this._http.delete(`${this.apiBaseUrl}/${path}`).subscribe((res) => {
+      alert('Documento Excluído');
+    });
   }
-
- 
 
   concluirTratamento(
     path,

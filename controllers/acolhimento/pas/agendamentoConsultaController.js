@@ -12,15 +12,18 @@ let get = (req, res, next) => {
 
 let getById = (req, res, next) => {
   Acolhimento.findOne(
-    { _id: req.params._id, "agendamentoConsulta._id": req.params.agendamentoconsulta },
+    {
+      _id: req.params._id,
+      "agendamentoConsulta._id": req.params.agendamentoconsulta,
+    },
     { "agendamentoConsulta.$": 1 }
-  ).then((acolhimento) => {
-    res.status(200).json(acolhimento.agendamentoConsulta[0]);
-  })
-  .catch((err) => {
-    
-    res.status(500).json({message:err.message});
-  });
+  )
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento.agendamentoConsulta[0]);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 };
 
 let put = (req, res, next) => {
@@ -28,7 +31,10 @@ let put = (req, res, next) => {
     ...req.body.agendamentoconsulta,
   };
   Acolhimento.findOneAndUpdate(
-    { _id: req.params._id, "agendamentoConsulta._id": req.params.agendamentoconsulta },
+    {
+      _id: req.params._id,
+      "agendamentoConsulta._id": req.params.agendamentoconsulta,
+    },
     {
       $set: {
         "agendamentoConsulta.$": data,
@@ -39,8 +45,7 @@ let put = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-    
-      res.status(500).json({message:err.message});
+      res.status(500).json({ message: err.message });
     });
 };
 
@@ -63,8 +68,25 @@ let post = (req, res, next) => {
       res.status(200).json(acolhimento);
     })
     .catch((err) => {
-    
-      res.status(500).json({message:err.message});
+      res.status(500).json({ message: err.message });
+    });
+};
+let remove = (req, res, next) => {
+  Acolhimento.findOneAndUpdate(
+    { _id: req.params._id },
+    {
+      $pull: {
+        agendamentoConsulta: {
+          _id: req.params.agendamentoConsulta,
+        },
+      },
+    }
+  )
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento.agendamentoConsulta);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
     });
 };
 module.exports = {
@@ -72,4 +94,5 @@ module.exports = {
   put: put,
   post: post,
   getById: getById,
+  remove: remove,
 };

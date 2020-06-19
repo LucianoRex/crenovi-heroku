@@ -54,4 +54,5 @@ router.delete("/:_id", (req, res, next) => {
     res.status(200).json(livroDiario);
   });
 });
+
 module.exports = router;

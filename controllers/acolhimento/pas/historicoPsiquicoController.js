@@ -14,7 +14,7 @@ let get = (req, res, next) => {
 
 let put = (req, res, next) => {
   let data = {
-    ...req.body._id,
+    ...req.body.historicoPsiquico,
   };
   Acolhimento.findOneAndUpdate(
     {
@@ -27,7 +27,7 @@ let put = (req, res, next) => {
     }
   )
     .then((acolhimento) => {
-      res.status(200).json(acolhimento);
+      res.status(200).json(acolhimento.historicoPsiquico);
     })
     .catch((err) => {
     

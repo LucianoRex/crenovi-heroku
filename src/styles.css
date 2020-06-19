@@ -26,3 +26,9 @@ form{
 mat-form-field {
   width: 100%;
 }
+mat-card-header-text,
+mat-card-header,
+.mat-card-header-text {
+  margin: 0 auto !important;
+  text-align: center !important;
+}

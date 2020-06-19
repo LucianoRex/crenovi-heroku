@@ -1,15 +1,13 @@
 const Acolhimento = require("../../../models/acolhimento");
 
 let get = (req, res, next) => {
-  Acolhimento.findOne({ _id: req.params._id }, { biometria: 1 }).then(
-    (acolhimento) => {
+  Acolhimento.findOne({ _id: req.params._id }, { biometria: 1 })
+    .then((acolhimento) => {
       res.status(200).json(acolhimento.biometria);
-    }
-  )
-  .catch((err) => {
-    
-    res.status(500).json({message:err.message});
-  });
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
 };
 
 let getById = (req, res, next) => {
@@ -25,7 +23,7 @@ let getById = (req, res, next) => {
     });
 };
 
-let put = (req, res, next) => {  
+let put = (req, res, next) => {
   let data = {
     ...req.body.biometria,
   };
@@ -67,9 +65,29 @@ let post = (req, res, next) => {
       res.status(500).json({ message: err.message });
     });
 };
+
+let remove = (req, res, next) => {
+  Acolhimento.findOneAndUpdate(
+    { _id: req.params._id },
+    {
+      $pull: {
+        biometria: {
+          _id: req.params.biometria,
+        },
+      },
+    }
+  )
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento.biometria);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+};
 module.exports = {
   get: get,
   put: put,
   post: post,
   getById: getById,
+  remove: remove,
 };

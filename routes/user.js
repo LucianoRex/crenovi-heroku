@@ -9,6 +9,7 @@ const {
   readUsers,
   chekRoles,
   register,
+  registerUpdate
 } = require("./../utils/auth");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
@@ -38,6 +39,14 @@ router.post(
   }
 );
 
+router.put(
+  "/register/:_id",
+  userAuth,
+  chekRoles(["superadmin"]),
+  async (req, res, next) => {
+    await registerUpdate(req, res);
+  }
+);
 /*
 router.post("/forgot", (req, res, next) => {
   var remetente = nodemailer.createTransport({

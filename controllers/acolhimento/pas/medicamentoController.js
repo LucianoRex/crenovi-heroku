@@ -84,9 +84,28 @@ let post = (req, res, next) => {
       });
      */
 };
+let remove = (req, res, next) => {
+  Acolhimento.findOneAndUpdate(
+    { _id: req.params._id },
+    {
+      $pull: {
+        medicamento: {
+          _id: req.params.medicamento,
+        },
+      },
+    }
+  )
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento.medicamento);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+};
 module.exports = {
   get: get,
   put: put,
   post: post,
   getById: getById,
+  remove:remove
 };

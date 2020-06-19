@@ -22,12 +22,13 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './login/login/login.component';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
+import { HomeComponent } from './home/home.component';
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 registerLocaleData(localePtBr);
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, LoginComponent],
+  declarations: [AppComponent, NavComponent, LoginComponent, HomeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -40,7 +40,7 @@ export class DynamicFormTableResource {
     this.dynamicListService = injector.get(DynamicListService);
   }
 
-  remove(): void {}
+  remove(data): void {}
 
   montaTabela({
     columns,
@@ -69,7 +69,6 @@ export class DynamicFormTableResource {
       this.selectedRow.emit(res);
     });
 
-   
     componentRef.instance.create.subscribe(() => {
       this.dialog.open(DialogDynamicTableLoaderComponent, {
         data: { component: component, _id: undefined, caminho: caminho },
@@ -93,8 +92,9 @@ export class DynamicFormTableResource {
       });
     });
 
-    componentRef.instance.delete.subscribe(() => {
-      this.remove();
+    componentRef.instance.delete.subscribe((res) => {
+      let confirma = confirm('Deseja Realmente Excluir?');
+      confirma ? this.remove(caminho + '/' + res) : null;
     });
   }
 }

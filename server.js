@@ -125,7 +125,7 @@ app.use("/api/grupoterapeutico", grupoTerapeutico);
 app.use("/api/colaborador", colaborador);
 app.use("/api/substancia", substancia);
 app.use("/api/livrodiario", livroDiario);
-app.use("/api/acolhimento/rotinadiaria", rotinaDiaria);
+app.use("/api/rotinadiaria", rotinaDiaria);
 app.use("/api/comunidade", comunidade);
 //app.use("/api/medicamento", medicamento);
 app.use("/api/busca", busca);

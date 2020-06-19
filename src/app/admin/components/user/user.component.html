@@ -1,4 +1,4 @@
-<button (click)="openDialog({})">Novo</button>
+<button (click)="openDialog(null)"><mat-icon>add</mat-icon></button>
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="username">
@@ -20,7 +20,7 @@
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
         <button mat-button md-raised-button (click)="openDialog(element)">
-          Edit
+          <mat-icon>edit</mat-icon>
         </button>
       </td>
     </ng-container>
@@ -53,16 +53,23 @@
         </div>
         <div class="col-md-4">
           <mat-form-field>
-            <mat-label>Senha</mat-label>
-            <input matInput formControlName="password" />
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field>
             <mat-label>Role</mat-label>
             <mat-select formControlName="role">
               <mat-option *ngFor="let role of roles" [value]="role">
                 {{ role }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field>
+            <mat-label>Colaborador</mat-label>
+            <mat-select formControlName="colaborador">
+              <mat-option
+                *ngFor="let colaborador of colaboradores"
+                [value]="colaborador._id"
+              >
+                {{ colaborador.nome }}
               </mat-option>
             </mat-select>
           </mat-form-field>

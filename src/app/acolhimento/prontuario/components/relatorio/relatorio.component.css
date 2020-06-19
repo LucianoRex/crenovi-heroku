@@ -3,12 +3,7 @@
 *::after {
   box-sizing: content-box !important;
 }
-mat-card-header-text,
-mat-card-header,
-.mat-card-header-text {
-  margin: 0 auto !important;
-  text-align: center !important;
-}
+
 .mat-card-title {
   font-size: 1em !important;
   margin: 0 auto !important;

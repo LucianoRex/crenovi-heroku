@@ -1,6 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { EvolucaoPsicologicaFormComponent } from '../evolucao-psicologica-form/evolucao-psicologica-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import {
+  IDynamicTableBuilder,
+  FieldType,
+} from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-evolucao-psicologica-list',
@@ -14,16 +18,16 @@ export class EvolucaoPsicologicaListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'dataI',
         label: 'Data Inicial',
-        type: 'date',
+        type: FieldType.date,
       },
       {
         name: 'dataF',
         label: 'Data Final',
-        type: 'date',
+        type: FieldType.date,
       },
     ];
     super.montaTabela({

@@ -1,6 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { AgendamentoConsultaFormComponent } from '../agendamento-consulta-form/agendamento-consulta-form.component';
+import {
+  IDynamicTableBuilder,
+  FieldType,
+} from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-agendamento-consulta-list',
@@ -14,11 +18,11 @@ export class AgendamentoConsultaListaComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'data',
         label: 'Data',
-        type: 'date',
+        type: FieldType.date,
       },
       {
         name: 'tipo',
@@ -27,12 +31,15 @@ export class AgendamentoConsultaListaComponent extends ProntuarioResource
       {
         name: 'consultaEfetuada',
         label: 'Efetuada',
-        type: 'boolean',
+        type: FieldType.boolean,
       },
     ];
     super.montaTabela({
       columns,
-      service: this.prontuarioService.readById(this.concatenatedPath,'agendamentoconsulta'),
+      service: this.prontuarioService.readById(
+        this.concatenatedPath,
+        'agendamentoconsulta'
+      ),
       component: AgendamentoConsultaFormComponent,
       _id: this._id,
       socketioPath: 'agendamentoconsulta',

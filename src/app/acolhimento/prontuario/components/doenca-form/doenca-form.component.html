@@ -2,14 +2,24 @@
   <div formGroupName="doenca">
     <div class="row"></div>
     <div class="row">
-      <div class="col-md-12" formGroupName="doenca">
+      <div class="col-md-9" formGroupName="doenca">
         <mat-form-field class="example-full-width">
-          <mat-label>Doença</mat-label>
-          <mat-icon aria-hidden="false" (click)="getDoenca()">search</mat-icon>
+          <mat-label>Doença</mat-label>       
           <input matInput [disabled]="true" formControlName="codigo" />
           <input matInput [disabled]="true" formControlName="nome" />
         </mat-form-field>
       </div>
+      <div class="col-md-3" style="margin: auto;">
+        <button
+          mat-button          
+          (click)="getDoenca()"
+          color="primary"        
+        >
+          <mat-icon aria-hidden="false" aria-label="Example home icon"
+            >search</mat-icon
+          >
+        </button>
+      </div>     
     </div>
     <div>
       <app-button-save [form]="form" (save)="save()"></app-button-save>

@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ColaboradorService } from 'src/app/colaborador/services/colaborador.service';
 
 @Component({
   selector: 'app-user',
@@ -14,22 +15,27 @@ export class UserComponent implements OnInit {
   displayedColumns: string[] = ['username', 'email', 'role', 'actions'];
   roles: any[] = ['admin', 'user'];
   dataSource;
+  colaboradores;
   form: FormGroup;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild('formulario') formulario;
   constructor(
     private adminService: AdminService,
     private fb: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private colaboradorService: ColaboradorService
   ) {}
 
   ngOnInit(): void {
+    this.colaboradorService.read('colaborador').subscribe((res) => {
+      this.colaboradores = res;
+    });
     this.form = this.fb.group({
       _id: undefined,
       username: [''],
       email: [''],
       role: [''],
-      password: [''],
+      colaborador: [''],
     });
     this.adminService.readUsers().subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);
@@ -38,7 +44,12 @@ export class UserComponent implements OnInit {
     });
   }
   openDialog(row): void {
-    this.form.patchValue(row);
+    if (row != null) {
+      this.form.patchValue(row);
+    } else {
+      this.form.reset();
+    }
+
     const dialogRef = this.dialog.open(this.formulario, {
       width: '80vw',
       //   data: {name: this.name, animal: this.animal}

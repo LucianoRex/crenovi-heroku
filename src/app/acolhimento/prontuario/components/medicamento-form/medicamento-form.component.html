@@ -4,7 +4,7 @@
       <div class="col-md-3">
         <mat-form-field>
           <mat-label>Posologia</mat-label>
-          <mat-select formControlName="posologia">
+          <mat-select   cdkFocusInitial formControlName="posologia">
             <mat-option
               *ngFor="let posologia of posologias"
               value="{{ posologia._id }}"
@@ -16,16 +16,25 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12" formGroupName="medicamento">
+      <div class="col-md-9" formGroupName="medicamento">
         <mat-form-field>
           <mat-label>Medicamento</mat-label>
-          <mat-icon aria-hidden="false" (click)="getMedicamento()"
-            >search</mat-icon
-          >
+
           <input matInput [disabled]="true" formControlName="PRODUTO" />
           <input matInput [disabled]="true" formControlName="APRESENTACAO" />
         </mat-form-field>
       </div>
+      <div class="col-md-3" style="margin: auto;">
+        <button
+          mat-button          
+          (click)="getMedicamento()"
+          color="primary"        
+        >
+          <mat-icon aria-hidden="false" aria-label="Example home icon"
+            >search</mat-icon
+          >
+        </button>
+      </div>     
     </div>
     <div>
       <app-button-save [form]="form" (save)="save()"></app-button-save>

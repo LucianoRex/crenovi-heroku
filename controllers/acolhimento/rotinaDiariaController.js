@@ -13,7 +13,7 @@ let getById = (req, res, next) => {
 };
 
 let put = (req, res, next) => {
-    console.log('Atualizar rotina')
+  console.log("Atualizar rotina");
   let data = {
     ...req.body,
   };
@@ -52,9 +52,23 @@ let post = (req, res, next) => {
       res.status(500).json({ message: error.message });
     });
 };
+
+let remove = (req, res, next) => {
+  RotinaDiaria.findOneAndRemove({
+    _id: req.params._id,
+  })
+    .then((rotinaDiaria) => {
+      res.status(200).json(rotinaDiaria);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
+};
+
 module.exports = {
   get: get,
   put: put,
   post: post,
   getById: getById,
+  remove: remove,
 };

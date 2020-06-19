@@ -25,6 +25,17 @@
       </div>
       <div class="col-md-4">
         <button
+          mat-raised-button
+          color="warn"
+          [disabled]="!form.valid"
+          (click)="gerarRelatorio()"
+        >
+          Gerar Relatório
+        </button>
+      </div>
+      <!--
+      <div class="col-md-4">
+        <button
           mat-button
           (click)="carregaDadosPsicoterapia()"
           [disabled]="!form.valid"
@@ -33,7 +44,7 @@
           Carregar dados da Psicoterapia
         </button>
       </div>
-    </div>
+    --></div>
     <h3>Procedimentos realizados no período</h3>
     <div class="row">
       <div class="col-md-12">
@@ -78,10 +89,6 @@
     </div>
     <div>
       <app-button-save [form]="form" (save)="save()"></app-button-save>
-
-      <button mat-button [disabled]="!form.valid" (click)="gerarRelatorio()">
-        Gerar Relatório
-      </button>
     </div>
   </div>
 </form>

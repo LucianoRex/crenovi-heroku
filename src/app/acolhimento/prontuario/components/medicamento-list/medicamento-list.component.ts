@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { MedicamentoFormComponent } from '../medicamento-form/medicamento-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { IDynamicTableBuilder } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-medicamento-list',
@@ -14,7 +15,7 @@ export class MedicamentoListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns:IDynamicTableBuilder[] = [
       {
         name: 'medicamento.PRODUTO',
         label: 'Medicamento',

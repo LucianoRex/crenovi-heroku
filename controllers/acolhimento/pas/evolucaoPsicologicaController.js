@@ -27,7 +27,7 @@ let getById = (req, res, next) => {
     });
 };
 
-let put = (req, res, next) => {  
+let put = (req, res, next) => {
   let data = {
     ...req.body.evolucaoPsicologica,
   };
@@ -74,6 +74,7 @@ let post = (req, res, next) => {
 };
 
 let procedimentos = (req, res, next) => {
+  console.log(req.body);
   Acolhimento.aggregate([
     { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
     {
@@ -82,7 +83,6 @@ let procedimentos = (req, res, next) => {
         procedimento: {
           $filter: {
             input: "$psicoterapia",
-
             as: "procedimento",
             cond: {
               /* $and: [
@@ -112,9 +112,21 @@ let procedimentos = (req, res, next) => {
             },
           },
         },
+        avaliacao: {
+          $filter: {
+            input: "$avaliacao",
+            as: "avaliacao",
+            cond: {
+              $and: [
+                { $gte: ["$$avaliacao.data", new Date(req.body.dataI)] },
+                { $lte: ["$$avaliacao.data", new Date(req.body.dataF)] },
+              ],
+            },
+          },
+        },
       },
     },
-    { $unwind: "$_id" },
+    //{ $unwind: "$avaliacao" },
     //{ $unwind: "$consulta" },
 
     /* {
@@ -124,18 +136,23 @@ let procedimentos = (req, res, next) => {
       },
     },
 */
+
     {
       $group: {
-        _id: "$agendamentoConsulta",
-        allValues2: { $push: "$consulta" },
-        _id: "$psicoterapia",
-        allValues: { $push: "$procedimento.procedimento" },
-      },
-    },
-    {
-      $project: {
-        procedimentos: { $concatArrays: "$allValues" },
-        consultas: "$allValues2",
+        _id: {
+          consultas: "$consulta",
+          procedimentos: "$procedimento.procedimento",
+          avaliacoes: {
+            disciplina: { $trunc: [{ $avg: "$avaliacao.disciplina" }, 1] },
+            autoestima: { $trunc: [{ $avg: "$avaliacao.autoestima" }, 1] },
+            reunioes: { $trunc: [{ $avg: "$avaliacao.reunioes" }, 1] },
+            espiritualidade: {
+              $trunc: [{ $avg: "$avaliacao.espiritualidade" }, 1],
+            },
+            higiene: { $trunc: [{ $avg: "$avaliacao.higiene" }, 1] },
+            criatividade: { $trunc: [{ $avg: "$avaliacao.criatividade" }, 1] },
+          },
+        },
       },
     },
   ])
@@ -192,7 +209,50 @@ let consultas = (req, res, next) => {
     });
 };
 
-let getAcolhido = (req, res, next) => {  
+let avaliacoes = (req, res, next) => {
+  console.log(req.body);
+  Acolhimento.aggregate([
+    { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
+    {
+      $project: {
+        _id: 1,
+
+        avaliacao: {
+          $filter: {
+            input: "$avaliacao",
+
+            as: "avaliacao",
+            cond: {
+              $and: [
+                { $gte: ["$$avaliacao.data", new Date(req.body.dataI)] },
+                { $lte: ["$$avaliacao.data", new Date(req.body.dataF)] },
+              ],
+            },
+          },
+        },
+      },
+    },
+    //  { $unwind: "$_id" },
+    {
+      $project: {
+        disciplina: { $avg: "$avaliacao.disciplina" },
+        autoestima: { $avg: "$avaliacao.autoestima" },
+        reunioes: { $avg: "$avaliacao.reunioes" },
+        espiritualidade: { $avg: "$avaliacao.espiritualidade" },
+        higiene: { $avg: "$avaliacao.higiene" },
+        criatividade: { $avg: "$avaliacao.criatividade" },
+      },
+    },
+  ])
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });
+};
+
+let getAcolhido = (req, res, next) => {
   Acolhimento.findOne(
     {
       _id: req.params._id,
@@ -209,6 +269,24 @@ let getAcolhido = (req, res, next) => {
       res.status(500).json({ message: err.message });
     });
 };
+let remove = (req, res, next) => {
+  Acolhimento.findOneAndUpdate(
+    { _id: req.params._id },
+    {
+      $pull: {
+        evolucaoPsicologica: {
+          _id: req.params.evolucaoPsicologica,
+        },
+      },
+    }
+  )
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento.evolucaoPsicologica);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+};
 module.exports = {
   get: get,
   put: put,
@@ -217,4 +295,6 @@ module.exports = {
   procedimentos: procedimentos,
   getAcolhido: getAcolhido,
   consultas: consultas,
+  avaliacoes: avaliacoes,
+  remove:remove
 };

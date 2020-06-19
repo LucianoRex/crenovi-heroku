@@ -16,8 +16,11 @@ export class AdminService {
     return this._http.get(`${this.apiUrl}/users/users`);
   }
   saveUser(form): Observable<any> {
-    return this._http.post(`${this.apiUrl}/users/register`, form);
+    if (form._id == undefined) {
+    
+      return this._http.post(`${this.apiUrl}/users/register`, form);
+    } else {
+      return this._http.put(`${this.apiUrl}/users/register/${form._id}`, form);
+    }
   }
-
-  
 }

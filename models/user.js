@@ -22,6 +22,10 @@ let user = new Schema(
       type: String,
       required: true,
     },
+    colaborador: {
+      type: mongoose.Types.ObjectId,
+      ref: "colaborador",
+    },
     role: {
       type: String,
       default: "user",
@@ -29,13 +33,13 @@ let user = new Schema(
     },
     resetPasswordToken: {
       type: String,
-      required: false
-  },
+      required: false,
+    },
 
-  resetPasswordExpires: {
+    resetPasswordExpires: {
       type: Date,
-      required: false
-  }
+      required: false,
+    },
   },
   {
     collection: "user",

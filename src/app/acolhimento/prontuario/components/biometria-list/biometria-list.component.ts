@@ -2,6 +2,10 @@ import { Component, OnInit, Injector } from '@angular/core';
 
 import { BiometriaFormComponent } from '../biometria-form/biometria-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import {
+  IDynamicTableBuilder,
+  FieldType,
+} from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-biometria-list',
@@ -15,11 +19,11 @@ export class BiometriaListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'data',
         label: 'Data',
-        type: 'date',
+        type: FieldType.date,
       },
       {
         name: 'pa',
@@ -38,6 +42,5 @@ export class BiometriaListComponent extends ProntuarioResource
       socketioPath: 'biometria',
       caminho: this.concatenatedPath + '/biometria',
     });
-    
   }
 }

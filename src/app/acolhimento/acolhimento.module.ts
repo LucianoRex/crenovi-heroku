@@ -12,6 +12,8 @@ import { NormaFormComponent } from './norma-form/norma-form.component';
 import { RotinaDiariaListComponent } from './rotina-diaria/rotina-diaria-list/rotina-diaria-list.component';
 import { RotinaDiariaFormComponent } from './rotina-diaria/rotina-diaria-form/rotina-diaria-form.component';
 import { MaskDirective, NgxMaskModule, IConfig } from 'ngx-mask';
+import { AcolhimentoRelatorioComponent } from './relatorio/acolhimento-relatorio.component';
+
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { MaskDirective, NgxMaskModule, IConfig } from 'ngx-mask';
     NormaFormComponent,
     RotinaDiariaListComponent,
     RotinaDiariaFormComponent,
+    AcolhimentoRelatorioComponent,
   ],
   imports: [
     CommonModule,

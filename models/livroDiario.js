@@ -6,7 +6,6 @@ let livroDiario = new Schema(
     anotacoes: {
       type: String,
     },
-
     data: {
       type: Date,
       default: Date.now(),
@@ -19,14 +18,14 @@ let livroDiario = new Schema(
 );
 
 livroDiario.pre("save", true, function (next, done) {
-  var self = this;  
+  var self = this;
   mongoose.models["livroDiario"].findOne({ data: self.data }, function (
     err,
     user
   ) {
     if (err) {
       done(err);
-    } else if (user) {     
+    } else if (user) {
       done(new Error("Um Livro por dia"));
     } else {
       done();

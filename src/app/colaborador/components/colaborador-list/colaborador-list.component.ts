@@ -1,6 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ColaboradorResource } from '../../classes/colaborador-resource';
 import { ColaboradorFormComponent } from '../colaborador-form/colaborador-form.component';
+import {
+  IDynamicTableBuilder,
+  FieldType,
+} from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-colaborador-list',
@@ -14,7 +18,7 @@ export class ColaboradorListComponent extends ColaboradorResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'nome',
         label: 'Nome',
@@ -22,7 +26,7 @@ export class ColaboradorListComponent extends ColaboradorResource
       {
         name: 'telefone',
         label: 'Telefone',
-        type: 'phone',
+        type: FieldType.phone,
       },
       {
         name: 'funcao',
@@ -30,7 +34,7 @@ export class ColaboradorListComponent extends ColaboradorResource
       },
     ];
     this.montaTabela({
-      columns:columns,
+      columns: columns,
       service: this.colaboradorService.read('colaborador'),
       component: ColaboradorFormComponent,
       socketioPath: 'colaborador',

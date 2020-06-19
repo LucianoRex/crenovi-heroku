@@ -46,14 +46,11 @@ router.get("/livrodiario/:_id", livroDiarioController.getById);
 router.post("/livrodiario", livroDiarioController.post);
 router.put("/livrodiario/:_id", livroDiarioController.put);
 
-
 /**rotins diario Controller */
 router.get("/rotinadiaria", rotinaDiariaController.get);
 router.get("/rotinadiaria/:_id", rotinaDiariaController.getById);
 router.post("/rotinadiaria", rotinaDiariaController.post);
 router.put("/rotinadiaria/:_id", rotinaDiariaController.put);
-
-
 
 router.get("/acolhido", function (req, res, next) {
   Acolhido.find().then((acolhido) => {
@@ -77,6 +74,10 @@ router.delete("/:_id", (req, res, next) => {
 router.get("/:_id/responsavel", responsavelController.get);
 router.put("/:_id/responsavel", responsavelController.put);
 
+/**HistPsiquico*/
+router.get("/:_id/historicoPsiquico", historicoPsiquicoController.get);
+router.put("/:_id/historicoPsiquico", historicoPsiquicoController.put);
+
 /** Identificacao*/
 router.post("/identificacao", identificacaoController.post);
 router.get("/:_id/identificacao", identificacaoController.get);
@@ -86,10 +87,6 @@ router.put(
   // chekRole(["admin"]),
   identificacaoController.put
 );
-
-/**HistPsiquico*/
-router.get("/:_id/historicoPsiquico", historicoPsiquicoController.get);
-router.put("/:_id/historicoPsiquico", historicoPsiquicoController.put);
 
 /**Hist familiar social */
 router.get(
@@ -110,18 +107,21 @@ router.get("/:_id/medicamento/:medicamento", medicamentoController.getById);
 router.get("/:_id/medicamento", medicamentoController.get);
 router.put("/:_id/medicamento", medicamentoController.post);
 router.put("/:_id/medicamento/:medicamento", medicamentoController.put);
+router.delete("/:_id/medicamento/:medicamento", medicamentoController.remove);
 
 /**Doenca Controller */
 router.get("/:_id/doenca/:doenca", doencaController.getById);
 router.get("/:_id/doenca", doencaController.get);
 router.put("/:_id/doenca", doencaController.post);
 router.put("/:_id/doenca/:doenca", doencaController.put);
+router.delete("/:_id/doenca/:doenca", doencaController.remove);
 
 /**Biometria Controller */
 router.get("/:_id/biometria/:biometria", biometriaController.getById);
 router.get("/:_id/biometria", biometriaController.get);
 router.put("/:_id/biometria", biometriaController.post);
 router.put("/:_id/biometria/:biometria", biometriaController.put);
+router.delete("/:_id/biometria/:biometria", biometriaController.remove);
 
 /**Evolucao Controller */
 router.get(
@@ -146,24 +146,37 @@ router.post(
   "/:_id/evolucaoPsicologica/consultas",
   evolucaoPsicologicaController.consultas
 );
-
+router.post(
+  "/:_id/evolucaoPsicologica/avaliacoes",
+  evolucaoPsicologicaController.avaliacoes
+);
+router.delete(
+  "/:_id/evolucaoPsicologica/:evolucaoPsicologica",
+  evolucaoPsicologicaController.remove
+);
 /**Psicoterapia */
 router.get("/:_id/psicoterapia/:psicoterapia", psicoterapiaController.getById);
 router.get("/:_id/psicoterapia", psicoterapiaController.get);
 router.put("/:_id/psicoterapia", psicoterapiaController.post);
 router.put("/:_id/psicoterapia/:psicoterapia", psicoterapiaController.put);
+router.delete(
+  "/:_id/psicoterapia/:psicoterapia",
+  psicoterapiaController.remove
+);
 
 /**Avalicao Controller */
 router.get("/:_id/avaliacao/:avaliacao", avaliacaoController.getById);
 router.get("/:_id/avaliacao", avaliacaoController.get);
 router.put("/:_id/avaliacao", avaliacaoController.post);
 router.put("/:_id/avaliacao/:avaliacao", avaliacaoController.put);
+router.delete("/:_id/avaliacao/:avaliacao", avaliacaoController.remove);
 
 /**Pertence Controller */
 router.get("/:_id/pertence/:pertence", pertenceController.getById);
 router.get("/:_id/pertence", pertenceController.get);
 router.put("/:_id/pertence", pertenceController.post);
 router.put("/:_id/pertence/:pertence", pertenceController.put);
+router.delete("/:_id/pertence/:pertence", pertenceController.remove);
 
 /**HistQuimico Controller */
 router.get(
@@ -176,13 +189,16 @@ router.put(
   "/:_id/historicoQuimico/:historicoQuimico",
   historicoQuimicoController.put
 );
-
+router.delete(
+  "/:_id/historicoQuimico/:historicoQuimico",
+  historicoQuimicoController.remove
+);
 /**Saida Controller */
 router.get("/:_id/saida/:saida", saidaController.getById);
 router.get("/:_id/saida", saidaController.get);
 router.put("/:_id/saida", saidaController.post);
 router.put("/:_id/saida/:saida", saidaController.put);
-
+router.delete("/:_id/saida/:saida", saidaController.remove);
 /**agendamento Controller */
 router.get(
   "/:_id/agendamentoconsulta/:agendamentoconsulta",
@@ -194,7 +210,10 @@ router.put(
   "/:_id/agendamentoconsulta/:agendamentoconsulta",
   agendamentoConsultaController.put
 );
-
+router.delete(
+  "/:_id/agendamentoconsulta/:agendamentoconsulta",
+  agendamentoConsultaController.remove
+);
 /**Acolhido Controller */
 router.get("/:_id/acolhido/:acolhido", userAuth, acolhidoController.getById);
 router.get("/acolhido/:acolhido", userAuth, acolhidoController.getById);
@@ -265,7 +284,7 @@ router.get("/relatorio/:_id", (req, res, netx) => {
   });
 });
 
-router.post("/evolucaoPsicologica/:_id", (req, res, next) => {
+/*router.post("/evolucaoPsicologica/:_id", (req, res, next) => {
   Acolhimento.aggregate([
     { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
     {
@@ -276,12 +295,7 @@ router.post("/evolucaoPsicologica/:_id", (req, res, next) => {
             input: "$psicoterapia",
 
             as: "procedimento",
-            cond: {
-              /* $and: [
-                { $eq: [{ $month: "$$evolucaoPsicologica.data" }, 5] },
-                { $eq: [{ $year: "$$evolucaoPsicologica.data" }, 2020] },
-              ],
-              */
+            cond: {            
 
               $and: [
                 { $gte: ["$$procedimento.data", new Date(req.body.dataI)] },
@@ -314,5 +328,5 @@ router.post("/evolucaoPsicologica/:_id", (req, res, next) => {
       res.status(500).json({ message: error.message });
     });
 });
-
+*/
 module.exports = router;

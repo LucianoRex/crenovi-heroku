@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { newArray } from '@angular/compiler/src/util';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -49,6 +50,11 @@ export class RelatorioService {
   ) {}
 
   usoImagem(_id: string) {
+    let user;
+
+    this.authenticationService.currentUser.subscribe((res) => {
+      user = res;
+    });
     this.http
       .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
       .subscribe((acolhimento: Pas) => {
@@ -74,7 +80,9 @@ export class RelatorioService {
                     fontSize: 14,
                   },
                   {
-                    text: '__________________________________\n\nTestemunha',
+                    text: `__________________________________\n\n${
+                      user.colaborador.nome || 'Funcionário'
+                    } ${user.colaborador.funcao || ''}`,
                     alignment: 'center',
                     fontSize: 14,
                   },
@@ -159,7 +167,7 @@ export class RelatorioService {
              fontSize: 14,
            },*/
             {
-              text: `__________________________________\n\n${acolhimento[0].identificacao.acolhido.nome} -  Responsável pelo acolhido`,
+              text: `__________________________________\n\n${acolhimento[0].responsavel.nome} -  Responsável pelo acolhido`,
               alignment: 'center',
               fontSize: 14,
               margin: [0, 0, 0, 70],
@@ -190,6 +198,11 @@ export class RelatorioService {
   }
 
   termoResponsabilidade(_id: string) {
+    let user;
+
+    this.authenticationService.currentUser.subscribe((res) => {
+      user = res;
+    });
     this.http
       .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
       .subscribe((acolhimento: Pas) => {
@@ -215,7 +228,9 @@ export class RelatorioService {
                     fontSize: 14,
                   },
                   {
-                    text: '__________________________________\n\nFuncionário',
+                    text: `__________________________________\n\n${
+                      user.colaborador.nome || 'Funcionário'
+                    } ${user.colaborador.funcao || ''}`,
                     alignment: 'center',
                     fontSize: 14,
                   },
@@ -263,14 +278,14 @@ export class RelatorioService {
     let user;
 
     this.authenticationService.currentUser.subscribe((res) => {
-    //  console.log(res);
-      user = res.nome;
+      //  console.log(res);
+      user = res;
     });
 
     this.http
       .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
       .subscribe((acolhimento: Pas) => {
-     //   console.log(acolhimento);
+        //   console.log(acolhimento);
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -348,8 +363,15 @@ export class RelatorioService {
             },
 
             { text: `Santa Rosa, ${texto}\n\n`, alignment: 'justify' },
-            { text: user, alignment: 'justify' },
-            //  { text: user.result.colaborador.funcao.nome, alignment: 'justify' },
+            {
+              text: user.colaborador.nome || 'Funcionário',
+              alignment: 'justify',
+            },
+            {
+              text: user.colaborador.funcao || '',
+              alignment: 'justify',
+            },
+            //  { text: `${JSON.parse(localStorage.getItem('currentUser')).colaborador.nome || 'Funcionário'} - ${JSON.parse(localStorage.getItem('currentUser')).colaborador.funcao || ''}`, alignment: 'justify' },
           ],
 
           styles: {
@@ -368,11 +390,11 @@ export class RelatorioService {
   }
 
   evolucaoPsicologica(_id: string, form) {
-   // console.log(_id);
+    // console.log(_id);
     let user;
     this.authenticationService.currentUser.subscribe((res) => {
       console.log(res);
-      user = res.nome;
+      user = res;
     });
 
     this.http
@@ -380,50 +402,54 @@ export class RelatorioService {
       .subscribe((acolhido: any) => {
         let ac = acolhido.identificacao.acolhido.nome;
         this.http
-          .post(
-            `${this.apiBaseUrl}/${_id}/procedimentos`,
-            form
-          )
-          .subscribe((acolhimento: Pas) => {
+          .post(`${this.apiBaseUrl}/${_id}/procedimentos`, form)
+          .subscribe((acolhimento: any) => {
+            console.log(acolhimento);
             let procedimentos = [];
-            acolhimento[0]
-              ? (procedimentos = acolhimento[0].procedimentos)
+            acolhimento[0]._id.procedimentos
+              ? (procedimentos = acolhimento[0]._id.procedimentos)
               : (procedimentos = []);
-            console.log(procedimentos);
-            let consultas = [];
-            acolhimento[0]
-              ? (consultas = acolhimento[0].consultas)
-              : (consultas = []);
-            let p: [] = [];
-            let p2: [] = [];
+            let procedimentos2: [] = [];
             procedimentos.forEach((e: []) => {
-              p.push(...e);
-            });
-            consultas.forEach((e: []) => {
-              p2.push(...e);
+              procedimentos2.push(...e);
             });
             let counts = [];
-            p.forEach(function (x) {
+            /*procedimentos2.forEach(function (x) {
               counts[x] = (counts[x] || 0) + 1;
             });
-            console.log(counts);
-            console.log([...new Set([...p])]);
-            let n: any[] = [...new Set([...p][0])];
-            let n2 = p2.map((e: any) => e.tipo);
+            */
+            let n: any[] = [...new Set([...procedimentos2])];
+            console.log(n);
+
+            let consultas = [];
+            let consultas2 = [];
+            acolhimento[0]._id.consultas
+              ? (consultas = acolhimento[0]._id.consultas)
+              : (consultas = []);
+            console.log(consultas);
+            consultas.forEach((e: any) => {
+              consultas2.push(e);
+            });
+
+            let n2 = consultas2.map((e: any) => e.tipo);
+            console.log(n2);
             let counts2 = [];
             n2.forEach(function (x) {
               counts2[x] = (counts2[x] || 0) + 1;
             });
-            const texto = this.formatarData();
-            let consultas2 = '';
+            let consultas3 = '';
             for (let a of Object.entries(counts2)) {
-              consultas2 += a[0] + ':' + a[1] + '\n';
+              consultas3 += a[0] + ':' + a[1] + '\n';
             }
 
+            let avaliacoes = acolhimento[0]._id.avaliacoes;
+            console.log(avaliacoes);
+
+            const texto = this.formatarData();
             const documentDefinition = {
               pageSize: 'A4',
               pageOrientation: 'portrait',
-              pageMargins: [10, 10, 10, 120],
+              pageMargins: [20, 20, 20, 120],
               footer: function (currentPage, pageCount) {
                 return [
                   {
@@ -436,7 +462,9 @@ export class RelatorioService {
                     alignment: 'justify',
                     columns: [
                       {
-                        text: `__________________________________\n${user}`,
+                        text: `__________________________________\n${
+                          user.colaborador.nome || ''
+                        } - Psicóloga`,
                         alignment: 'center',
                         fontSize: 14,
                       },
@@ -447,11 +475,23 @@ export class RelatorioService {
               },
 
               content: [
-                new new Relatorio().logo(575, 'center', 100).image,
+                new new Relatorio().logo(555, 'center', 100).image,
                 new new Relatorio().titulo('Evolução Psicológica'),
 
                 {
                   text: `Acolhido: ${ac}\n`,
+                },
+                {
+                  text: `Convênio: ${acolhido.identificacao.convenio}`,
+                },
+                {
+                  text: `Período: ${acolhido.identificacao.periodo} meses`,
+                },
+                {
+                  text: `Data de Ingresso: ${new DatePipe('en-US').transform(
+                    acolhido.identificacao.dataIngresso,
+                    'dd/MM/yyyy'
+                  )}`,
                 },
                 {
                   text: `Período: ${new DatePipe('en-US').transform(
@@ -533,7 +573,46 @@ export class RelatorioService {
                   text: `\nConsultas:\n`,
                 },
                 // Object.entries(counts2).toString(),
-                consultas2,
+                consultas3,
+                '\n',
+                {
+                  style: 'tableExample',
+
+                  table: {
+                    headerRows: 1,
+                    widths: ['*', '*', '*', '*', '*', '*'],
+                    body: [
+                      [
+                        {
+                          text: 'Avaliação do período',
+                          colSpan: 6,
+                          alignment: 'center',
+                        },
+                        {},
+                        {},
+                        {},
+                        {},
+                        {},
+                      ],
+                      [
+                        'Autoestima',
+                        'Disciplina',
+                        'Higiene',
+                        'Espiritualidade',
+                        'Reuniões',
+                        'Criatividade',
+                      ],
+                      [
+                        avaliacoes.autoestima,
+                        avaliacoes.disciplina,
+                        avaliacoes.higiene,
+                        avaliacoes.espiritualidade,
+                        avaliacoes.reunioes,
+                        avaliacoes.criatividade,
+                      ],
+                    ],
+                  },
+                },
                 {
                   text: `\nSíntese da escuta:\n`,
                 },
@@ -560,5 +639,235 @@ export class RelatorioService {
             pdfMake.createPdf(documentDefinition).open();
           });
       });
+  }
+  medicamentoNome(medicamentos: Array<any>): Array<any> {
+    let nome = [];
+    let matrix = [];
+    let tabela = [];
+
+    //   nome = medicamentos.map((e) => e.medicamento.PRODUTO);
+    for (let i = 0, k = -1; i < medicamentos.length; i++) {
+      if (i == 0) {
+        k++;
+        matrix[k] = [];
+      }
+
+      matrix[k].push(medicamentos[i].medicamento.PRODUTO.slice(0, 10), [
+        {
+          table: {
+            body: this.gerarDias(),
+          },
+          pageBreak: 'after',
+        },
+      ]);
+      nome.push([
+        medicamentos[i].medicamento.PRODUTO.slice(0, 10),
+        [
+          {
+            table: {
+              body: this.gerarDias(),
+            },
+          },
+        ],
+      ]);
+    }
+
+    /*nome.push(	[
+            'or a nested table',
+            {
+              table: {
+                body: [
+                  ['Col1', 'Col2', 'Col3'],
+                  ['1', '2', '3'],
+                  ['1', '2', '3']
+                ]
+              },
+            }
+          ],)*/
+    console.log(nome);
+    return nome;
+  }
+  gerarDias(): Array<any> {
+    let dias: any[] = [];
+    for (let i = 1; i <= 31; i++) {
+      dias.push([i, 'M', 'T', 'N']);
+    }
+    return dias;
+  }
+  medicamentos(medicamentos: Array<any>): Array<any> {
+    return [
+      {
+        table: {
+          body: [this.medicamentoNome(medicamentos)],
+        },
+      },
+    ];
+
+    let dias: any[] = [];
+    //dias.push(['DIA','M','T','N']);
+    for (let i = 1; i <= 31; i++) {
+      dias.push([i, 'M', 'T', 'N']);
+    }
+    return dias;
+  }
+
+  geraTabelaMedicamento(medicamentos: Array<any>): Array<any> {
+    let lista = [];
+    let lista2 = [];
+    let newArr = [];
+
+    for (let i = 0; i < medicamentos.length; i++) {
+      lista2.push(medicamentos[i]);
+    }
+    while (lista2.length) {
+      newArr.push(lista2.splice(0, 6));
+    }
+    for (let i = 0; i < newArr.length; i++) {
+      lista.push(this.medicamentos(newArr[i]));
+    }
+    return lista;
+  }
+
+  medicamento(_id: string): void {
+    let user;
+    this.authenticationService.currentUser.subscribe((res) => {
+      user = res;
+    });
+
+    this.http
+      .get(`${this.apiBaseUrl}/acolhimento/${_id}/medicamento`)
+      .subscribe((medicamentos: Array<any>) => {
+        const texto = this.formatarData();
+        const documentDefinition = {
+          pageSize: 'A4',
+          pageOrientation: 'portrait',
+          pageMargins: [20, 20, 20, 120],
+
+          content: [
+            // new new Relatorio().logo(555, 'center', 100).image,
+            new new Relatorio().titulo('medicamentos'),
+            this.geraTabelaMedicamento(medicamentos),
+          ],
+        };
+        pdfMake.createPdf(documentDefinition).open();
+      });
+  }
+
+  medicamento2(_id: string): void {
+    let user;
+    this.authenticationService.currentUser.subscribe((res) => {
+      user = res;
+    });
+
+    this.http
+      .get(`${this.apiBaseUrl}/acolhimento/${_id}/medicamento`)
+      .subscribe((medicamentos: Array<any>) => {
+        const texto = this.formatarData();
+        const documentDefinition = {
+          pageSize: 'A4',
+          pageOrientation: 'landscape',
+          pageMargins: [20, 20, 20, 120],
+
+          content: [
+            // new new Relatorio().logo(555, 'center', 100).image,
+            new new Relatorio().titulo('medicamentos'),
+            //this.gdias2(),
+            this.geraListaMedicamentos(medicamentos),
+          ],
+        };
+        pdfMake.createPdf(documentDefinition).open();
+      });
+  }
+  geraCabecalho(medicamentos: Array<any>): Array<any> {
+    let tabela = [];
+    let med = [];
+    let cabecalho: any[] = [
+      'Medicamento',
+      'Dosagem',
+      'Intervalo',
+      'Qtde Dias',
+      'Horário',
+    ];
+    let dias: any[] = [];
+    for (let i = 1; i < 31; i++) {
+      cabecalho.push(i);
+    }
+    //  cabecalho.push([this.geratabela(medicamentos)]);
+    console.log(cabecalho);
+    return cabecalho;
+  }
+
+  geratabela(medicamentos) {
+    return [
+      {
+        style: 'tableExample',
+        table: {
+          body: this.geraListaMedicamentos(medicamentos),
+          // this.geraListaMedicamentos(medicamentos)
+        },
+      },
+    ];
+  }
+  geraListaMedicamentos(medicamentos) {
+    let arr = [];
+    let arr2 = [];
+    let array3 = ['u', 'yu', 'oi'];
+
+    for (let i = 0; i < medicamentos.length; i++) {
+      arr.push([
+        {
+          table: {
+            body: [this.gdias2(), this.gdias(medicamentos[i])],
+          },
+        },
+      ]);
+    }
+    console.log(arr2);
+
+    return arr;
+  }
+  gdias(medicamento) {
+    let arr = [];
+    let arr2 = [];
+    for (let i = 0; i < 30; i++) {
+      arr.push([
+        { border: [false, false, false, false], text: 'M' },
+        { border: [false, false, false, false], text: 'M' },
+        { border: [false, false, false, false], text: 'M' },
+      ]);
+    }
+    arr.push(
+      {
+        border: [false, false, false, false],
+        text: medicamento.medicamento.PRODUTO,
+      },
+      {
+        border: [false, false, false, false],
+        text: medicamento.posologia,
+      }
+    );
+    arr2.push();
+    return arr;
+  }
+
+  gdias2() {
+    let arr = [];
+    let arr2 = [];
+    for (let i = 0; i < 30; i++) {
+      arr.push({ border: [false, false, false, false], text: i });
+    }
+
+    arr.push(
+      {
+        border: [false, false, false, false],
+        text: 'Medicamento',
+      },
+      {
+        border: [false, false, false, false],
+        text: 'Posologia',
+      }
+    );
+    arr2.push();
+    return arr;
   }
 }

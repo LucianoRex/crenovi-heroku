@@ -44,6 +44,7 @@ const userRegister = async (userDets, role, res) => {
 };
 
 const register = async (userDets, res) => {
+  console.log(userDets);
   try {
     let usernameNotTaken = await validateUserName(userDets.username);
     if (!usernameNotTaken) {
@@ -62,7 +63,7 @@ const register = async (userDets, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(userDets.password, 12);
+    const hashedPassword = await bcrypt.hash(userDets.password || "1234", 12);
     const newUser = new User({
       ...userDets,
       password: hashedPassword,
@@ -80,11 +81,43 @@ const register = async (userDets, res) => {
     });
   }
 };
+
+const registerUpdate = async (userDets, res) => {
+  try {
   
+
+    User.findOneAndUpdate(
+      { _id: userDets.params._id },
+      {
+        $set: userDets.body,
+      },
+      {
+        $upsert: true,
+      }
+    )
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        res.status(500).json({
+          message: err.message,
+          success: false,
+        });
+      });
+  } catch (error) {
+    console.log("Error" + error);
+    return res.status(500).json({
+      message: "Erro",
+      success: false,
+    });
+  }
+};
+
 const login = async (userCreds, res) => {
   let { username, password } = userCreds;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username }).populate('colaborador');
+  console.log(user)
   if (!user) {
     return res.status(404).json({
       message: "Usuário não encontrado",
@@ -101,7 +134,7 @@ const login = async (userCreds, res) => {
         role: user.role,
         username: user.username,
         email: user.email,
-        nome:user.nome
+        nome: user.nome,    
       },
       cfg.jwtSecret,
       { expiresIn: "7 days" }
@@ -111,7 +144,8 @@ const login = async (userCreds, res) => {
       username: user.username,
       role: user.role,
       email: user.email,
-      nome:user.nome,
+      nome: user.nome,
+      colaborador:user.colaborador || '',
       token: `Bearer ${token}`,
       expiresIn: 168,
     };
@@ -215,7 +249,9 @@ const serializeUser = (user) => {
 };
 
 const readUsers = (req, res) => {
-  const user = User.find().then((user) => {
+  const user = User.find()
+  .populate('colaborador')
+  .then((user) => {
     return res.status(200).json(user);
   });
   // console.log(user)
@@ -231,4 +267,5 @@ module.exports = {
   readUsers: readUsers,
   chekRoles: chekRoles,
   register: register,
+  registerUpdate: registerUpdate,
 };

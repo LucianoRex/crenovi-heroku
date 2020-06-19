@@ -35,7 +35,9 @@ export class AcolhimentoService {
     }
   }
 
-  remove() {
-    alert('Vamos remover?');
+  remove(path) {
+    this._http.delete(`${this.apiBaseUrl}/${path}`).subscribe((res) => {
+      alert('Documento Excluído');
+    });
   }
 }

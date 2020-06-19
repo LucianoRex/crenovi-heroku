@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { PertenceFormComponent } from '../pertence-form/pertence-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { IDynamicTableBuilder } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-pertence-list',
@@ -14,7 +15,7 @@ export class PertenceListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns:IDynamicTableBuilder[] = [
       {
         name: 'pertence',
         label: 'Pertence',

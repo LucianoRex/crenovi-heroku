@@ -33,29 +33,30 @@ let put = (req, res, next) => {
     });
 };
 
-let post = (req, res, next) => {
-  let data = {
-    ...req.body,
-  };
-  delete data._id;
-  let mensagem = [];
-  Acolhimento.create(new Acolhimento(data))
-    .then((acolhimento) => {
-      res.status(200).json(acolhimento);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: error.message,
+let post = async (req, res, next) => {
+  let confereAcolhido = await Acolhimento.findOne({
+    "identificacao.acolhido": req.body.identificacao.acolhido._id,
+    ativo: true,
+  });
+
+  if (confereAcolhido) {    
+    res.status(500).json({ message: "Acolhido está em acolhimento" });
+  } else {
+    let data = {
+      ...req.body,
+    };
+    delete data._id;
+    let mensagem = [];
+    Acolhimento.create(new Acolhimento(data))
+      .then((acolhimento) => {
+        res.status(200).json(acolhimento);
+      })
+      .catch((error) => {
+        res.status(500).json({
+          message: error.message,
+        });
       });
-    });
-  /**
-     * for (field in error.errors) {
-        mensagem.push(error.errors[field].message);
-      }
-      res.status(500).json({
-        message: mensagem,
-      });
-     */
+  }
 };
 module.exports = {
   get: get,

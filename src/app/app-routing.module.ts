@@ -4,6 +4,7 @@ import { NavComponent } from './nav/nav.component';
 import { AuthGuard } from './helpers/auth.guard';
 import { LoginComponent } from './login/login/login.component';
 import { Role } from './models/role';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
@@ -33,14 +34,19 @@ const routes: Routes = [
             (m) => m.ColaboradorModule
           ),
       },
+      {
+        path: 'admin',
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.SuperAdmin] },
+        loadChildren: () =>
+          import('./admin/admin.module').then((m) => m.AdminModule),
+      },
+      {
+        path:'',
+        component:HomeComponent
+
+      }
     ],
-  },
-  {
-    path: 'admin',
-    canActivate: [AuthGuard],
-    data: { roles: [Role.Admin,Role.SuperAdmin] },
-    loadChildren: () =>
-      import('./admin/admin.module').then((m) => m.AdminModule),
   },
   { path: 'login', component: LoginComponent },
   { path: '**', redirectTo: '' },

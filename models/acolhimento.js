@@ -1,57 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const HistoricoPsiquico = new Schema({
-  higienePessoal: {
-    type: String,
-    alias: "Higiene Pessoal",
-  },
-  vestimenta: {
-    type: String,
-  },
-  postura: {
-    type: String,
-  },
-  consciencia: {
-    type: String,
-  },
-  atencao: {
-    type: String,
-  },
-  memoria: {
-    type: String,
-  },
-  pensamento: {
-    type: String,
-  },
-  linguagem: {
-    type: String,
-  },
-  afeto: {
-    type: String,
-  },
-  humor: {
-    type: String,
-  },
-  psicomotricidade: {
-    type: String,
-  },
-  sensopercepcao: {
-    type: String,
-  },
-  internacaoPsiquiatrica: {
-    type: Boolean,
-  },
-  ideiaSuicida: {
-    type: Boolean,
-  },
-  familiar: {
-    type: Boolean,
-  },
-  observacoes: {
-    type: String,
-  },
-});
+
 
 const Avaliacao = new Schema({
   disciplina: {
@@ -101,76 +51,9 @@ const Avaliacao = new Schema({
   },
 });
 
-const HistoricoFamiliarSocial = new Schema({
-  resideFamiliar: {
-    type: Boolean,
-    default: null,
-  },
-  situacaoRua: {
-    type: Boolean,
-    default: null,
-  },
-  filhos: {
-    type: String,
-    default: null,
-  },
-  estadoCivil: {
-    type: String,
-    default: null,
-  },
-  vinculoFamiliar: {
-    type: String,
-    default: null,
-  },
-  empregado: {
-    type: Boolean,
-    default: null,
-  },
-  casaPropria: {
-    type: Boolean,
-    default: null,
-  },
-  beneficio: {
-    type: Boolean,
-    default: null,
-  },
-  amigoUsuario: {
-    type: Boolean,
-    default: null,
-  },
-  lazer: {
-    type: String,
-    default: null,
-  },
-  escolaridade: {
-    type: String,
-    default: null,
-  },
-  problemaTrabalho: {
-    type: String,
-  },
-  conjuge: {
-    type: String,
-  },
-});
 
-const HistoricoForense = new Schema({
-  cometeuDelito: {
-    type: Boolean,
-  },
-  foiDetido: {
-    type: Boolean,
-  },
-  respondeProcessoJudicial: {
-    type: Boolean,
-  },
-  motivo: {
-    type: String,
-  },
-  observacoes: {
-    type: String,
-  },
-});
+
+
 
 const Saida = new Schema({
   saida: {
@@ -410,8 +293,109 @@ let acolhimento = new Schema(
       },
     ],
 
-    historicoPsiquico: HistoricoPsiquico,
-    historicoFamiliarSocial: HistoricoFamiliarSocial,
+    historicoPsiquico: {
+      higienePessoal: {
+        type: String,
+        alias: "Higiene Pessoal",
+      },
+      vestimenta: {
+        type: String,
+      },
+      postura: {
+        type: String,
+      },
+      consciencia: {
+        type: String,
+      },
+      atencao: {
+        type: String,
+      },
+      memoria: {
+        type: String,
+      },
+      pensamento: {
+        type: String,
+      },
+      linguagem: {
+        type: String,
+      },
+      afeto: {
+        type: String,
+      },
+      humor: {
+        type: String,
+      },
+      psicomotricidade: {
+        type: String,
+      },
+      sensopercepcao: {
+        type: String,
+      },
+      internacaoPsiquiatrica: {
+        type: Boolean,
+      },
+      ideiaSuicida: {
+        type: Boolean,
+      },
+      familiar: {
+        type: Boolean,
+      },
+      observacoes: {
+        type: String,
+      },
+    },
+    historicoFamiliarSocial: {
+      resideFamiliar: {
+        type: Boolean,
+        default: null,
+      },
+      situacaoRua: {
+        type: Boolean,
+        default: null,
+      },
+      filhos: {
+        type: String,
+        default: null,
+      },
+      estadoCivil: {
+        type: String,
+        default: null,
+      },
+      vinculoFamiliar: {
+        type: String,
+        default: null,
+      },
+      empregado: {
+        type: Boolean,
+        default: null,
+      },
+      casaPropria: {
+        type: Boolean,
+        default: null,
+      },
+      beneficio: {
+        type: Boolean,
+        default: null,
+      },
+      amigoUsuario: {
+        type: Boolean,
+        default: null,
+      },
+      lazer: {
+        type: String,
+        default: null,
+      },
+      escolaridade: {
+        type: String,
+        default: null,
+      },
+      problemaTrabalho: {
+        type: String,
+      },
+      conjuge: {
+        type: String,
+      },
+    },
     historicoQuimico: [
       {
         substancia: {
@@ -429,7 +413,23 @@ let acolhimento = new Schema(
         },
       },
     ],
-    historicoForense: HistoricoForense,
+    historicoForense: {
+      cometeuDelito: {
+        type: Boolean,
+      },
+      foiDetido: {
+        type: Boolean,
+      },
+      respondeProcessoJudicial: {
+        type: Boolean,
+      },
+      motivo: {
+        type: String,
+      },
+      observacoes: {
+        type: String,
+      },
+    },
     saida: [Saida],
     pertence: [Pertence],
     criado: {

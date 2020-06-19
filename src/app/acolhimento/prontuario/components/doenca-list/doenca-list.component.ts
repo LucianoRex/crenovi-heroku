@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 
 import { DoencaFormComponent } from '../doenca-form/doenca-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { IDynamicTableBuilder } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-doenca-list',
@@ -14,7 +15,7 @@ export class DoencaListComponent extends ProntuarioResource implements OnInit {
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns:IDynamicTableBuilder[] = [
       {
         name: 'doenca.codigo',
         label: 'Código',

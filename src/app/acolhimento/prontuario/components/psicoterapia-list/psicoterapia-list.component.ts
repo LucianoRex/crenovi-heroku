@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { PsicoterapiaFormComponent } from '../psicoterapia-form/psicoterapia-form.component';
+import { IDynamicTableBuilder, FieldType } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-psicoterapia-list',
@@ -14,11 +15,11 @@ export class PsicoterapiaListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns:IDynamicTableBuilder[] = [
       {
         name: 'data',
         label: 'Data',
-        type: 'date',
+        type: FieldType.date,
       },
     ];
     super.montaTabela({

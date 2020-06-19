@@ -10,6 +10,7 @@ import {
   MatTreeFlattener,
   MatTreeFlatDataSource,
 } from '@angular/material/tree';
+import { AcolhimentoRelatorioService } from '../acolhimento/relatorio/acolhimento-relatorio.service';
 
 interface FoodNode {
   name: string;
@@ -27,6 +28,7 @@ const TREE_DATA: FoodNode[] = [
       { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
       { name: 'Normas', link: '/acolhimento/norma' },
       { name: 'Rotina Diária', link: '/acolhimento/rotina-diaria' },
+      { name: 'Relatórios', link: '/acolhimento/relatorio' },
     ],
   },
   {
@@ -39,6 +41,24 @@ const TREE_DATA: FoodNode[] = [
       {
         name: 'Colaboradores',
         link: '/colaborador/colaborador',
+      },
+    ],
+  },
+  {
+    name: 'Colaborador',
+    children: [
+      {
+        name: 'Colaboradores',
+        link: '/colaborador/colaborador',
+      },
+    ],
+  },
+  {
+    name: 'Admin',
+    children: [
+      {
+        name: 'Usuários',
+        link: '/admin/user',
       },
     ],
   },
@@ -85,7 +105,8 @@ export class NavComponent {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private acolhimentoRelatorioService: AcolhimentoRelatorioService
   ) {
     this.authenticationService.currentUser.subscribe(
       (x) => (this.currentUser = x)

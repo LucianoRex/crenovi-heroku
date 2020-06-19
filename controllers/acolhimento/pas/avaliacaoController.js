@@ -68,9 +68,28 @@ let post = (req, res, next) => {
       res.status(500).json({message:err.message});
     });
 };
+let remove = (req, res, next) => {
+  Acolhimento.findOneAndUpdate(
+    { _id: req.params._id },
+    {
+      $pull: {
+        avaliacao: {
+          _id: req.params.avaliacao,
+        },
+      },
+    }
+  )
+    .then((acolhimento) => {
+      res.status(200).json(acolhimento.avaliacao);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err.message });
+    });
+};
 module.exports = {
   get: get,
   put: put,
   post: post,
   getById: getById,
+  remove:remove
 };

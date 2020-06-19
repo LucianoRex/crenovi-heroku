@@ -34,7 +34,7 @@
           </button>
           {{ node.name }}
         </mat-tree-node>
-      </mat-tree>     
+      </mat-tree>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -49,14 +49,16 @@
         >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
+        <!--
         <img src="../../assets/kindpng_3241474.png" width="120" alt="" />
+        -->
         <span
           style="
             font-family: 'Orbitron', sans-serif;
             font-size: xx-large;
             text-shadow: 10px 10px 4px #000000;
           "
-          >CRENOVI</span
+          ><a style="color: white; text-decoration:none" routerLink="/">CRENOVI</a></span
         >
         <span class="example-spacer"></span>
         <span>{{ currentUser.nome }}</span>
@@ -65,4 +67,9 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
+<!--
+<div class="footer example-container mat-elevation-z8" #footer>
+  
+  <a routerLink="/admin" style="margin: 1px;">Admin</a>
+</div>
+-->

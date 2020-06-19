@@ -4,6 +4,8 @@ import { AcolhimentoComponent } from './acolhimento/acolhimento.component';
 import { LivroDiarioListComponent } from './livro-diario/livro-diario-list/livro-diario-list.component';
 import { NormaFormComponent } from './norma-form/norma-form.component';
 import { RotinaDiariaListComponent } from './rotina-diaria/rotina-diaria-list/rotina-diaria-list.component';
+import { AcolhimentoRelatorioComponent } from './relatorio/acolhimento-relatorio.component';
+
 
 const routes: Routes = [
   {
@@ -26,6 +28,10 @@ const routes: Routes = [
   {
     path: 'norma',
     component: NormaFormComponent,
+  },
+  {
+    path: 'relatorio',
+    component: AcolhimentoRelatorioComponent,
   },
   {
     path: 'grupo-terapeutico',

@@ -11,13 +11,13 @@ import { UserComponent } from './components/user/user.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AdminComponent,UserComponent],
+  declarations: [AdminComponent, UserComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
     AngularMaterialModule,
-   ReactiveFormsModule,
-    LayoutModule,        
+    ReactiveFormsModule,
+    LayoutModule,   
   ],
 })
 export class AdminModule {}

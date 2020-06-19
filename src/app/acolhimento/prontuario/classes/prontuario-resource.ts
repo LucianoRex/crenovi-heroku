@@ -9,16 +9,12 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import * as io from 'socket.io-client';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
-import { Subject } from 'rxjs';
-import { FormGroup } from '@angular/forms';
-import { ProntuarioSocketService } from '../services/prontuario-socket.service';
 import { DynamicListService } from 'src/app/shared/utils/services/dynamic-list.service';
 
-export class ProntuarioResource extends DynamicFormTableResource implements OnDestroy {
+export class ProntuarioResource extends DynamicFormTableResource
+  implements OnDestroy {
   //socket = io(environment.SOCKET_ENDPOINT);
   @Input() concatenatedPath: string;
   socketdata: string;
@@ -33,8 +29,9 @@ export class ProntuarioResource extends DynamicFormTableResource implements OnDe
     this.dynamicListService = injector.get(DynamicListService);
     this.toastr = injector.get(ToastrService);
   }
+
   ngOnDestroy(): void {
-  // this.socket.disconnect()
+    // this.socket.disconnect()
   }
 
   save() {
@@ -44,8 +41,8 @@ export class ProntuarioResource extends DynamicFormTableResource implements OnDe
         (res) => {
           this.toastr.success('Salvo');
           this.selectedRow.emit(res);
-       //   this.socket.emit(this.form.get('path').value, res);
-       //   this.socket.disconnect();
+          //   this.socket.emit(this.form.get('path').value, res);
+          //   this.socket.disconnect();
           this.saved.emit(true);
         },
         (err) => {
@@ -82,8 +79,8 @@ export class ProntuarioResource extends DynamicFormTableResource implements OnDe
       }
     });
   }
-  remove() {
-    this.prontuarioService.remove();
+  remove(path) {   
+    this.prontuarioService.remove(path);
   }
 }
 

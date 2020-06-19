@@ -1,6 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { HistoricoQuimicoFormComponent } from '../historico-quimico-form/historico-quimico-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { IDynamicTableBuilder } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-historico-quimico-list',
@@ -14,7 +15,7 @@ export class HistoricoQuimicoListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns = [
+    let columns:IDynamicTableBuilder[] = [
       {
         name: 'idade',
         label: 'Idade',

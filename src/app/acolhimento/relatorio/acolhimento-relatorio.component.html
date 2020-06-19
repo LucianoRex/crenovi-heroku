@@ -1,0 +1,30 @@
+<div class="row">
+    <div
+      class="col-md-3"
+      style="margin: 1em 0;"
+      *ngFor="let relatorio of relatorios"
+    >
+      <mat-card>
+        <mat-card-header
+          class="mat-card-header-text mat-card-header mat-card-title"
+        >
+          <mat-card-title class="mat-card-header-text" style="margin: 0 auto;">{{
+            relatorio.titulo
+          }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="../../../../../assets/img/relatorio.jpg" />
+        <mat-card-content> </mat-card-content>
+        <mat-card-actions>
+          <button
+            mat-button
+            style="display: block; margin: 0 auto;"
+            color="accent"
+            (click)="open(relatorio.function)"
+          >
+            Gerar Documento
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  

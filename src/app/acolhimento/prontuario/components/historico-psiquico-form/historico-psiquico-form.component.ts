@@ -304,7 +304,7 @@ export class HistoricoPsiquicoFormComponent extends ProntuarioResource
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById(this.concatenatedPath,'historicoPsiquico').subscribe((res) => {
+      ? this.prontuarioService.readById(this.concatenatedPath,'historicoPsiquico').subscribe((res) => {        
           this.form.patchValue(res);
         })
       : null;

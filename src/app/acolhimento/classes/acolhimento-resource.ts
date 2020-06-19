@@ -45,7 +45,7 @@ export class AcolhimentoResource extends DynamicFormTableResource {
     );
   }
 
-  remove() {
-    this.acolhimentoService.remove();
+  remove(path) {
+    this.acolhimentoService.remove(path);
   }
 }

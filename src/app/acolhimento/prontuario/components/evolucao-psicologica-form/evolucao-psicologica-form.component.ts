@@ -43,8 +43,7 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
     this.form.statusChanges.subscribe(() => this.carregaDadosPsicoterapia());
   }
 
-  carregaDadosPsicoterapia() {
-    console.log(this.form.get('evolucaoPsicologica').value);
+  carregaDadosPsicoterapia() {    
     this.prontuarioService
       .carregaDadosPsicoterapia(
         this.concatenatedPath,
@@ -52,9 +51,9 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
       )
       .subscribe((res) => {
         if (res[0]) {
-          this.procedimentos = new Set(...res[0].procedimentos[0]);
+          this.procedimentos = new Set(...res[0]._id.procedimentos);
           this.consultas = new Set(
-            Array.from(res[0].consultas[0]).map((e: any) => {
+            Array.from(res[0]._id.consultas).map((e: any) => {
               return e.tipo;
             })
           );

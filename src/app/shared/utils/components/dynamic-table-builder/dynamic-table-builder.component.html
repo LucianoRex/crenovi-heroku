@@ -11,7 +11,6 @@
     <mat-label>Filtrar</mat-label>
     <input matInput (keyup)="applyFilter($event)" />
   </mat-form-field>
-
   <table mat-table [dataSource]="dataSource" matSort>
     <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
       <th
@@ -61,7 +60,7 @@
           *ngIf="column.name == 'acoes'"
           mat-icon-button
           color="warn"
-          (click)="delete.emit()"
+          (click)="delete.emit(element._id)"
         >
           <mat-icon class="indigo-icon" aria-label="Delete">delete</mat-icon>
         </button>
@@ -76,14 +75,12 @@
       *matRowDef="let row; columns: displayedColumns"
     ></tr>
   </table>
-
-  <mat-paginator
-    fixed
-    class="mat-paginator-sticky"
-    [length]="10"
-    [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 25, 100]"
-    showFirstLastButtons
-  >
-  </mat-paginator>
 </div>
+<mat-paginator
+  fixed
+  [length]="10"
+  [pageSize]="30"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  showFirstLastButtons
+>
+</mat-paginator>

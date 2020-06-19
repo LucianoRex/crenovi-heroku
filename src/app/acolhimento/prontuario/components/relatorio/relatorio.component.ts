@@ -35,7 +35,11 @@ export class RelatorioComponent implements OnInit {
     {
       titulo: 'Responsabilidade ',
       function: this.termoResponsabilidade.bind(this),
-    },   
+    },
+    {
+      titulo: 'Medicamento ',
+      function: this.medicamento.bind(this),
+    },
   ];
   constructor(
     private relatorioService: RelatorioService,
@@ -56,7 +60,9 @@ export class RelatorioComponent implements OnInit {
   usoImagem() {
     this.relatorioService.usoImagem(this._id);
   }
-
+  medicamento() {
+    this.relatorioService.medicamento2(this._id);
+  }
   termoCiencia() {
     this.relatorioService.termoCiencia(this._id);
   }
