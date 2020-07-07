@@ -2,7 +2,7 @@ export interface Pas {
   identificacao: Identificacao;
   medicamento: Medicamento[];
   doenca: Doenca[];
-  responsavel: Responsavel;
+  responsavel :  Responsavel;
   pertence: Pertence[];
   saida: Saida[];
   historicoQuimico: HistoricoQuimico[];
@@ -192,7 +192,7 @@ export class Acolhimento {
   convenio = new Convenio();
   periodo: string = '';
   //  substancias = new Array<Substancia>();
-  responsavel = new Responsavel();
+  responsavel :Responsavel;
 }
 export class Convenio {
   _id: string = null;
@@ -219,11 +219,11 @@ interface Substancia {
   nome: string;
 }
 
-class Responsavel {
-  nome: string = '';
-  rg: string = '';
-  cpf: string = '';
-  telefone: string = '';
+interface Responsavel {
+  nome:string;
+  rg:string ;
+  cpf:string;
+  telefone:string;
 }
 
 export interface HistoricoPsiquico {

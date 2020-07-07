@@ -27,6 +27,7 @@ export class DynamicFormTableResource {
   //mudouForm: boolean = false;
   //socketioPath;
   @Output() selectedRow = new EventEmitter<any>();
+  @Output() createdDoc = new EventEmitter<any>();
   @Output() formChange = new EventEmitter<any>();
   @Output() removeRow = new EventEmitter<any>();
   @Output() notify: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
@@ -46,14 +47,14 @@ export class DynamicFormTableResource {
     columns,
     service,
     component,
-    socketioPath,
+  //  socketioPath,
     caminho,
   }: {
     columns: Array<any>;
     service: any;
     component?;
     _id?: any;
-    socketioPath: string;
+  //  socketioPath: string;
     caminho?: string;
   }) {
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
@@ -64,7 +65,7 @@ export class DynamicFormTableResource {
     );
     componentRef.instance.columns = columns;
     componentRef.instance.data = service;
-    componentRef.instance.socketioPath = socketioPath;
+  //  componentRef.instance.socketioPath = socketioPath;
     componentRef.instance.selectedRow.subscribe((res) => {
       this.selectedRow.emit(res);
     });
@@ -93,6 +94,7 @@ export class DynamicFormTableResource {
     });
 
     componentRef.instance.delete.subscribe((res) => {
+      console.log(caminho + '/' + res)
       let confirma = confirm('Deseja Realmente Excluir?');
       confirma ? this.remove(caminho + '/' + res) : null;
     });

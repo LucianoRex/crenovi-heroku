@@ -5,9 +5,9 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             Sintomas de abstinência
-          </mat-panel-title>         
+          </mat-panel-title>
         </mat-expansion-panel-header>
-    
+
         <div class="row" formGroupName="abstinencia">
           <div class="col-md-12">
             <mat-checkbox formControlName="tremor">Tremor</mat-checkbox>
@@ -49,11 +49,11 @@
             <mat-checkbox formControlName="fissura">Fissura</mat-checkbox>
           </div>
         </div>
-      </mat-expansion-panel>      
-    </mat-accordion>  
-  
+      </mat-expansion-panel>
+    </mat-accordion>
+
     <div class="row">
-     <h2></h2>
+      <h2></h2>
       <div class="col-md-12" style="margin: auto;">
         <mat-checkbox formControlName="cessarUso"
           >Tentativa de cessar o uso por conta própria</mat-checkbox
@@ -71,16 +71,10 @@
         </mat-form-field>
       </div>
     </div>
-
-    <div>
-      <button
-        mat-button
-        matStepperNext
-        [disabled]="!form.valid"
-        (click)="save()"
-      >
-        Salvar
-      </button>
-    </div>
+  </div>
+  <div>
+    <button mat-button matStepperNext [disabled]="!form.valid" (click)="save()">
+      Salvar
+    </button>
   </div>
 </form>

@@ -69,6 +69,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatSliderModule,
     MatTreeModule,
     MatExpansionModule,    
+    MatAutocompleteModule
   ],
   exports: [
     MatTreeModule,
@@ -98,7 +99,8 @@ import { MatTreeModule } from '@angular/material/tree';
     MatPaginatorModule,
     MatStepperModule,
     MatSliderModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatAutocompleteModule
   ],
   providers: [MatDatepickerModule],
 })

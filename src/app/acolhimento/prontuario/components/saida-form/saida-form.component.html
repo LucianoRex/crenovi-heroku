@@ -27,8 +27,8 @@
         <mat-form-field>
           <mat-label>Motivo</mat-label>
           <mat-select formControlName="motivo" placeholder="">
-            <mat-option *ngFor="let motivo of motivos" [value]="motivo">
-              {{ motivo }}
+            <mat-option *ngFor="let motivo of motivos" [value]="motivo._id">
+              {{ motivo.motivo }}
             </mat-option>
           </mat-select>
         </mat-form-field>

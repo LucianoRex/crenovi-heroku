@@ -20,13 +20,14 @@ export class HistoricoQuimicoFormComponent extends ProntuarioResource
     this.prontuarioService
       .readCollection('substancia')
       .subscribe((res: any) => {
-     //   console.log(res);
+        //   console.log(res);
         this.substancias = res;
       });
 
     this.form = this.fb.group({
       //_id: undefined,
       path: 'historicoQuimico',
+      array: true,
       historicoQuimico: this.fb.group({
         _id: undefined,
         idade: [''],

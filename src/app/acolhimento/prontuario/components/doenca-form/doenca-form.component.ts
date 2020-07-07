@@ -3,7 +3,15 @@ import { environment } from 'src/environments/environment';
 import { DynamicListBuilderComponent } from 'src/app/shared/utils/components/dynamic-list-builder/dynamic-list-builder.component';
 import { Validators } from '@angular/forms';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
-
+import {
+  startWith,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  tap,
+  switchMap,
+  finalize,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-doenca-form',
@@ -12,6 +20,8 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
 })
 export class DoencaFormComponent extends ProntuarioResource implements OnInit {
   //@Output() notify = new EventEmitter();
+  filteredOptions;
+  isLoading = false;
   apiUrl = environment.apiBaseUrl;
   posologias: any[] = [
     {
@@ -30,8 +40,9 @@ export class DoencaFormComponent extends ProntuarioResource implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      //  _id: undefined,
+      _id: undefined,
       path: 'doenca',
+      array: true,
       doenca: this.fb.group({
         _id: undefined,
         doenca: this.fb.group({
@@ -42,12 +53,49 @@ export class DoencaFormComponent extends ProntuarioResource implements OnInit {
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById(this.concatenatedPath, this._id).subscribe((res: any) => {
-        //  console.log(res);
-          this.form.get('doenca').patchValue(res);
-        })
+      ? this.prontuarioService
+          .readById(this.concatenatedPath, this._id)
+          .subscribe((res: any) => {
+            //  console.log(res);
+            this.form.get('doenca').patchValue(res);
+          })
       : null;
     this.notify.emit(this.form);
+    this.form
+      .get('doenca')
+      .get('doenca')
+      .get('nome')
+      .valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((query: string) => query?.length > 3),
+        tap(() => (this.isLoading = true)),
+        switchMap((value) =>
+          this.prontuarioService
+            .buscaDoenca({ doenca: value }, 1)
+            .pipe(finalize(() => (this.isLoading = false)))
+        )
+      )
+      .subscribe((users) => (this.filteredOptions = users));
+
+      this.form
+      .get('doenca')
+      .get('doenca')
+      .get('codigo')
+      .valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((query: string) => query?.length > 1),
+        tap(() => (this.isLoading = true)),
+        switchMap((value) =>
+          this.prontuarioService
+            .buscaDoenca({ doenca: value }, 1)
+            .pipe(finalize(() => (this.isLoading = false)))
+        )
+      )
+      .subscribe((users) => (this.filteredOptions = users));
   }
 
   getDoenca() {
@@ -78,5 +126,9 @@ export class DoencaFormComponent extends ProntuarioResource implements OnInit {
       console.log(res);
       this.form.get('doenca').get('doenca').patchValue(res);
     });
+  }
+
+  updateForm(ev: any, option: any) {
+    this.form.get('doenca').get('doenca').patchValue(option);
   }
 }

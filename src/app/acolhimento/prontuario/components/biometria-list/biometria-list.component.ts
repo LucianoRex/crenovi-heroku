@@ -26,8 +26,24 @@ export class BiometriaListComponent extends ProntuarioResource
         type: FieldType.date,
       },
       {
+        name: 'altura',
+        label: 'Altura',
+        type: FieldType.pattern,
+        pattern: '0.00',
+      },
+      {
+        name: 'peso',
+        label: 'Peso',
+      },
+      {
         name: 'pa',
         label: 'P.A.',
+        type: FieldType.pattern,
+        pattern: '000/00',
+      },
+      {
+        name: 'glicemia',
+        label: 'Glicemia',
       },
     ];
 
@@ -35,11 +51,12 @@ export class BiometriaListComponent extends ProntuarioResource
       columns,
       service: this.prontuarioService.readById(
         this.concatenatedPath,
-        'biometria'
+        'biometria',
+        true
       ),
       component: BiometriaFormComponent,
       _id: this._id,
-      socketioPath: 'biometria',
+      //socketioPath: 'biometria',
       caminho: this.concatenatedPath + '/biometria',
     });
   }

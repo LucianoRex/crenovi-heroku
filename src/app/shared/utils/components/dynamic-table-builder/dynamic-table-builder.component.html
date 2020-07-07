@@ -45,6 +45,8 @@
             ? formatPhoneNumber(element, column.name)
             : column.type == "time"
             ? formataHora(element, column.name)
+            : column.type == "pattern"
+            ? formatNumberPattern(element, column)
             : getProperty(element, column.name)
         }}
         <button

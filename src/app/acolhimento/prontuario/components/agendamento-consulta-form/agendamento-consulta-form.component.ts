@@ -23,8 +23,12 @@ export class AgendamentoConsultaFormComponent extends ProntuarioResource
     super(injector);
   }
   ngOnInit(): void {
+    this.prontuarioService.tipoConsulta().subscribe((res) => {
+      this.tipos = res;
+    });
     this.form = this.fb.group({
       //_id: undefined,
+      array: true,
       path: 'agendamentoconsulta',
       agendamentoconsulta: this.fb.group({
         _id: undefined,

@@ -90,7 +90,7 @@ export class RotinaDiariaListComponent extends AcolhimentoResource
       service: this.acolhimentoService.read('rotinadiaria'),
       component: RotinaDiariaFormComponent,
       _id: undefined,
-      socketioPath: 'rotinadiaria',
+      //socketioPath: 'rotinadiaria',
        caminho: 'rotinadiaria',
     });
   }

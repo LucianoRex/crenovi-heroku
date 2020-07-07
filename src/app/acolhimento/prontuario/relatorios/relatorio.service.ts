@@ -56,8 +56,8 @@ export class RelatorioService {
       user = res;
     });
     this.http
-      .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
-      .subscribe((acolhimento: Pas) => {
+      .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
+      .subscribe((prontuario: Pas) => {
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -75,7 +75,7 @@ export class RelatorioService {
                 alignment: 'justify',
                 columns: [
                   {
-                    text: `_________________________________\n\n ${acolhimento[0].identificacao.acolhido.nome}`,
+                    text: `_________________________________\n\n ${prontuario.identificacao.acolhido.nome}`,
                     alignment: 'center',
                     fontSize: 14,
                   },
@@ -96,7 +96,7 @@ export class RelatorioService {
             new new Relatorio().titulo('TERMO DE AUTORIZAÇÃO DE USO DE IMAGEM'),
             {
               text: [
-                `Neste ato, eu, ${acolhimento[0].identificacao.acolhido.nome
+                `Neste ato, eu, ${prontuario.identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, `,
                 { text: 'AUTORIZO', fontSize: 15, bold: true },
@@ -125,8 +125,8 @@ export class RelatorioService {
   }
   termoCiencia(_id: string) {
     this.http
-      .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
-      .subscribe((acolhimento: Pas) => {
+      .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
+      .subscribe((prontuario: Pas) => {
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -138,7 +138,7 @@ export class RelatorioService {
             new new Relatorio().titulo('Termo de ciência'),
             {
               text: [
-                `Neste ato, eu, ${acolhimento[0].identificacao.acolhido.nome
+                `Neste ato, eu, ${prontuario.identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, voluntariamente aceito acolhimento , e concordo com as normas de convivência constantes no Regimento Interno do Centro de Reabilitação Nova Vida, e comprometo-me a cumprir o estabelecido durante o período de tratamento de 09 nove meses e máxima de 12 meses em regime de residência, podendo, em caso de descumprimento do mesmo, ser desligado do serviço. Resolução CONAD 01/2015 – RDC 29/2011.
               `,
@@ -148,7 +148,7 @@ export class RelatorioService {
               margin: [0, 0, 0, 30],
             },
             {
-              text: `__________________________________\n\n${acolhimento[0].identificacao.acolhido.nome} - Acolhido`,
+              text: `__________________________________\n\n${prontuario.identificacao.acolhido.nome} - Acolhido`,
               alignment: 'center',
               fontSize: 14,
               margin: [0, 0, 0, 70],
@@ -167,7 +167,7 @@ export class RelatorioService {
              fontSize: 14,
            },*/
             {
-              text: `__________________________________\n\n${acolhimento[0].responsavel.nome} -  Responsável pelo acolhido`,
+              text: `__________________________________\n\n${prontuario.responsavel.nome} -  Responsável pelo acolhido`,
               alignment: 'center',
               fontSize: 14,
               margin: [0, 0, 0, 70],
@@ -204,8 +204,8 @@ export class RelatorioService {
       user = res;
     });
     this.http
-      .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
-      .subscribe((acolhimento: Pas) => {
+      .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
+      .subscribe((prontuario: Pas) => {
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -244,9 +244,9 @@ export class RelatorioService {
             new new Relatorio().titulo('Termo de responsabilidade'),
             {
               text: [
-                `Eu, ${acolhimento[0].responsavel.nome
+                `Eu, ${prontuario.responsavel.nome
                   .trim()
-                  .toLocaleUpperCase()} portador(a) do CPF Nº ${acolhimento[0].responsavel.cpf.trim()} e do RG Nº ${acolhimento[0].responsavel.rg.trim()}, por meio deste instrumento declaro me responsabilizar pelo acolhido ${acolhimento[0].identificacao.acolhido.nome
+                  .toLocaleUpperCase()}, portador(a) do CPF Nº ${prontuario.responsavel.cpf.trim()} e do RG Nº ${prontuario.responsavel.rg.trim()}, por meio deste instrumento declaro me responsabilizar pelo acolhido ${prontuario.identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, entregue no dia ${new Date().getDate()}/${
                   new Date().getUTCMonth() + 1
@@ -283,8 +283,8 @@ export class RelatorioService {
     });
 
     this.http
-      .get(`${this.apiBaseUrl}/acolhimento/relatorio/${_id}`)
-      .subscribe((acolhimento: Pas) => {
+      .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
+      .subscribe((prontuario: Pas) => {
         //   console.log(acolhimento);
         const texto = this.formatarData();
         const documentDefinition = {
@@ -315,23 +315,23 @@ export class RelatorioService {
             ),
             {
               text: [
-                `Declaramos para os devidos fins, que o acolhido , Sr. ${acolhimento[0].identificacao.acolhido.nome
+                `Declaramos para os devidos fins, que o acolhido , Sr. ${prontuario.identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, nascido em ${new DatePipe(
                   'en-US'
                 ).transform(
-                  acolhimento[0].identificacao.acolhido.dataNasc,
+                  prontuario.identificacao.acolhido.dataNasc,
                   'dd/MM/yyyy'
-                )} portador do CPF Nº ${acolhimento[0].identificacao.acolhido.cpf.trim()} e do RG Nº ${acolhimento[0].identificacao.acolhido.rg.trim()}, natural de ${
-                  acolhimento[0].identificacao.acolhido.naturalidade.municipio
+                )} portador do CPF Nº ${prontuario.identificacao.acolhido.cpf.trim()} e do RG Nº ${prontuario.identificacao.acolhido.rg.trim()}, natural de ${
+                  prontuario.identificacao.acolhido.naturalidade.municipio
                 }-${
-                  acolhimento[0].identificacao.acolhido.naturalidade.uf
+                  prontuario.identificacao.acolhido.naturalidade.uf
                 } encontra-se acolhido na Comunidade Terapêutica Centro de Reabilitação Nova Vida, CNPJ 02.084.777, endereço Rincão Santo Cristo s/n interior Santa Rosa-RS desde
                  ${new DatePipe('en-US').transform(
-                   acolhimento[0].identificacao.dataIngresso,
+                   prontuario.identificacao.dataIngresso,
                    'dd/MM/yyyy'
                  )}, para tratamento terapêutico de substâncias psicoativas (álcool e outras drogas), contemplando um período de ${
-                  acolhimento[0].identificacao.periodo
+                  prontuario.identificacao.periodo
                 } meses. Declaramos nos termos da lei 13.105/2015, artigo 98, que o mesmo não possui condições financeiras para custear as despesas do documento solicitado.             
             `,
               ],
@@ -349,6 +349,7 @@ export class RelatorioService {
               ],
             },
             { text: 'Enviar para:', style: 'header' },
+            /*
             {
               text: `${acolhimento[1].correspondencia.rua}, n° ${acolhimento[1].correspondencia.numero}`,
               alignment: 'justify',
@@ -371,6 +372,7 @@ export class RelatorioService {
               text: user.colaborador.funcao || '',
               alignment: 'justify',
             },
+            */
             //  { text: `${JSON.parse(localStorage.getItem('currentUser')).colaborador.nome || 'Funcionário'} - ${JSON.parse(localStorage.getItem('currentUser')).colaborador.funcao || ''}`, alignment: 'justify' },
           ],
 
@@ -390,7 +392,6 @@ export class RelatorioService {
   }
 
   evolucaoPsicologica(_id: string, form) {
-    // console.log(_id);
     let user;
     this.authenticationService.currentUser.subscribe((res) => {
       console.log(res);
@@ -398,6 +399,244 @@ export class RelatorioService {
     });
 
     this.http
+      .post(`${this.apiBaseUrl}/${_id}/relatorio`, form)
+      .subscribe((relatorio: any) => {
+        let acolhido = relatorio[0]._id['acolhido'];
+        let identificacao = relatorio[0]._id['identificacao'];
+        let procedimentos = relatorio[0]._id['procedimentos'];
+        let consultas = relatorio[0]._id['consultas'];
+        console.log(procedimentos);
+        let procedimentosLista: string = '';
+        procedimentos.forEach((e) => {
+          procedimentosLista += `(X)${e}\t`;
+        });
+
+        let counts2 = [];
+        consultas.forEach(function (x) {
+          counts2[x] = (counts2[x] || 0) + 1;
+        });
+        let consultas3 = '';
+        for (let a of Object.entries(counts2)) {
+          consultas3 += a[0] + ':' + a[1] + '\t';
+        }
+
+        let avaliacoes = relatorio[0]._id['avaliacoes'];
+        console.log(avaliacoes);
+        console.log(consultas3);
+        const texto = this.formatarData();
+        const documentDefinition = {
+          pageSize: 'A4',
+          pageOrientation: 'portrait',
+          pageMargins: [20, 20, 20, 120],
+          footer: function (currentPage, pageCount) {
+            return [
+              {
+                text: `Santa Rosa, ${texto}`,
+                margin: [0, 0, 0, 30],
+                alignment: 'center',
+                fontSize: 14,
+              },
+              {
+                alignment: 'justify',
+                columns: [
+                  {
+                    text: `__________________________________\n${
+                      user.colaborador.nome || ''
+                    } - Psicóloga`,
+                    alignment: 'center',
+                    fontSize: 14,
+                  },
+                ],
+                margin: [0, 0, 0, 50],
+              },
+            ];
+          },
+
+          content: [
+            new new Relatorio().logo(555, 'center', 100).image,
+            new new Relatorio().titulo('Evolução Psicológica'),
+            {
+              text: `\Identificação:\n`,
+              bold: true,
+            },
+            {
+              text: `Autor/Relator: ${user.colaborador.nome || ''} - ${
+                user.colaborador.funcao || ''
+              }`,
+            },
+            {
+              text: `Acolhido: ${acolhido.nome}`,
+            },
+            {
+              text: ` Data Nasc.: ${new DatePipe('en-US').transform(
+                acolhido.dataNasc,
+                'dd/MM/yyyy'
+              )}`,
+            },
+            {
+              text: `Convênio: ${identificacao.convenio}`,
+            },
+            {
+              text: `Período do acolhimento: ${identificacao.periodo} meses`,
+            },
+            {
+              text: `Data de Ingresso: ${new DatePipe('en-US').transform(
+                identificacao.dataIngresso,
+                'dd/MM/yyyy'
+              )}`,
+            },
+            {
+              text: `Período  da avaliação: ${new DatePipe('en-US').transform(
+                form.dataI,
+                'dd/MM/yyyy'
+              )} a ${new DatePipe('en-US').transform(
+                form.dataF,
+                'dd/MM/yyyy'
+              )}\n`,
+            },
+            {
+              text: `\nProcedimento(s) técnicos realizado(s):\n`,
+              bold: true,
+            },
+            procedimentosLista,
+            /*
+            {
+              alignment: 'left',
+              procedimentosArray
+              columns: [
+                {
+                  text: `(${
+                    n.indexOf('aplicação teste psicológico') != -1 ? 'X' : '  '
+                  })aplicação teste psicológico`,
+                },
+                {
+                  text: `(${
+                    n.indexOf('desenhos/brincadeiras') != -1 ? 'X' : '  '
+                  })desenhos/brincadeiras`,
+                },
+                {
+                  text: `(${
+                    n.indexOf('escuta/acolhimento') != -1 ? 'X' : '  '
+                  })escuta/acolhimento`,
+                },
+              ],
+            },
+            {
+              alignment: 'left',
+              columns: [
+                {
+                  text: `(${
+                    n.indexOf('atendimento grupal') != -1 ? 'X' : '  '
+                  })atendimento grupal`,
+                },
+                {
+                  text: `(${
+                    n.indexOf('entrevista com o responsável') != -1 ? 'X' : '  '
+                  })entrevista com o responsável`,
+                },
+                {
+                  text: `(${
+                    n.indexOf('devolutiva') != -1 ? 'X' : '  '
+                  })devolutiva`,
+                },
+              ],
+            },
+            {
+              alignment: 'left',
+              columns: [
+                {
+                  text: `(${
+                    n.indexOf('atendimento individual') != -1 ? 'X' : '  '
+                  })atendimento individual`,
+                },
+                {
+                  text: `(${
+                    n.indexOf('Outros') != -1 ? 'X' : '  '
+                  })Outros_________________`,
+                },
+                {
+                  text: `(${
+                    n.indexOf('orientação profissional') != -1 ? 'X' : '  '
+                  })orientação profissional`,
+                },
+              ],
+            },
+            */
+            {
+              text: `\nAnálise:`,
+              bold: true,
+            },
+            {
+              text: `Consultas:\n`,
+            },
+            // Object.entries(counts2).toString(),
+            consultas3,
+            '\n',
+            {
+              style: 'tableExample',
+
+              table: {
+                headerRows: 1,
+                widths: ['*', '*', '*', '*', '*', '*'],
+                body: [
+                  [
+                    {
+                      text: 'Avaliação do período',
+                      colSpan: 6,
+                      alignment: 'center',
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                  ],
+                  [
+                    'Autoestima',
+                    'Disciplina',
+                    'Higiene',
+                    'Espiritualidade',
+                    'Reuniões',
+                    'Criatividade',
+                  ],
+                  [
+                    avaliacoes.autoestima,
+                    avaliacoes.disciplina,
+                    avaliacoes.higiene,
+                    avaliacoes.espiritualidade,
+                    avaliacoes.reunioes,
+                    avaliacoes.criatividade,
+                  ],
+                ],
+              },
+            },
+            {
+              text: `\nSíntese da escuta:\n`,
+            },
+            {
+              table: {
+                heights: [150],
+                widths: ['*'],
+                body: [[form.sintese]],
+              },
+            },
+          ],
+
+          styles: {
+            header: {
+              fontSize: 16,
+              bold: true,
+              alignment: 'justify',
+            },
+            tableHeader: {
+              bold: true,
+            },
+          },
+        };
+        pdfMake.createPdf(documentDefinition).open();
+      });
+
+    /*  this.http
       .get(`${this.apiBaseUrl}/${_id}/acolhido`)
       .subscribe((acolhido: any) => {
         let ac = acolhido.identificacao.acolhido.nome;
@@ -414,10 +653,7 @@ export class RelatorioService {
               procedimentos2.push(...e);
             });
             let counts = [];
-            /*procedimentos2.forEach(function (x) {
-              counts[x] = (counts[x] || 0) + 1;
-            });
-            */
+           
             let n: any[] = [...new Set([...procedimentos2])];
             console.log(n);
 
@@ -639,6 +875,7 @@ export class RelatorioService {
             pdfMake.createPdf(documentDefinition).open();
           });
       });
+      */
   }
   medicamentoNome(medicamentos: Array<any>): Array<any> {
     let nome = [];

@@ -23,7 +23,7 @@ const TREE_DATA: FoodNode[] = [
     name: 'Programa de Acolhimento',
     children: [
       { name: 'Prontuários - PAS', link: '/acolhimento/prontuario' },
-      { name: 'Acolhidos', link: '/acolhimento/prontuario/acolhido' },
+      { name: 'Acolhidos', link: '/acolhimento/acolhido' },
       { name: 'Grupos Terapêuticos', link: '/acolhimento/grupo-terapeutico' },
       { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
       { name: 'Normas', link: '/acolhimento/norma' },

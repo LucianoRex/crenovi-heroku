@@ -37,7 +37,7 @@ export class ColaboradorListComponent extends ColaboradorResource
       columns: columns,
       service: this.colaboradorService.read('colaborador'),
       component: ColaboradorFormComponent,
-      socketioPath: 'colaborador',
+      //socketioPath: 'colaborador',
     });
   }
 }

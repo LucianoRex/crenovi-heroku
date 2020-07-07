@@ -8,7 +8,7 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
 })
 export class PsicoterapiaFormComponent extends ProntuarioResource
   implements OnInit {
-  procedimentos: any[] = [
+  procedimentos; /*: any[] = [
     'aplicação teste psicológico',
     'desenhos/brincadeiras',
     'escuta/acolhimento',
@@ -16,7 +16,7 @@ export class PsicoterapiaFormComponent extends ProntuarioResource
     'devolutiva',
     'orientação profissional',
   ];
-
+*/
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -24,6 +24,7 @@ export class PsicoterapiaFormComponent extends ProntuarioResource
   ngOnInit(): void {
     this.form = this.fb.group({
       //_id: undefined,
+      array: true,
       path: 'psicoterapia',
       psicoterapia: this.fb.group({
         _id: undefined,
@@ -32,17 +33,18 @@ export class PsicoterapiaFormComponent extends ProntuarioResource
         observacoes: [''],
       }),
     });
+    this.prontuarioService.procedimentoPsicologico().subscribe((res) => {
+      this.procedimentos = res;
+    });
     this._id !== undefined
       ? this.prontuarioService
           .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
-            this.form
-              .get('psicoterapia')
-              .patchValue(res);
-              //, { emitEvent: false, onlySelf: true }
+            this.form.get('psicoterapia').patchValue(res);
+            //, { emitEvent: false, onlySelf: true }
           })
       : null;
 
-    this.form.statusChanges.subscribe();
+    //this.form.statusChanges.subscribe();
   }
 }

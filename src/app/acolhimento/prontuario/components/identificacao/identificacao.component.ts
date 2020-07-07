@@ -8,9 +8,10 @@ import {
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { DialogDynamicTableLoaderComponent } from 'src/app/shared/utils/components/dialog-dynamic-table-loader/dialog-dynamic-table-loader.component';
-import { AcolhidoListComponent } from '../acolhido-list/acolhido-list.component';
+
 import { DatePipe } from '@angular/common';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { AcolhidoListComponent } from 'src/app/acolhimento/acolhido/components/acolhido-list/acolhido-list.component';
 
 @Component({
   selector: 'app-identificacao',
@@ -57,12 +58,9 @@ export class IdentificacaoComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    this.socketdata = 'pas';
-  //  console.log(this._id);
     this.selectedRow.subscribe((res) => {
-  //    console.log(res);
+      //    console.log(res);
     });
-  //  console.log(this.selectedRow);
     this.form = this.fb.group({
       path: 'identificacao',
       identificacao: this.fb.group({
@@ -80,16 +78,16 @@ export class IdentificacaoComponent extends ProntuarioResource
     });
     this._id !== undefined
       ? this.prontuarioService
-          .readById(this.concatenatedPath,'identificacao')
+          .readById(this.concatenatedPath, 'identificacao')
           .subscribe((res: any) => {
+            console.log(res);
             this.form.patchValue(res);
           })
       : this.form.get('identificacao').get('dataEgresso').disable();
 
     this.notify.emit(this.form);
 
-   // super(this.injector)
-
+    // super(this.injector)
   }
 
   getAcolhido() {

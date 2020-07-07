@@ -1,14 +1,16 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { ProntuarioFormComponent } from '../prontuario-form/prontuario-form.component';
-import { IDynamicTableBuilder, FieldType } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
+import {
+  IDynamicTableBuilder,
+  FieldType,
+} from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-prontuario-list',
   templateUrl: './prontuario-list.component.html',
   styleUrls: ['./prontuario-list.component.css'],
 })
-
 export class ProntuarioListComponent extends ProntuarioResource
   implements OnInit {
   constructor(protected injector: Injector) {
@@ -17,7 +19,7 @@ export class ProntuarioListComponent extends ProntuarioResource
 
   ngOnInit(): void {
     this.concatenatedPath = 'acolhimento';
-    let columns : IDynamicTableBuilder []=[
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'ativo',
         label: 'Em acolhimento',
@@ -30,7 +32,7 @@ export class ProntuarioListComponent extends ProntuarioResource
       {
         name: 'identificacao.dataIngresso',
         label: 'Data Ingresso',
-        type: FieldType.boolean,
+        type: FieldType.date,
       },
       {
         name: 'identificacao.convenio',
@@ -48,8 +50,8 @@ export class ProntuarioListComponent extends ProntuarioResource
       service: this.prontuarioService.read(),
       component: ProntuarioFormComponent,
       _id: undefined,
-      socketioPath: 'identificacao',
-      caminho: 'acolhimento',
+     // socketioPath: 'identificacao',
+      caminho: 'prontuario',
     });
   }
 }

@@ -27,10 +27,10 @@ export class HistoricoQuimicoListComponent extends ProntuarioResource
     ];
     super.montaTabela({
       columns,
-      service: this.prontuarioService.readById(this.concatenatedPath,'historicoQuimico'),
+      service: this.prontuarioService.readById(this.concatenatedPath,'historicoQuimico',true),
       component: HistoricoQuimicoFormComponent,
       _id: this._id,
-      socketioPath: 'historicoQuimico',
+     // socketioPath: 'historicoQuimico',
       caminho: this.concatenatedPath + '/historicoQuimico',
     });
   }

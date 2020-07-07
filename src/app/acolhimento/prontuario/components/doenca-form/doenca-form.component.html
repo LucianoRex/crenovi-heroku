@@ -1,6 +1,51 @@
 <form [formGroup]="form">
   <div formGroupName="doenca">
-    <div class="row"></div>
+    <div class="row" formGroupName="doenca">
+      <div class="col-md-6">
+        <mat-form-field class="example-full-width">
+          <mat-label>CID</mat-label>
+          <input
+            type="text"
+            aria-label="Number"
+            matInput
+            formControlName="codigo"
+            [matAutocomplete]="codigo"
+          />
+          <mat-autocomplete autoActiveFirstOption #codigo="matAutocomplete">
+            <mat-option
+              (onSelectionChange)="updateForm($event, option)"
+              *ngFor="let option of filteredOptions"
+              [value]="option"
+            >
+              {{ option.codigo }}- {{ option.nome }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field class="example-full-width">
+          <mat-label>Nome</mat-label>
+          <input
+            type="text"
+            placeholder="Digite o nome"
+            aria-label="Number"
+            matInput
+            formControlName="nome"
+            [matAutocomplete]="nome"
+          />
+          <mat-autocomplete autoActiveFirstOption #nome="matAutocomplete">
+            <mat-option
+              (onSelectionChange)="updateForm($event, option)"
+              *ngFor="let option of filteredOptions"
+              [value]="option"
+            >
+              {{ option.nome }} - {{ option.codigo }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <!--
     <div class="row">
       <div class="col-md-9" formGroupName="doenca">
         <mat-form-field class="example-full-width">
@@ -21,6 +66,7 @@
         </button>
       </div>     
     </div>
+  -->
     <div>
       <app-button-save [form]="form" (save)="save()"></app-button-save>
     </div>

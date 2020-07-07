@@ -34,13 +34,15 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(this.data);
     let component = this.componentFactoryResolver.resolveComponentFactory(
       this.data.component
     );
     let componentRef = this.viewContainerRef.createComponent(component);
-    //componentRef.changeDetectorRef.detectChanges();    
+    //componentRef.changeDetectorRef.detectChanges();
     componentRef.instance['_id'] = this.data._id;
     componentRef.instance['concatenatedPath'] = this.data.caminho;
+    componentRef.instance['caminho'] = this.data.caminho;
     if (componentRef.instance['selectedRow']) {
       componentRef.instance['selectedRow'].subscribe((res) => {
         this.data = res;
@@ -57,11 +59,11 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
 
     if (componentRef.instance['formChange']) {
       componentRef.instance['formChange'].subscribe((res) => {
-        this.isDirty = res;        
+        this.isDirty = res;
       });
     }
 
-    this.dialogRef.backdropClick().subscribe(() => {      
+    this.dialogRef.backdropClick().subscribe(() => {
       this.dialogRef.close(this.data);
     });
     componentRef.changeDetectorRef.detectChanges();

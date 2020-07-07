@@ -6,7 +6,6 @@ import { NormaFormComponent } from './norma-form/norma-form.component';
 import { RotinaDiariaListComponent } from './rotina-diaria/rotina-diaria-list/rotina-diaria-list.component';
 import { AcolhimentoRelatorioComponent } from './relatorio/acolhimento-relatorio.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -32,6 +31,11 @@ const routes: Routes = [
   {
     path: 'relatorio',
     component: AcolhimentoRelatorioComponent,
+  },
+  {
+    path: 'acolhido',
+    loadChildren: () =>
+      import('./acolhido/acolhido.module').then((m) => m.AcolhidoModule),
   },
   {
     path: 'grupo-terapeutico',

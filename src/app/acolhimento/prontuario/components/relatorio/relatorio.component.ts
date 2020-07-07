@@ -36,10 +36,10 @@ export class RelatorioComponent implements OnInit {
       titulo: 'Responsabilidade ',
       function: this.termoResponsabilidade.bind(this),
     },
-    {
+    /*{
       titulo: 'Medicamento ',
       function: this.medicamento.bind(this),
-    },
+    },*/
   ];
   constructor(
     private relatorioService: RelatorioService,

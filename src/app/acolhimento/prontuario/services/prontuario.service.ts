@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -17,17 +18,61 @@ export class ProntuarioService {
     headers = headers.set('apiExterna', 'true');
     return this._http.get(api);
   }
+  buscaMedicamento(
+    filter: { medicamento: string } = { medicamento: '' },
+    page = 1
+  ): Observable<any> {
+    return this._http
+      .get(`${this.apiBaseUrl}/busca/medicamento/${filter.medicamento}`)
+      .pipe(
+        tap((response: any[]) => {
+          console.log(response);
+          response.map((medicamento) => medicamento);
+          // Not filtering in the server since in-memory-web-api has somewhat restricted api
+          // .filter((user) => user.modelo.includes(filter.modelo));
 
+          return response;
+        })
+      );
+  }
+  procedimentoPsicologico(): Observable<any> {
+    return this._http.get(`${this.apiBaseUrl}/procedimentopsicologico`);
+  }
+  motivoSaida(): Observable<any> {
+    return this._http.get(`${this.apiBaseUrl}/motivosaida`);
+  }
+  tipoConsulta(): Observable<any> {
+    return this._http.get(`${this.apiBaseUrl}/tipoconsulta`);
+  }
+  buscaDoenca(
+    filter: { doenca: string } = { doenca: '' },
+    page = 1
+  ): Observable<any> {
+    return this._http
+      .get(`${this.apiBaseUrl}/busca/doenca/${filter.doenca}`)
+      .pipe(
+        tap((response: any[]) => {
+          console.log(response);
+          response.map((doenca) => doenca);
+          // Not filtering in the server since in-memory-web-api has somewhat restricted api
+          // .filter((user) => user.modelo.includes(filter.modelo));
+
+          return response;
+        })
+      );
+  }
   read(path = '') {
-    return this._http.get(`${this.apiBaseUrl}/acolhimento/${path}`);
+    return this._http.get(`${this.apiBaseUrl}/prontuario/${path}`);
   }
 
   readCollection(collection) {
     return this._http.get(`${this.apiBaseUrl}/${collection}`);
   }
 
-  readById(path, document) {
-    return this._http.get(`${this.apiBaseUrl}/${path}/${document}`);
+  readById(path, document, array: boolean = false) {
+    return this._http.get(
+      `${this.apiBaseUrl}/${path}/${document}?array=${array}`
+    );
   }
 
   save(form, _id, path: string): Observable<any> {
@@ -50,10 +95,8 @@ export class ProntuarioService {
     }
   }
 
-  remove(path) {
-    this._http.delete(`${this.apiBaseUrl}/${path}`).subscribe((res) => {
-      alert('Documento Excluído');
-    });
+  remove(path: string): Observable<any> {
+    return this._http.delete(`${this.apiBaseUrl}/${path}`);
   }
 
   concluirTratamento(
@@ -68,6 +111,6 @@ export class ProntuarioService {
   }
 
   carregaDadosPsicoterapia(path, form: any): Observable<any> {
-    return this._http.post(`${this.apiBaseUrl}/${path}/procedimentos`, form);
+    return this._http.post(`${this.apiBaseUrl}/${path}/relatorio`, form);
   }
 }

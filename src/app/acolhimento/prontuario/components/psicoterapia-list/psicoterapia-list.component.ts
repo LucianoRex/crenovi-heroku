@@ -26,11 +26,11 @@ export class PsicoterapiaListComponent extends ProntuarioResource
       columns,
       service: this.prontuarioService.readById(
         this.concatenatedPath,
-        'psicoterapia'
-      ),
+        'psicoterapia',
+        true      ),
       component: PsicoterapiaFormComponent,
       _id: this._id,
-      socketioPath: 'psicoterapia',
+     // socketioPath: 'psicoterapia',
       caminho: this.concatenatedPath + '/psicoterapia',
     });
   }

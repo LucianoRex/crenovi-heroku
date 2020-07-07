@@ -27,8 +27,8 @@ export class LivroDiarioListComponent extends AcolhimentoResource
       service: this.acolhimentoService.read('livrodiario'),
       component: LivroDiarioFormComponent,
       _id: undefined,
-      socketioPath: 'livrodiario',
-      caminho: 'livroDiario',
+     // socketioPath: 'livrodiario',
+     // caminho: 'livroDiario',
     });
     //this.socketioPath = 'livroDiario';
   }

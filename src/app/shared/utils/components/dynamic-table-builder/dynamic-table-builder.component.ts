@@ -48,18 +48,17 @@ export class DynamicTableBuilderComponent implements OnInit {
   title: string;
 
   constructor(
-    private datePipe: DatePipe
-  ) // private socketService: ProntuarioSocketService
-  {}
+    private datePipe: DatePipe // private socketService: ProntuarioSocketService
+  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe);
- //   this.socket.disconnect();
+    //   this.socket.disconnect();
   }
 
   ngOnInit(): void {
     // console.log(this.socketioPath);
-   /* this.socket.on(
+    /* this.socket.on(
       this.socketioPath,
       function (data: any) {
         this.getData();
@@ -120,6 +119,22 @@ export class DynamicTableBuilderComponent implements OnInit {
   formataHora(obj, path) {
     let hora = new String(path.split('.').reduce((o, p) => o && o[p], obj));
     return hora.substring(0, 2) + ':' + hora.substring(2);
+  }
+
+  formatNumberPattern(obj, path) {
+    console.log(path);
+    let format = new String(
+      path.name.split('.').reduce((o, p) => o && o[p], obj)
+    );
+    let formatted = '';
+    format.split('').forEach((e, i) => {
+      if (!/[0-9]/.test(path.pattern.charAt(i))) {
+        formatted += path.pattern[i] + e;
+      } else {
+        formatted += e;
+      }
+    });
+    return formatted; //hora.substring(0, 2) + ':' + hora.substring(2);
   }
 
   createEvent(e: Event) {

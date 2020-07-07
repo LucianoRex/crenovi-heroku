@@ -45,6 +45,8 @@ import { ProntuarioListComponent } from './components/prontuario-list/prontuario
 import { ProntuarioFormComponent } from './components/prontuario-form/prontuario-form.component';
 import { AgendamentoConsultaListaComponent } from './components/agendamento-consulta-list/agendamento-consulta-list.component';
 import { AgendamentoConsultaFormComponent } from './components/agendamento-consulta-form/agendamento-consulta-form.component';
+import { ChartsModule } from 'ng2-charts';
+
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
@@ -94,6 +96,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     FormsModule,
     AngularMaterialModule,
     WebcamModule,
+    ChartsModule
   ],
   exports: [],
 })

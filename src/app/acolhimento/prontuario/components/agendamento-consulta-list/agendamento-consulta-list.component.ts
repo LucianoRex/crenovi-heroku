@@ -25,7 +25,7 @@ export class AgendamentoConsultaListaComponent extends ProntuarioResource
         type: FieldType.date,
       },
       {
-        name: 'tipo',
+        name: 'tipo.tipo',
         label: 'Tipo',
       },
       {
@@ -38,11 +38,12 @@ export class AgendamentoConsultaListaComponent extends ProntuarioResource
       columns,
       service: this.prontuarioService.readById(
         this.concatenatedPath,
-        'agendamentoconsulta'
+        'agendamentoconsulta',
+        true
       ),
       component: AgendamentoConsultaFormComponent,
-      _id: this._id,
-      socketioPath: 'agendamentoconsulta',
+      _id: this._id,    
+      //socketioPath: 'agendamentoconsulta',
       caminho: this.concatenatedPath + '/agendamentoconsulta',
     });
   }

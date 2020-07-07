@@ -1,7 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { AvaliacaoFormComponent } from '../avaliacao-form/avaliacao-form.component';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
-import { IDynamicTableBuilder, FieldType } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
+import {
+  IDynamicTableBuilder,
+  FieldType,
+} from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 
 @Component({
   selector: 'app-avaliacao-list',
@@ -14,8 +17,8 @@ export class AvaliacaoListComponent extends ProntuarioResource
     super(injector);
   }
 
-  ngOnInit(): void {   
-    let columns:IDynamicTableBuilder[] = [
+  ngOnInit(): void {
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'data',
         label: 'Data',
@@ -50,11 +53,12 @@ export class AvaliacaoListComponent extends ProntuarioResource
       columns,
       service: this.prontuarioService.readById(
         this.concatenatedPath,
-        'avaliacao',       
+        'avaliacao',
+        true
       ),
       component: AvaliacaoFormComponent,
       _id: this._id,
-      socketioPath: 'avaliacao',
+      //socketioPath: 'avaliacao',
       caminho: this.concatenatedPath + '/avaliacao',
     });
   }

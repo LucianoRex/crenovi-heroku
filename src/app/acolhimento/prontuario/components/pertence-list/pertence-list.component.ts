@@ -17,8 +17,8 @@ export class PertenceListComponent extends ProntuarioResource
   ngOnInit(): void {
     let columns:IDynamicTableBuilder[] = [
       {
-        name: 'pertence',
-        label: 'Pertence',
+        name: 'item',
+        label: 'Item',
       },
       {
         name: 'quantidade',
@@ -27,10 +27,10 @@ export class PertenceListComponent extends ProntuarioResource
     ];
     super.montaTabela({
       columns,
-      service: this.prontuarioService.readById(this.concatenatedPath,'pertence'),
+      service: this.prontuarioService.readById(this.concatenatedPath,'pertence',true),
       component: PertenceFormComponent,
       _id: this._id,
-      socketioPath: 'pertence',
+     // socketioPath: 'pertence',
       caminho: this.concatenatedPath + '/pertence',
     });
   }

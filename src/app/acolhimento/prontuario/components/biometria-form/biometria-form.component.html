@@ -1,7 +1,7 @@
 <form [formGroup]="form">
   <div formGroupName="biometria">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-3">
         <mat-form-field>
           <mat-label>Data</mat-label>
           <input matInput [matDatepicker]="picker" formControlName="data" />
@@ -29,7 +29,7 @@
       <div class="col-md-3">
         <mat-form-field>
           <mat-label>Peso</mat-label>
-          <input matInput formControlName="peso" mask="0*" placeholder="80Kg" />
+          <input matInput formControlName="peso" placeholder="80.000Kg" />
         </mat-form-field>
       </div>
 
@@ -50,8 +50,7 @@
           <mat-label>Glicemia</mat-label>
           <input
             matInput
-            formControlName="glicemia"
-            mask="0*"
+            formControlName="glicemia"          
             placeholder="80mg/dl"
           />
         </mat-form-field>

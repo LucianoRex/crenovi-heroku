@@ -41,8 +41,8 @@ export class AcolhidoListComponent extends ProntuarioResource
       columns: columns,
       service: this.prontuarioService.read('acolhido'),
       component: AcolhidoFormComponent,
-      socketioPath: 'acolhido',
-      caminho: 'acolhimento/acolhido',
+     // socketioPath: 'acolhido',
+      caminho: 'acolhido',
     });
   }
 }

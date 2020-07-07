@@ -18,18 +18,20 @@ export class ProntuarioFormComponent extends ProntuarioResource
   historicoForenseForm: FormGroup;
   tratamentoForm: FormGroup;
   quadroClinicoForm: FormGroup;
-
-  //_id: string;
+  caminho: string;
+  
   constructor(
     protected injector: Injector,
     protected prontuarioService: ProntuarioService
   ) {
     super(injector);
+    this.selectedRow.subscribe((res) => {
+      console.log(res);
+    });
   }
 
   ngOnInit() {
-    this.concatenatedPath = 'acolhimento';
-   // console.log(this._id);    
+    this.concatenatedPath = 'acolhimento';    
     this._id != undefined ? (this.isLinear = false) : (this.isLinear = true);
   }
 
@@ -44,8 +46,7 @@ export class ProntuarioFormComponent extends ProntuarioResource
     this.responsavelForm = formGroup;
     this.responsavelForm.valueChanges.subscribe(() => {
       this.formChange.emit(true);
-    });
-    console.log(this.responsavelForm);
+    });    
     // this.formChange.emit(true);
     //this.responsavelForm.patchValue({}, { emitEvent: false, onlySelf: true });
   }
@@ -63,5 +64,9 @@ export class ProntuarioFormComponent extends ProntuarioResource
   }
   quadroClinico(formGroup: FormGroup): void {
     this.quadroClinicoForm = formGroup;
+  }
+  criado(doc) {
+    this._id = doc._id;
+    this.isLinear = false;
   }
 }

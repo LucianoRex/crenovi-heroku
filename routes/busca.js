@@ -19,10 +19,33 @@ router.post("/:model", (req, res, next) => {
   }
 
   const Model = require(`../models/${req.params.model}`);
- 
-  Model.find(criteria).then((result) => {      
+
+  Model.find(criteria).then((result) => {
     res.status(200).json(result);
   });
+});
+
+router.get("/medicamento/:field", function (req, res, next) {
+  const Model = require(`../models/medicamento`);
+  Model.find({ PRODUTO: { $regex: req.params.field, $options: "i" } })
+    // .limit(100)
+    .then((medicamento) => {
+      res.status(200).json(medicamento);
+    });
+});
+
+router.get("/doenca/:field", function (req, res, next) {
+  const Model = require(`../models/doenca`);
+  Model.find({
+    $or: [
+      { nome: { $regex: req.params.field, $options: "i" } },
+      { codigo: { $regex: req.params.field, $options: "i" } },
+    ],
+  })
+    // .limit(100)
+    .then((doenca) => {
+      res.status(200).json(doenca);
+    });
 });
 
 router.get("/getFields", async function (req, res, next) {

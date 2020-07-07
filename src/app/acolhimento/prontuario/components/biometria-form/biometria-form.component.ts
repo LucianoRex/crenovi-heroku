@@ -17,6 +17,7 @@ export class BiometriaFormComponent extends ProntuarioResource
   ngOnInit(): void {
     this.form = this.fb.group({
       path: 'biometria',
+      array:true,
       biometria: this.fb.group({
         _id: undefined,
         data: ['', Validators.required],

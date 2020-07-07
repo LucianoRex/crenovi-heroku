@@ -28,8 +28,8 @@
         <mat-form-field>
           <mat-label>Tipo</mat-label>
           <mat-select formControlName="tipo">
-            <mat-option *ngFor="let tipo of tipos" [value]="tipo">
-              {{ tipo }}
+            <mat-option *ngFor="let tipo of tipos" [value]="tipo._id">
+              {{ tipo.tipo }}
             </mat-option>
           </mat-select>
         </mat-form-field>

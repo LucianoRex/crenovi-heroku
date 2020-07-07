@@ -23,6 +23,7 @@ import { LoginComponent } from './login/login/login.component';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 import { HomeComponent } from './home/home.component';
+import { ChartsModule } from 'ng2-charts';
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 registerLocaleData(localePtBr);
@@ -42,7 +43,8 @@ registerLocaleData(localePtBr);
     ModalModule.forRoot(),
     NgxMaskModule.forRoot(),
     ReactiveFormsModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    ChartsModule
     //UtilsModule
   ],
   providers: [

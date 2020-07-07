@@ -2,6 +2,8 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { Validators } from '@angular/forms';
 import { RelatorioService } from '../../relatorios/relatorio.service';
+import { RadialChartOptions, ChartDataSets, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-evolucao-psicologica-form',
@@ -13,6 +15,25 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
   procedimentos;
   consultas;
   maxTextLineLength: number = 50;
+
+  // Radar
+  public radarChartOptions: RadialChartOptions = {
+    responsive: true,
+  };
+  public radarChartLabels: Label[] = [
+    'Disciplina',
+    'Autoestima',
+    'Reuniões',
+    'Espiritualidade',
+    'Higiene',
+    'Criatividade',
+  ];
+
+  public radarChartData: ChartDataSets[] = [
+    { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
+  ];
+  public radarChartType: ChartType = 'radar';
+
   constructor(
     protected injector: Injector,
     private relatorioServie: RelatorioService
@@ -23,6 +44,7 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
   ngOnInit(): void {
     this.form = this.fb.group({
       path: 'evolucaoPsicologica',
+      array: true,
       evolucaoPsicologica: this.fb.group({
         _id: undefined,
         dataI: ['', Validators.required],
@@ -41,22 +63,26 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
       : null;
 
     this.form.statusChanges.subscribe(() => this.carregaDadosPsicoterapia());
+    //this.carregaDadosPsicoterapia();
   }
 
-  carregaDadosPsicoterapia() {    
+  carregaDadosPsicoterapia() {
     this.prontuarioService
       .carregaDadosPsicoterapia(
         this.concatenatedPath,
         this.form.get('evolucaoPsicologica').value
       )
       .subscribe((res) => {
+        console.log(res);
         if (res[0]) {
-          this.procedimentos = new Set(...res[0]._id.procedimentos);
-          this.consultas = new Set(
-            Array.from(res[0]._id.consultas).map((e: any) => {
-              return e.tipo;
-            })
-          );
+          this.procedimentos = new Set(res[0]._id.procedimentos);
+          this.consultas = new Set(res[0]._id.consultas);
+          this.radarChartData = [
+            {
+              data: [...Object.values(res[0]._id.avaliacoes)],
+              label: 'Avaliações',
+            },
+          ];
         } else {
           this.procedimentos = new Array();
           this.consultas = new Array();
@@ -101,7 +127,7 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
       if (line.length > limit) {
         line = line.substr(0, limit);
       }
-      newtext += '\n'+line;
+      newtext += '\n' + line;
     }
     control = newtext;
     console.log(control);

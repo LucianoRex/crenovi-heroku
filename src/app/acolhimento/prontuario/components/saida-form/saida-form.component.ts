@@ -15,11 +15,15 @@ export class SaidaFormComponent extends ProntuarioResource implements OnInit {
   constructor(protected injector: Injector) {
     super(injector);
   }
-  motivos: any[] = ['Ressocialização', 'Consulta'];
+  motivos;
   ngOnInit(): void {
+    this.prontuarioService.motivoSaida().subscribe((res) => {
+      this.motivos = res;
+    });
     this.form = this.fb.group({
       //_id: undefined,
       path: 'saida',
+      array: true,
       saida: this.fb.group({
         _id: undefined,
         saida: [''],
@@ -29,9 +33,11 @@ export class SaidaFormComponent extends ProntuarioResource implements OnInit {
       }),
     });
     this._id !== undefined
-      ? this.prontuarioService.readById(this.concatenatedPath, this._id).subscribe((res: any) => {
-          this.form.get('saida').patchValue(res);
-        })
+      ? this.prontuarioService
+          .readById(this.concatenatedPath, this._id)
+          .subscribe((res: any) => {
+            this.form.get('saida').patchValue(res);
+          })
       : null;
     this.notify.emit(this.form);
   }

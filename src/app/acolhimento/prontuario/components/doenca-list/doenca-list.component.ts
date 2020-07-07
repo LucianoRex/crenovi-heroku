@@ -27,10 +27,10 @@ export class DoencaListComponent extends ProntuarioResource implements OnInit {
     ];
     super.montaTabela({
       columns,
-      service: this.prontuarioService.readById(this.concatenatedPath,'doenca'),
+      service: this.prontuarioService.readById(this.concatenatedPath,'doenca',true),
       component: DoencaFormComponent,
       _id: this._id,
-      socketioPath: 'doenca',
+     // socketioPath: 'doenca',
       caminho: this.concatenatedPath + '/doenca',
     });
   }

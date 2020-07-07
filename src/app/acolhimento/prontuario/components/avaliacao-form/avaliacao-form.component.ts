@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Input } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { Validators } from '@angular/forms';
 
@@ -9,6 +9,7 @@ import { Validators } from '@angular/forms';
 })
 export class AvaliacaoFormComponent extends ProntuarioResource
   implements OnInit {
+  //  @Input() _id: string;
   autoTicks = false;
   disabled = false;
   invert = false;
@@ -26,8 +27,10 @@ export class AvaliacaoFormComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
+    console.log(this._id)
     this.form = this.fb.group({
       path: 'avaliacao',
+      array:true,
       avaliacao: this.fb.group({
         _id: undefined,
         data: ['', Validators.required],

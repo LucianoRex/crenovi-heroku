@@ -39,11 +39,26 @@ export class ProntuarioResource extends DynamicFormTableResource
       .save(this.form.value, this._id, this.concatenatedPath)
       .subscribe(
         (res) => {
+          console.log(res);
           this.toastr.success('Salvo');
-          this.selectedRow.emit(res);
+          this.createdDoc.emit(res);
           //   this.socket.emit(this.form.get('path').value, res);
           //   this.socket.disconnect();
           this.saved.emit(true);
+        },
+        (err) => {
+          this.toastr.error(err);
+          this.saved.emit(false);
+        }
+      );
+  }
+  remove(path) {
+    this.prontuarioService
+      .remove(path)
+      .subscribe(
+        (res) => {
+          console.log(res);
+          this.toastr.warning('Deletado');
         },
         (err) => {
           this.toastr.error(err);
@@ -78,9 +93,6 @@ export class ProntuarioResource extends DynamicFormTableResource
           );
       }
     });
-  }
-  remove(path) {   
-    this.prontuarioService.remove(path);
   }
 }
 

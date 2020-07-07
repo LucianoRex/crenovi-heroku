@@ -34,11 +34,12 @@ export class EvolucaoPsicologicaListComponent extends ProntuarioResource
       columns,
       service: this.prontuarioService.readById(
         this.concatenatedPath,
-        'evolucaoPsicologica'
+        'evolucaoPsicologica',
+        true
       ),
       component: EvolucaoPsicologicaFormComponent,
       _id: this._id,
-      socketioPath: 'evolucaoPsicologica',
+      //socketioPath: 'evolucaoPsicologica',
       caminho: this.concatenatedPath + '/evolucaoPsicologica',
     });
   }

@@ -15,10 +15,14 @@ export class MedicamentoListComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    let columns:IDynamicTableBuilder[] = [
+    let columns: IDynamicTableBuilder[] = [
       {
         name: 'medicamento.PRODUTO',
         label: 'Medicamento',
+      },
+      {
+        name: 'medicamento.APRESENTACAO',
+        label: 'Apresentação',
       },
       {
         name: 'posologia',
@@ -27,10 +31,14 @@ export class MedicamentoListComponent extends ProntuarioResource
     ];
     super.montaTabela({
       columns,
-      service: this.prontuarioService.readById(this.concatenatedPath,'medicamento'),
+      service: this.prontuarioService.readById(
+        this.concatenatedPath,
+        'medicamento',
+        true
+      ),
       component: MedicamentoFormComponent,
       _id: this._id,
-      socketioPath: 'medicamento',
+      // socketioPath: 'medicamento',
       caminho: this.concatenatedPath + '/medicamento',
     });
   }

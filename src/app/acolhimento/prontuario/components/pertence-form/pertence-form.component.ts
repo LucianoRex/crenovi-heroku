@@ -27,13 +27,13 @@ export class PertenceFormComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-  //  console.log(this._id);
-    this.form = this.fb.group({
-      //_id: undefined,
+    //  console.log(this._id);
+    this.form = this.fb.group({      
       path: 'pertence',
+      array: true,
       pertence: this.fb.group({
         _id: undefined,
-        pertence: [''],
+        item: [''],
         quantidade: ['1'],
       }),
     });
