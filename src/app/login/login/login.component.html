@@ -1,87 +1,109 @@
-<div class="col-md-6 offset-md-3 mt-5">
-  <div class="alert alert-info">
-    Usuário: teste<br />
-    Senha: teste
-  </div>
-  <div class="card">
-    <h4 class="card-header">Login</h4>
-    <div class="card-body">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="username">Usuário</label>
+<div class="col-md-4 offset-md-4 mt-5">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>LOGIN</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm">
+        <mat-form-field>
+          <mat-label>Usuário</mat-label>
           <input
-            type="text"
+            matInput
             formControlName="username"
-            class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
           />
           <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
             <div *ngIf="f.username.errors.required">Username is required</div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="password">Senha</label>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Senha</mat-label>
           <input
             type="password"
+            matInput
             formControlName="password"
-            class="form-control"
             [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
           />
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Password is required</div>
-          </div>
-        </div>
-        <button [disabled]="loading" class="btn btn-primary">
-          <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm mr-1"
-          ></span>
-          Login
-        </button>
-        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">
-          {{ error }}
-        </div>
+        </mat-form-field>
       </form>
-    </div>
-  </div>
-</div>
+      <div class="row">
+        <div class="col-md-6">
+          <button
+            mat-raised-button
+            (click)="onSubmit()"
+            [disabled]="loading"
+            color="primary"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm mr-1"
+            ></span
+            >Login
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="openDialog()"
+            [disabled]="loading"
+            class="btn btn-primary"
+          >
+            Esqueci Minha senha
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
-<div class="col-md-6 offset-md-3 mt-5">
-  <div class="card">
-    <div class="card-body">
-      <div class="panel panel-default">
-        <h2 class="text-center">Esqueceu a senha?</h2>
-        <p>Você pode retoma-la através do seu e-mail.</p>
-        <form class="form" [formGroup]="resetForm" (ngSubmit)="resetPassword()">
-          <div class="form-group">
-            <div class="input-group">
-              <span class="input-group-addon"
-                ><i class="glyphicon glyphicon-envelope color-blue"></i
-              ></span>
+  <ng-template #modal>
+    <div class="card">
+      <div class="card-body">
+        <div class="panel panel-default">
+          <h2 class="text-center">Esqueceu a senha?</h2>
+          <p>Você pode retoma-la através do seu e-mail.</p>
+          <form
+            class="form"
+            [formGroup]="resetForm"
+            (ngSubmit)="resetPassword()"
+          >
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"
+                  ><i class="glyphicon glyphicon-envelope color-blue"></i
+                ></span>
+                <input
+                  placeholder="seu e-mail"
+                  class="form-control"
+                  type="email"
+                  formControlName="email"
+                />
+              </div>
+            </div>
+            <div class="form-group">
               <input
-                placeholder="seu e-mail"
-                class="form-control"
-                type="email"
-                formControlName="email"
+                class="btn btn-lg btn-primary btn-block"
+                value="Renovar Senha"
+                type="submit"
               />
             </div>
-          </div>
-          <div class="form-group">
-            <input
-              class="btn btn-lg btn-primary btn-block"
-              value="Renovar Senha"
-              type="submit"
-            />
-          </div>
 
-          <input type="hidden" class="hide" name="token" id="token" value="" />
-        </form>
+            <input
+              type="hidden"
+              class="hide"
+              name="token"
+              id="token"
+              value=""
+            />
+          </form>
+        </div>
       </div>
     </div>
+  </ng-template>
+
+  <div *ngIf="load" class="spinner">
+    <h1>Processando...</h1>
+    <mat-spinner></mat-spinner>
   </div>
-</div>
-<div *ngIf="load" class="spinner">
-  <h1>Processando...</h1>
-  <mat-spinner></mat-spinner>
- 
 </div>

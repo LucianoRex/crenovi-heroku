@@ -39,6 +39,9 @@ let comunidade = new Schema(
         type: String,
       },
     },
+    lastModified: {
+      type: Date,
+    },
   },
   {
     collection: "comunidade",

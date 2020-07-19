@@ -183,14 +183,7 @@
       >
     </div>
     <div>
-      <button
-        mat-button
-        matStepperNext
-        [disabled]="!form.valid"
-        (click)="save()"
-      >
-        Salvar
-      </button>
+      <app-button-save [form]="form" (save)="save()"></app-button-save>
     </div>
   </div>
 </form>

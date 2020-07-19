@@ -1,9 +1,10 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { Validators } from '@angular/forms';
-import { RelatorioService } from '../../relatorios/relatorio.service';
+
 import { RadialChartOptions, ChartDataSets, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { RelatorioService } from '../../services/relatorios/relatorio.service';
 
 @Component({
   selector: 'app-evolucao-psicologica-form',
@@ -45,13 +46,18 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
     this.form = this.fb.group({
       path: 'evolucaoPsicologica',
       array: true,
-      evolucaoPsicologica: this.fb.group({
-        _id: undefined,
-        dataI: ['', Validators.required],
-        dataF: ['', Validators.required],
-        sintese: [''],
-        procedimentos: [''],
-      }),
+      evolucaoPsicologica: this.fb.group(
+        {
+          _id: undefined,
+          dataI: ['', Validators.required],
+          dataF: ['', Validators.required],
+          sintese: [''],
+          procedimentos: [''],
+        },
+        {
+          validators: this.comparaData('dataI', 'dataF'),
+        }
+      ),
     });
     this._id !== undefined
       ? this.prontuarioService

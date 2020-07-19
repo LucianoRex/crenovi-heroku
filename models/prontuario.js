@@ -37,7 +37,7 @@ let prontuario = new Schema(
     responsavel: {
       nome: {
         type: String,
-        // default: "",
+        default: "Responsável não declarado",
       },
       cpf: {
         type: String,
@@ -49,9 +49,11 @@ let prontuario = new Schema(
       },
       email: {
         type: String,
+        default: "",
       },
       telefone: {
         type: String,
+        default: "",
       },
     },
     avaliacao: [
@@ -98,8 +100,7 @@ let prontuario = new Schema(
         },
         data: {
           type: Date,
-          default: Date.now(),
-          unique: true,
+          default: Date.now(),        
         },
       },
     ],
@@ -111,11 +112,9 @@ let prontuario = new Schema(
         },
         posologia: {
           type: String,
-          default: "Posologia",
         },
         observacoes: {
           type: String,
-          default: "OBS",
         },
       },
     ],
@@ -404,13 +403,13 @@ let prontuario = new Schema(
     },
     saida: [
       {
-        saida: {
+        dataSaida: {
           type: Date,
           default: Date.now(),
         },
-        retorno: {
+        dataRetorno: {
           type: Date,
-          default: Date.now(),
+          //default: Date.now(),
         },
         motivo: {
           type: mongoose.Schema.Types.ObjectId,

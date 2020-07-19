@@ -21,6 +21,7 @@ import * as io from 'socket.io-client';
 })
 export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
   isDirty: boolean = false;
+  
   //socket = io(environment.SOCKET_ENDPOINT);
   constructor(
     public dialogRef: MatDialogRef<DialogDynamicTableLoaderComponent>,
@@ -33,16 +34,17 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
     //this.socket.emit('disconnect', {});
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     console.log(this.data);
     let component = this.componentFactoryResolver.resolveComponentFactory(
       this.data.component
     );
-    let componentRef = this.viewContainerRef.createComponent(component);
+    let componentRef = this.viewContainerRef.createComponent(component);    
     //componentRef.changeDetectorRef.detectChanges();
     componentRef.instance['_id'] = this.data._id;
     componentRef.instance['concatenatedPath'] = this.data.caminho;
     componentRef.instance['caminho'] = this.data.caminho;
+
     if (componentRef.instance['selectedRow']) {
       componentRef.instance['selectedRow'].subscribe((res) => {
         this.data = res;
@@ -70,40 +72,6 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
   }
 
   onNoClick(): void {
-    /*if (this.isDirty) {
-      const dialogRef = this.dialog.open(Confirm, {});
-
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log('The dialog was closed');
-        if (result) this.dialogRef.close(this.data);
-      });
-    } else {*/
     this.dialogRef.close(this.data);
-    // }
-  }
-}
-
-@Component({
-  selector: 'app-conclusao',
-  template: `
-    <div mat-dialog-content>
-      <p>Sair sem salvar?</p>
-    </div>
-    <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Não</button>
-      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
-        Sim
-      </button>
-    </div>
-  `,
-})
-export class Confirm {
-  constructor(
-    public dialogRef: MatDialogRef<Confirm>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

@@ -1,0 +1,12 @@
+.imagem {
+    /*&background-color: #3f51b5;*/
+  }
+  .imagem img {
+    display: block;
+    margin: 0 auto;
+    width: 80%;
+    padding: .1em;
+  }
+  img {
+  }
+  

@@ -13,6 +13,7 @@ let user = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -21,10 +22,12 @@ let user = new Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
     },
     colaborador: {
       type: mongoose.Types.ObjectId,
       ref: "colaborador",
+      unique: true,
     },
     role: {
       type: String,

@@ -14,10 +14,11 @@
         <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
           <!-- use a disabled button to provide padding for tree leaf -->
           <button mat-icon-button disabled></button>
-          <a routerLink="{{ node.link }}"> {{ node.name }}</a>
+          <a routerLink="{{ node.link }}">{{ node.name }}</a>
         </mat-tree-node>
         <!-- This is the tree node template for expandable nodes -->
         <mat-tree-node
+          [disabled]="true"
           *matTreeNodeDef="let node; when: hasChild"
           matTreeNodePadding
         >
@@ -58,10 +59,19 @@
             font-size: xx-large;
             text-shadow: 10px 10px 4px #000000;
           "
-          ><a style="color: white; text-decoration:none" routerLink="/">CRENOVI</a></span
+          ><a style="color: white; text-decoration: none;" routerLink="/"
+            >CRENOVI</a
+          ></span
         >
         <span class="example-spacer"></span>
-        <span>{{ currentUser.nome }}</span>
+        <span>{{ currentUser.username }}</span>
+        <span
+          style="margin-left: 1em; cursor: pointer;"
+          (click)="logout()"
+          class="material-icons"
+        >
+          exit_to_app
+        </span>
       </mat-toolbar-row>
     </mat-toolbar>
     <router-outlet></router-outlet>

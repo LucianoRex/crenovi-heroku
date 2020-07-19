@@ -2,6 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { environment } from 'src/environments/environment';
 import { Validators } from '@angular/forms';
+import { ProntuarioService } from '../../services/prontuario.service';
 
 @Component({
   selector: 'app-agendamento-consulta-form',
@@ -10,7 +11,7 @@ import { Validators } from '@angular/forms';
 })
 export class AgendamentoConsultaFormComponent extends ProntuarioResource
   implements OnInit {
-  apiUrl = environment.apiBaseUrl;
+  apiUrl = environment.apiBaseUrl;  
   tipos: any[] = [
     'Dentista',
     'Médico',
@@ -26,8 +27,7 @@ export class AgendamentoConsultaFormComponent extends ProntuarioResource
     this.prontuarioService.tipoConsulta().subscribe((res) => {
       this.tipos = res;
     });
-    this.form = this.fb.group({
-      //_id: undefined,
+    this.form = this.fb.group({      
       array: true,
       path: 'agendamentoconsulta',
       agendamentoconsulta: this.fb.group({
@@ -43,9 +43,12 @@ export class AgendamentoConsultaFormComponent extends ProntuarioResource
       ? this.prontuarioService
           .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
+            console.log(res)            
             this.form.get('agendamentoconsulta').patchValue(res);
           })
       : null;
     this.notify.emit(this.form);
   }
+
+ 
 }

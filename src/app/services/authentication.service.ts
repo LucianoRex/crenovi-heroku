@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
@@ -11,13 +11,17 @@ import { FormGroup } from '@angular/forms';
 })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
+  //private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-
+  comunidade: Observable<any>;
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser'))
     );
     this.currentUser = this.currentUserSubject.asObservable();
+    this.comunidade = new BehaviorSubject(
+      JSON.parse(localStorage.getItem('comunidade'))
+    ).asObservable();
   }
 
   public get currentUserValue(): User {
@@ -34,9 +38,13 @@ export class AuthenticationService {
       })
       .pipe(
         map((user) => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
+          this.http
+            .get(`${environment.apiBaseUrl}/comunidade/comunidade`)
+            .subscribe((comunidade) => {
+              localStorage.setItem('comunidade', JSON.stringify(comunidade));
+            });
           return user;
         })
       );
@@ -47,8 +55,8 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
   }
-  
+
   resetPassword(form: FormGroup): Observable<any> {
-    return this.http.post(`${environment.apiBaseUrl}/users/recover`, form)
+    return this.http.post(`${environment.apiBaseUrl}/users/recover`, form);
   }
 }

@@ -5,6 +5,7 @@ import {
   IDynamicTableBuilder,
   FieldType,
 } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
+import { IDynamicFormTable } from 'src/app/shared/utils/classes/dynamic-form-table-resource';
 
 @Component({
   selector: 'app-prontuario-list',
@@ -44,14 +45,16 @@ export class ProntuarioListComponent extends ProntuarioResource
         complemento: ' Meses',
       },
     ];
-
-    this.montaTabela({
+    
+    let data: IDynamicFormTable = {
       columns: columns,
       service: this.prontuarioService.read(),
       component: ProntuarioFormComponent,
-      _id: undefined,
-     // socketioPath: 'identificacao',
+      _id: undefined,      
       caminho: 'prontuario',
-    });
+      title: 'Prontuário',
+    };
+
+    this.montaTabela(data);
   }
 }

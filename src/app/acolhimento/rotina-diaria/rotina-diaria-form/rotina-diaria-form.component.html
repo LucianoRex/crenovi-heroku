@@ -17,7 +17,11 @@
     <div class="col-md-3">
       <mat-form-field>
         <mat-label>Atividade</mat-label>
-        <input matInput formControlName="atividade" />
+        <mat-select formControlName="atividade">
+          <mat-option *ngFor="let atividade of atividades" [value]="atividade">
+            {{ atividade }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
     <div class="col-md-3">

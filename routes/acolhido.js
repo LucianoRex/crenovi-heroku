@@ -1,4 +1,5 @@
 const Acolhido = require("../models/acolhido");
+const Prontuario = require("../models/prontuario");
 var express = require("express");
 var router = express.Router();
 
@@ -16,13 +17,18 @@ router.get("/:_id", (req, res, next) => {
     });
 });
 
-router.put("/:_id", (req, res, next) => {
+router.put("/:_id", async (req, res, next) => {
   console.log("AtualizandoAcolhido");
   let data = {
     ...req.body.acolhido,
   };
-  console.log(req.params);
+  //console.log(req.body);
   let mensagem = [];
+  /* let conferecpf = await Acolhido.find({
+    $and: [{ _id: { $ne: req.params._id } }, { cpf: req.body.acolhido.cpf }],
+  });*/
+  // console.log("CONFERECPF" + conferecpf);
+
   Acolhido.findOneAndUpdate(
     {
       _id: req.params._id,
@@ -31,8 +37,7 @@ router.put("/:_id", (req, res, next) => {
       $set: data,
     },
     {
-      // new: true,
-      //upsert: true,
+      upsert: true,
     }
   )
     .then((acolhido) => {
@@ -56,6 +61,21 @@ router.post("/", (req, res, next) => {
     .catch((error) => {
       res.status(500).json({ message: error.message });
     });
+});
+
+router.delete("/:_id", (req, res, next) => {
+
+  let data = {
+    ...req.body.acolhido,
+  };
+
+ /* Acolhido.findOneAndRemove({ _id: req.params._id })
+    .then((acolhido) => {
+      res.status(200).json(acolhido);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    });*/
 });
 
 module.exports = router;

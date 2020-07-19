@@ -17,11 +17,10 @@ body {
 
 .app-full-bleed-dialog .mat-dialog-container {
   padding: 0;
-  border: solid;
 }
 
-form{
-  padding: .5em;
+form {
+  padding: 0.5em;
 }
 mat-form-field {
   width: 100%;

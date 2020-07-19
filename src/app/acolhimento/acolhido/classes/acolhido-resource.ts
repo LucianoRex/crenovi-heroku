@@ -19,12 +19,12 @@ export class AcolhidoResource extends DynamicFormTableResource
   @Output() saved = new EventEmitter<boolean>();
   protected acolhidoService: AcolhidoService;
   protected dynamicListService: DynamicListService;
-  private toastr: ToastrService;
+ // private toastr: ToastrService;
   constructor(protected injector: Injector) {
     super(injector);
     this.acolhidoService = injector.get(AcolhidoService);
     this.dynamicListService = injector.get(DynamicListService);
-    this.toastr = injector.get(ToastrService);
+   // this.toastr = injector.get(ToastrService);
   }
 
   ngOnDestroy(): void {

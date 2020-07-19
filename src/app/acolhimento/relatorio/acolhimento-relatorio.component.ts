@@ -12,6 +12,10 @@ export class AcolhimentoRelatorioComponent implements OnInit {
       titulo: 'Rotina diária',
       function: this.normaDiaria.bind(this),
     },
+    {
+      titulo: 'Normas da comunidade',
+      function: this.normaComunidade.bind(this),
+    },
   ];
   constructor(
     private acolhimentoRelatorioService: AcolhimentoRelatorioService
@@ -25,6 +29,10 @@ export class AcolhimentoRelatorioComponent implements OnInit {
   }
 
   normaDiaria() {
-    this.acolhimentoRelatorioService.rotinaDiaria()
+    this.acolhimentoRelatorioService.rotinaDiaria();
+  }
+
+  normaComunidade() {
+    this.acolhimentoRelatorioService.normaComunidade();
   }
 }

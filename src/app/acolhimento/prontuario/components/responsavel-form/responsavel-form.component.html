@@ -33,7 +33,7 @@
       </div>
     </div>
     <div>
-      <button appSaveButton mat-button matStepperNext (click)="save()">Salvar</button>
+      <app-button-save [form]="form" (save)="save()"></app-button-save>
     </div>
   </div>
 </form>

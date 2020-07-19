@@ -7,6 +7,26 @@
   top: 0; /* Sets the sticky toolbar to be on top */
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
 }
-.test{
+.test {
   background-color: brown;
+}
+
+.spinner {
+  height: -webkit-fill-available;
+  position: fixed;
+  width: 100%;
+  border: solid;
+  top: 0;
+  background-color: rgba(7, 7, 7, 0.8);
+}
+.spinner h1 {
+  position: absolute;
+  margin: 40%;
+  font-size: xxx-large;
+  color: white;
+}
+mat-spinner {
+  margin: 50%;
+  width: 100px;
+  height: 100px;
 }

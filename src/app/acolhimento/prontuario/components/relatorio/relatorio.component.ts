@@ -7,11 +7,12 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-import { RelatorioService } from '../../relatorios/relatorio.service';
+
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { RelatorioService } from '../../services/relatorios/relatorio.service';
 
 @Component({
   selector: 'app-relatorio',
@@ -35,6 +36,10 @@ export class RelatorioComponent implements OnInit {
     {
       titulo: 'Responsabilidade ',
       function: this.termoResponsabilidade.bind(this),
+    },
+    {
+      titulo: 'Pertences ',
+      function: this.declaracoPetence.bind(this),
     },
     /*{
       titulo: 'Medicamento ',
@@ -68,6 +73,9 @@ export class RelatorioComponent implements OnInit {
   }
   termoResponsabilidade() {
     this.relatorioService.termoResponsabilidade(this._id);
+  }
+  declaracoPetence() {
+    this.relatorioService.declaracaoPertence(this._id);
   }
   declaracaoHipossuficiencia() {
     const initialState = {

@@ -38,6 +38,21 @@ export class RotinaDiariaFormComponent extends AcolhimentoResource
       value: 'Domingo',
     },
   ];
+
+  atividades: string[] = [
+    'Despertar',
+    'Café da manhã',
+    'Devocional',
+    'Atividades Ocupacionais',
+    'R.I.M.',
+    'Almoço/Descanço',
+    'Descanço',
+    'Janta',
+    'Culto',
+    'Lanche',
+    'Reunião/Grupo',
+    'Descanço/Silêncio'
+  ];
   constructor(protected injector: Injector) {
     super(injector);
   }

@@ -58,7 +58,7 @@ export class AvaliacaoListComponent extends ProntuarioResource
       ),
       component: AvaliacaoFormComponent,
       _id: this._id,
-      //socketioPath: 'avaliacao',
+      title: 'Avaliações',
       caminho: this.concatenatedPath + '/avaliacao',
     });
   }

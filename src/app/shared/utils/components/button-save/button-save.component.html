@@ -1,11 +1,17 @@
 <div>
   <button
-    mat-button
-    color="accent"
+    mat-raised-button
+    [ngClass]="{ blink: changeColor }"
+    [color]="!changeColor ? 'primary' : 'warn'"
     [disabled]="!form.valid"
+    [changeColor]="changeColor"
     (click)="save.emit()"
     appSaveButton
   >
+    <span
+      *ngIf="changeColor"
+      class="spinner-border spinner-border-sm mr-1"
+    ></span>
     Salvar
   </button>
 </div>

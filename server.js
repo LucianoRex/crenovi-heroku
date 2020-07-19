@@ -75,51 +75,6 @@ const busca = require("./routes/busca");
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
-/*
-io.on("connection", function (socket) {
-  console.log("a user connected");
-  socket.on("avaliacao", (data) => {
-    console.log("Cheou avaliacao");
-    io.emit("avaliacao", { data: data });
-    io.removeListener('avaliacao',()=>this)
-  });
-  socket.on("biometria", (data) => {
-    io.emit("biometria", { data: data });
-    socket.off = socket.removeAllListeners("biometria");
-  });
-  socket.on("psicoterapia", (data) => {
-    io.emit("psicoterapia", { data: data });
-    socket.off = socket.removeAllListeners("psicoterapia");
-  });
-  socket.on("saida", (data) => {
-    io.emit("saida", { data: data });
-    socket.off = socket.removeAllListeners("saida");
-  });
-  socket.on("pertence", (data) => {
-    io.emit("pertence", { data: data });
-    socket.off = socket.removeAllListeners("pertence");
-  });
-  socket.on("agendamentoconsulta", (data) => {
-    io.emit("agendamentoconsulta", { data: data });
-    socket.off = socket.removeAllListeners("agendamentoconsulta");
-  });
-  socket.on("identificacao", (data) => {
-    console.log("IDe");
-    io.emit("identificacao", { data: data });
-    socket.off = socket.removeAllListeners("identificacao");
-  });
-  socket.on("livrodiario", (data) => {
-    io.emit("livrodiario", { data: data });
-    socket.off = socket.removeAllListeners("livrodiario");
-  });
- 
-
-  socket.on("disconnect", function () {
-    console.log("user disconnected");    
-    
-  });
-});
-*/
 
 // HTTP request logger
 app.use(morgan("tiny"));

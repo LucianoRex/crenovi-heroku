@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake.js';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
-import { Pas } from '../models/pas';
-import { Relatorio } from '../models/relatorio';
+
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { newArray } from '@angular/compiler/src/util';
+import { Pas } from '../../models/pas';
+import { Relatorio } from '../../models/relatorio';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -98,9 +99,19 @@ export class RelatorioService {
               text: [
                 `Neste ato, eu, ${prontuario.identificacao.acolhido.nome
                   .trim()
-                  .toLocaleUpperCase()}, `,
+                  .toLocaleUpperCase()}, portador da Cédula de
+                  Identidade nº ${
+                    prontuario.identificacao.acolhido.rg
+                  }, inscrito no CPF sob nº ${
+                  prontuario.identificacao.acolhido.cpf
+                }`,
                 { text: 'AUTORIZO', fontSize: 15, bold: true },
-                ` o uso de minha imagem em todo e qualquer material entre fotos e documentos, para ser utilizadas em divulgação, E outros movimentos da entidade Centro de Reabilitação Nova Vida-CRENOVI. Por  ser a expressão da minha vontade declaro e autorizo o uso acima descrito sem que nada haja a ser reclamado a título de direitos conexos à minha imagem ou a qualquer outro, e assino a presente autorização.
+                ` o uso de minha imagem em todo e qualquer material entre fotos e documentos, 
+                para ser utilizadas em divulgação, E outros movimentos da entidade 
+                Centro de Reabilitação Nova Vida-CRENOVI. 
+                Por  ser a expressão da minha vontade declaro e autorizo o uso acima descrito 
+                sem que nada haja a ser reclamado a título de direitos conexos à minha imagem 
+                ou a qualquer outro, e assino a presente autorização.
           `,
               ],
               fontSize: 14,
@@ -123,6 +134,7 @@ export class RelatorioService {
         pdfMake.createPdf(documentDefinition).open();
       });
   }
+
   termoCiencia(_id: string) {
     this.http
       .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
@@ -179,6 +191,91 @@ export class RelatorioService {
               text: `__________________________________\n\nCarimbo e assinatura do funcionário`,
               alignment: 'center',
               fontSize: 14,
+            },
+          ],
+
+          styles: {
+            header: {
+              fontSize: 16,
+              bold: true,
+              alignment: 'justify',
+            },
+            tableHeader: {
+              bold: true,
+            },
+          },
+        };
+        pdfMake.createPdf(documentDefinition).open();
+      });
+  }
+
+  declaracaoPertence(_id: string) {
+    this.http
+      .get(`${this.apiBaseUrl}/prontuario/declaracaopertence/${_id}`)
+      .subscribe((prontuario: Pas) => {
+        let user;
+
+        this.authenticationService.currentUser.subscribe((res) => {
+          user = res;
+        });
+        let pertence: any[] = prontuario.pertence;
+        let listaPertence: any[] = [];
+        listaPertence.push(['ITEM', 'QUANTIDADE']);
+        pertence.forEach((e) => {
+          listaPertence.push([e.item, e.quantidade]);
+        });
+        const texto = this.formatarData();
+        const documentDefinition = {
+          pageSize: 'A4',
+          pageOrientation: 'portrait',
+          pageMargins: [50, 50, 50, 150],
+          footer: function (currentPage, pageCount) {
+            return [
+              {
+                text: `Santa Rosa, ${texto}`,
+                margin: [0, 0, 0, 50],
+                alignment: 'center',
+                fontSize: 14,
+              },
+              {
+                alignment: 'justify',
+                columns: [
+                  {
+                    text: `_________________________________\n\n\ ${prontuario.identificacao.acolhido.nome}`,
+                    alignment: 'center',
+                    fontSize: 14,
+                  },
+                  {
+                    text: `__________________________________\n\n${
+                      user.colaborador.nome || 'Funcionário'
+                    } 
+                    \n
+                    ${user.colaborador.funcao || ''}`,
+                    alignment: 'center',
+                    fontSize: 14,
+                  },
+                ],
+                margin: [0, 0, 0, 100],
+              },
+            ];
+          },
+          content: [
+            new new Relatorio().logo(500, 'center', 50).image,
+            new new Relatorio().titulo('Declaração de pertences'),
+            {
+              text: [
+                `Neste ato, eu, ${prontuario.identificacao.acolhido.nome
+                  .trim()
+                  .toLocaleUpperCase()}, declaro para os devidos fins, que no presente momento de ingresso ao CENTRO DE REABILITAÇÃO NOVA VIDA, possuo os seguintes pertences:`,
+              ],
+              fontSize: 14,
+              alignment: 'justify',
+              margin: [0, 0, 0, 30],
+            },
+            {
+              table: {
+                body: listaPertence,
+              },
             },
           ],
 
@@ -276,12 +373,16 @@ export class RelatorioService {
 
   declaracaoHipossuficienciaDeRenda(_id: string, form: any[]) {
     let user;
+    let comunidade;
 
     this.authenticationService.currentUser.subscribe((res) => {
       //  console.log(res);
       user = res;
     });
 
+    this.authenticationService.comunidade.subscribe(
+      (res) => (comunidade = res)
+    );
     this.http
       .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
       .subscribe((prontuario: Pas) => {
@@ -299,7 +400,7 @@ export class RelatorioService {
                   `${form[0].value}\n`,
                   `Cidade: ${form[1].value}\n`,
                   `Endereço: ${form[2].value}\n`,
-                  `CEP: ${form[3].value}`,
+                  `CEP: ${form[3].value.slice(0, 5)}-${form[3].value.slice(5)}`,
                 ],
                 margin: [50, 10, 10, 100],
                 alignment: 'justify',
@@ -315,7 +416,7 @@ export class RelatorioService {
             ),
             {
               text: [
-                `Declaramos para os devidos fins, que o acolhido , Sr. ${prontuario.identificacao.acolhido.nome
+                `Declaramos para os devidos fins, que o acolhido Sr. ${prontuario.identificacao.acolhido.nome
                   .trim()
                   .toLocaleUpperCase()}, nascido em ${new DatePipe(
                   'en-US'
@@ -349,17 +450,21 @@ export class RelatorioService {
               ],
             },
             { text: 'Enviar para:', style: 'header' },
-            /*
+
             {
-              text: `${acolhimento[1].correspondencia.rua}, n° ${acolhimento[1].correspondencia.numero}`,
+              text: `${comunidade.correspondencia.rua}, n° ${comunidade.correspondencia.numero}`,
               alignment: 'justify',
             },
             {
-              text: `${acolhimento[1].correspondencia.bairro} ${acolhimento[1].correspondencia.cidade}-${acolhimento[1].correspondencia.uf}`,
+              text: `${comunidade.correspondencia.bairro} ${comunidade.correspondencia.cidade}-${comunidade.correspondencia.uf}`,
               alignment: 'justify',
             },
             {
-              text: `${acolhimento[1].correspondencia.cep}\n\n`,
+              text: `${comunidade.correspondencia.cep}\n`,
+              alignment: 'justify',
+            },
+            {
+              text: `Responsável Técnico: ${comunidade.responsavelTecnico}\n\n`,
               alignment: 'justify',
             },
 
@@ -372,7 +477,7 @@ export class RelatorioService {
               text: user.colaborador.funcao || '',
               alignment: 'justify',
             },
-            */
+
             //  { text: `${JSON.parse(localStorage.getItem('currentUser')).colaborador.nome || 'Funcionário'} - ${JSON.parse(localStorage.getItem('currentUser')).colaborador.funcao || ''}`, alignment: 'justify' },
           ],
 
@@ -405,7 +510,6 @@ export class RelatorioService {
         let identificacao = relatorio[0]._id['identificacao'];
         let procedimentos = relatorio[0]._id['procedimentos'];
         let consultas = relatorio[0]._id['consultas'];
-        console.log(procedimentos);
         let procedimentosLista: string = '';
         procedimentos.forEach((e) => {
           procedimentosLista += `(X)${e}\t`;
@@ -442,7 +546,7 @@ export class RelatorioService {
                   {
                     text: `__________________________________\n${
                       user.colaborador.nome || ''
-                    } - Psicóloga`,
+                    } - ${user.colaborador.funcao || ''}`,
                     alignment: 'center',
                     fontSize: 14,
                   },
@@ -495,7 +599,7 @@ export class RelatorioService {
               )}\n`,
             },
             {
-              text: `\nProcedimento(s) técnicos realizado(s):\n`,
+              text: `\nProcedimento(s) técnicos realizado(s) no período:\n`,
               bold: true,
             },
             procedimentosLista,
@@ -563,7 +667,7 @@ export class RelatorioService {
             },
             */
             {
-              text: `\nAnálise:`,
+              text: `\nAnálise do período:`,
               bold: true,
             },
             {

@@ -1,8 +1,9 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-import { Validators } from '@angular/forms';
+import { Validators, FormGroup } from '@angular/forms';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-saida-form',
@@ -21,16 +22,20 @@ export class SaidaFormComponent extends ProntuarioResource implements OnInit {
       this.motivos = res;
     });
     this.form = this.fb.group({
-      //_id: undefined,
       path: 'saida',
       array: true,
-      saida: this.fb.group({
-        _id: undefined,
-        saida: [''],
-        retorno: [''],
-        motivo: [''],
-        responsavel: [''],
-      }),
+      saida: this.fb.group(
+        {
+          _id: undefined,
+          dataSaida: ['', Validators.required],
+          dataRetorno: [''],
+          motivo: ['', Validators.required],
+          responsavel: ['', Validators.required],
+        },
+        {
+          validators: this.comparaData('dataSaida', 'dataRetorno'),
+        }
+      ),
     });
     this._id !== undefined
       ? this.prontuarioService
@@ -39,6 +44,7 @@ export class SaidaFormComponent extends ProntuarioResource implements OnInit {
             this.form.get('saida').patchValue(res);
           })
       : null;
-    this.notify.emit(this.form);
-  }
+    this.notify.emit(this.form);  
+   
+  } 
 }

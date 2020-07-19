@@ -72,34 +72,26 @@
         </mat-form-field>
       </div>
 
-      <div class="col-md-4" formGroupName="acolhido">
+      <div class="col-md-6" formGroupName="acolhido">
         <mat-form-field class="example-full-width">
           <mat-label>Acolhido</mat-label>
           <input matInput formControlName="nome" [readonly]="true" />
         </mat-form-field>
       </div>
-      <div class="col-md-2" style="align-self: center;">
+      <div class="col-md-1" style="align-self: center;">
+        <button mat-button (click)="editAcolhido()">
+          <mat-icon aria-hidden="false">edit</mat-icon>
+        </button>
+      </div>
+      <div class="col-md-1" style="align-self: center;">
         <button mat-button (click)="getAcolhido()">
           <mat-icon aria-hidden="false">search</mat-icon>
         </button>
       </div>
-    
-      <div class="col-md-3">
-        <button mat-raised-button color="accent" (click)="concluir()">
-          Concluir tratamento
-        </button>
-      </div>
     </div>
-    <div class="row"></div>
     <div>
-      <button
-        mat-button
-        matStepperNext
-        [disabled]="!form.valid"
-        (click)="save()"
-      >
-        Salvar
-      </button>
+      <app-button-save [form]="form" (save)="save()"></app-button-save>
     </div>
   </div>
 </form>
+

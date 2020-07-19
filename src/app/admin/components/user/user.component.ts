@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ColaboradorService } from 'src/app/colaborador/services/colaborador.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user',
@@ -23,7 +24,8 @@ export class UserComponent implements OnInit {
     private adminService: AdminService,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private colaboradorService: ColaboradorService
+    private colaboradorService: ColaboradorService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -60,10 +62,23 @@ export class UserComponent implements OnInit {
       //    this.animal = result;
     });
   }
-
-  save() {
-    this.adminService.saveUser(this.form.value).subscribe((res) => {
-      console.log(res);
+  resetPassword(row) {
+    this.adminService.resetPassword(row).subscribe((res) => {
+      this.toastr.success('Senha Alterada');
     });
+  }
+  load() {
+    this.adminService.readUsers().subscribe((res) => {
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+  save() {
+    this.adminService.saveUser(this.form.value).subscribe(
+      (res: any) => {
+        this.toastr.success('salvo');
+      },
+      (error) => this.toastr.error(error)
+    );
   }
 }

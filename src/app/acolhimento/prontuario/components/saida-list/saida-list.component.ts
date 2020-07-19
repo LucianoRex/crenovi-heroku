@@ -19,12 +19,12 @@ export class SaidaListComponent extends ProntuarioResource implements OnInit {
   ngOnInit(): void {
     let columns: IDynamicTableBuilder[] = [
       {
-        name: 'saida',
+        name: 'dataSaida',
         label: 'Saída',
         type: FieldType.date,
       },
       {
-        name: 'retorno',
+        name: 'dataRetorno',
         label: 'Retorno',
         type: FieldType.date,
       },

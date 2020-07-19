@@ -12,6 +12,8 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DynamicListService } from 'src/app/shared/utils/services/dynamic-list.service';
+import { FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class ProntuarioResource extends DynamicFormTableResource
   implements OnDestroy {
@@ -22,12 +24,11 @@ export class ProntuarioResource extends DynamicFormTableResource
   @Output() saved = new EventEmitter<boolean>();
   protected prontuarioService: ProntuarioService;
   protected dynamicListService: DynamicListService;
-  private toastr: ToastrService;
+ 
   constructor(protected injector: Injector) {
     super(injector);
     this.prontuarioService = injector.get(ProntuarioService);
-    this.dynamicListService = injector.get(DynamicListService);
-    this.toastr = injector.get(ToastrService);
+    this.dynamicListService = injector.get(DynamicListService);    
   }
 
   ngOnDestroy(): void {
@@ -53,18 +54,33 @@ export class ProntuarioResource extends DynamicFormTableResource
       );
   }
   remove(path) {
-    this.prontuarioService
-      .remove(path)
-      .subscribe(
-        (res) => {
-          console.log(res);
-          this.toastr.warning('Deletado');
-        },
-        (err) => {
-          this.toastr.error(err);
-          this.saved.emit(false);
-        }
-      );
+    this.prontuarioService.remove(path).subscribe(
+      (res) => {
+        console.log(res);
+        this.toastr.warning('Deletado');
+      },
+      (err) => {
+        this.toastr.error(err);
+        this.saved.emit(false);
+      }
+    );
+  }
+
+  comparaData(dataI: string, dataF: string) {
+    return (group: FormGroup): { [key: string]: any } => {
+      let inicial = group.controls[dataI];
+      let final = group.controls[dataF];
+      if (
+        new Date(inicial.value) > new Date(final.value) &&
+        final.value != null
+      ) {
+        this.toastr.error('Intervalo entre datas está incorreto');
+        return {
+          error: 'Intervalo entre datas está incorreto',
+        };
+      }
+      return {};
+    };
   }
 
   concluirTratamento() {

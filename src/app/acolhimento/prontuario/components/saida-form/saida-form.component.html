@@ -4,7 +4,11 @@
       <div class="col-md-3">
         <mat-form-field>
           <mat-label>Saída</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="saida" />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dataSaida"
+          />
           <mat-datepicker-toggle
             matSuffix
             [for]="picker"
@@ -15,7 +19,11 @@
       <div class="col-md-3">
         <mat-form-field>
           <mat-label>Retorno</mat-label>
-          <input matInput [matDatepicker]="retorno" formControlName="retorno" />
+          <input
+            matInput
+            [matDatepicker]="retorno"
+            formControlName="dataRetorno"
+          />
           <mat-datepicker-toggle
             matSuffix
             [for]="retorno"
@@ -45,3 +53,5 @@
     </div>
   </div>
 </form>
+  
+

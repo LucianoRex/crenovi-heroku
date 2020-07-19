@@ -10,12 +10,10 @@ export class ColaboradorResource extends DynamicFormTableResource {
   socket = io(environment.SOCKET_ENDPOINT);
   socketdata: string;
   @Input() _id: string = undefined;
-  protected colaboradorService: ColaboradorService;
-  private toastr: ToastrService;
+  protected colaboradorService: ColaboradorService;  
   constructor(protected injector: Injector) {
     super(injector);
-    this.colaboradorService = injector.get(ColaboradorService);
-    this.toastr = injector.get(ToastrService);
+    this.colaboradorService = injector.get(ColaboradorService);    
   }
   save() {
     console.log(this.form.value);

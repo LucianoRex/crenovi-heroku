@@ -69,4 +69,5 @@ export class ProntuarioFormComponent extends ProntuarioResource
     this._id = doc._id;
     this.isLinear = false;
   }
+ 
 }

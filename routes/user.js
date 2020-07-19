@@ -9,12 +9,12 @@ const {
   readUsers,
   chekRoles,
   register,
-  registerUpdate
+  registerUpdate,
 } = require("./../utils/auth");
-const bcrypt = require("bcryptjs");
+
 const nodemailer = require("nodemailer");
 var async = require("async");
-var crypto = require("crypto");
+var bcrypt = require("bcryptjs");
 const User = require("../models/user");
 //var flash = require("express-flash");
 router.post("/authenticate", async (req, res, next) => {
@@ -145,6 +145,26 @@ router.post("/recover", function (req, res, next) {
         .catch((err) => res.status(500).json({ message: err.message }));
     })
     .catch((err) => res.status(500).json({ message: err.message }));
+});
+
+router.post("/resetpassword/:_id", async function (req, res, next) {
+  const hashedPassword = await bcrypt.hash("crenovi", 12);
+  User.findOneAndUpdate(
+    { _id: req.params._id },
+    {
+      $set: {
+        password: hashedPassword,
+      },
+    }
+  )
+    .then((user) => {
+      res.status(200).json(user);
+    })
+    .catch((error) => {
+      res.json(500).json({
+        message: error.message,
+      });
+    });
 });
 
 router.get("/reset/:token", function (req, res) {

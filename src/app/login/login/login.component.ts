@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -18,13 +19,14 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   error = '';
   load: boolean = false;
-
+  @ViewChild('modal') modal: TemplateRef<any>;
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public dialog: MatDialog
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -34,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: [''],
+      username: ['',Validators.required],
       email: [''],
       nome: [''],
       password: ['', Validators.required],
@@ -75,9 +77,14 @@ export class LoginComponent implements OnInit {
         },
         (error) => {
           this.error = error;
+          this.toastr.error(error);
           this.loading = false;
         }
       );
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(this.modal, {});
   }
 
   resetPassword() {

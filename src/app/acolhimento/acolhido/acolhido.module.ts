@@ -19,6 +19,7 @@ import { UtilsModule } from 'src/app/shared/utils/utils.module';
     WebcamModule,
     ReactiveFormsModule,
     AngularMaterialModule,   
+    UtilsModule,
   ],
 })
 export class AcolhidoModule {}

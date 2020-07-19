@@ -5,6 +5,7 @@ import { AuthGuard } from './helpers/auth.guard';
 import { LoginComponent } from './login/login/login.component';
 import { Role } from './models/role';
 import { HomeComponent } from './home/home.component';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,8 @@ const routes: Routes = [
       },
       {
         path: 'comunidade',
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.SuperAdmin] },
         loadChildren: () =>
           import('./comunidade/comunidade.module').then(
             (m) => m.ComunidadeModule
@@ -29,6 +32,8 @@ const routes: Routes = [
       },
       {
         path: 'colaborador',
+        canActivate: [AuthGuard],
+        data: { roles: [Role.Admin, Role.SuperAdmin] },
         loadChildren: () =>
           import('./colaborador/colaborador.module').then(
             (m) => m.ColaboradorModule
@@ -45,11 +50,17 @@ const routes: Routes = [
         path:'',
         component:HomeComponent
 
-      }
+      },
+      {
+        path:'not',
+        component:NotAuthorizedComponent
+
+      },
+      { path: '', redirectTo: 'not',pathMatch:'full' },
     ],
   },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: '' },
+  //{ path: '**', redirectTo: 'not',pathMatch:'full' },
 ];
 
 @NgModule({

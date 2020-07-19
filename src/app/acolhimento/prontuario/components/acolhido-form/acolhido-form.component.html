@@ -1,4 +1,4 @@
-<form [formGroup]="form">
+<form [formGroup]="form" (keydown.enter)="$event.preventDefault()">
   <div formGroupName="acolhido">
     <div class="row">
       <div class="col-md-6">

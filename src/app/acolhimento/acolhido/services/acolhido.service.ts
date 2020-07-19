@@ -42,7 +42,7 @@ export class AcolhidoService {
   }
 
   remove(path) {
-    this._http.delete(`${this.apiBaseUrl}/${path}`).subscribe((res) => {
+    this._http.delete(`${this.apiBaseUrl}/acolhido${path}`).subscribe((res) => {
       alert('Documento Excluído');
     });
   }

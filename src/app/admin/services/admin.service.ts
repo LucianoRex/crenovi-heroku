@@ -17,10 +17,15 @@ export class AdminService {
   }
   saveUser(form): Observable<any> {
     if (form._id == undefined) {
-    
       return this._http.post(`${this.apiUrl}/users/register`, form);
     } else {
       return this._http.put(`${this.apiUrl}/users/register/${form._id}`, form);
     }
+  }
+  resetPassword(form): Observable<any> {
+    return this._http.post(
+      `${this.apiUrl}/users/resetpassword/${form._id}`,
+      form
+    );
   }
 }

@@ -12,6 +12,7 @@ import { DialogDynamicTableLoaderComponent } from 'src/app/shared/utils/componen
 import { DatePipe } from '@angular/common';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { AcolhidoListComponent } from 'src/app/acolhimento/acolhido/components/acolhido-list/acolhido-list.component';
+import { AcolhidoFormComponent } from 'src/app/acolhimento/acolhido/components/acolhido-form/acolhido-form.component';
 
 @Component({
   selector: 'app-identificacao',
@@ -94,11 +95,27 @@ export class IdentificacaoComponent extends ProntuarioResource
     const dialogRef = this.dialog.open(DialogDynamicTableLoaderComponent, {
       maxWidth: '90vw',
       width: '90vw',
-      data: { component: AcolhidoListComponent },
+      panelClass: 'app-full-bleed-dialog',
+      data: { component: AcolhidoListComponent, title: 'Acolhidos' },
     });
 
     dialogRef.afterClosed().subscribe((res) => {
       this.form.get('identificacao').get('acolhido').patchValue(res);
+    });
+  }
+
+  editAcolhido() {
+    let _id = this.form.get('identificacao').get('acolhido').get('_id').value
+    const dialogRef = this.dialog.open(DialogDynamicTableLoaderComponent, {
+      maxWidth: '90vw',
+      width: '90vw',
+      maxHeight:'70vh',
+      panelClass: 'app-full-bleed-dialog',
+      data: { component: AcolhidoFormComponent, title: 'Acolhidos',_id:_id },
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log(res)
+      this.form.get('identificacao').get('acolhido').patchValue(res/*,{emitEvent: false, onlySelf: true}*/);
     });
   }
 

@@ -3,9 +3,66 @@ var router = express.Router();
 const Prontuario = require("../models/prontuario");
 const ProcedimentoPsicologico = require("../models/procedimentoPsicologico");
 const mongoose = require("mongoose");
+const {
+  userRegister,
+  userLogin,
+  userAuth,
+  serializeUser,
+  chekRole,
+} = require("./../utils/auth");
 
-router.post("/:_id/evolucaoPsicologica/relatorio", (req, res, next) => {
-  console.log(req.body);
+
+router.post("/:_id/concluir",userAuth, async(req,res,next)=>{
+  try {
+    let prontuario = await Prontuario.findOne(
+      { _id: req.params._id },
+      { identificacao: 1 }
+    );
+    if (
+      new Date(req.body.dataEgresso) <
+      new Date(prontuario.identificacao.dataIngresso)
+    ) {
+      res.status(500).json({
+        message: "Data de Egresso não pode ser anterior à data de Ingresso",
+        success: false,
+      });
+    } else {
+      Prontuario.findOneAndUpdate(
+        {
+          _id: req.params._id,
+        },
+        {
+          $set: {
+            ativo: false,
+            motivoConclusao: req.body.motivo,
+            "identificacao.dataEgresso": new Date(req.body.dataEgresso),
+          },
+        },
+        {
+          upsert: true,
+        }
+      )
+        .then((prontuario) => {
+          res.status(200).json(prontuario);
+        })
+        .catch((error) => {
+          res.status(500).json({ message: error.message });
+        });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+})
+
+router.get("/declaracaopertence/:_id",userAuth, (req, res, next) => {
+  Prontuario.findOne({ _id: req.params._id }, { pertence: 1, identificacao: 1 })
+    .populate("identificacao.acolhido")
+    .then((pertence) => {
+      res.status(200).json(pertence);
+    });
+});
+
+router.post("/:_id/evolucaoPsicologica/relatorio",userAuth, (req, res, next) => {
   Prontuario.aggregate([
     { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
     {
@@ -124,7 +181,7 @@ router.post("/:_id/evolucaoPsicologica/relatorio", (req, res, next) => {
   });
 });
 
-router.get("/relatorio/:_id", (req, res, next) => {
+router.get("/relatorio/:_id", userAuth,(req, res, next) => {
   Prontuario.findOne(
     { _id: req.params._id },
     { identificacao: 1, responsavel: 1 }
@@ -135,7 +192,7 @@ router.get("/relatorio/:_id", (req, res, next) => {
     });
 });
 //retorna a lista de prontuarios
-router.get("/", (req, res, next) => {
+router.get("/",userAuth, (req, res, next) => {
   Prontuario.find({}, { identificacao: 1, ativo: 1 })
     .populate("identificacao.acolhido")
     .then((prontuario) => {
@@ -146,7 +203,7 @@ router.get("/", (req, res, next) => {
     });
 });
 
-router.get("/:_id/*", (req, res, next) => {
+router.get("/:_id/*",userAuth, (req, res, next) => {
   if (req.params[0].split("/")[1] == undefined) {
     Prontuario.findOne(
       {
@@ -190,7 +247,7 @@ router.get("/:_id/*", (req, res, next) => {
   }
 });
 
-router.put("/:_id/*", (req, res, next) => {
+router.put("/:_id/*", userAuth,(req, res, next) => {
   console.log(req.body);
   if (req.body.array != true) {
     Prontuario.findOneAndUpdate(
@@ -254,7 +311,7 @@ router.put("/:_id/*", (req, res, next) => {
   }
 });
 
-router.post("/identificacao", async (req, res, next) => {
+router.post("/identificacao", userAuth,async (req, res, next) => {
   console.log(req.body.identificacao);
   let confereAcolhido = await Prontuario.findOne({
     "identificacao.acolhido": req.body.identificacao.acolhido._id,
@@ -281,7 +338,20 @@ router.post("/identificacao", async (req, res, next) => {
   }
 });
 
-router.delete("/:_id/*", (req, res, next) => {
+router.delete("/:_id",userAuth, (req, res, next) => {
+  Prontuario.findOneAndRemove({ _id: req.params._id })
+    .then((prontuario) => {
+      res.status(200).json(prontuario);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: error.message,
+      });
+    });
+});
+router.delete("/:_id/*", userAuth,(req, res, next) => {
+  console.log(req.params);
+
   let data = {
     ...req.body[req.body.path],
   };

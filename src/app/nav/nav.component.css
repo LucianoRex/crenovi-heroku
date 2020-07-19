@@ -30,3 +30,7 @@
   text-align: right;
   margin: 0px;
 }
+a.disabled {
+  pointer-events: none;
+  cursor: no-drop;
+}

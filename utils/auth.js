@@ -84,7 +84,7 @@ const register = async (userDets, res) => {
 
 const registerUpdate = async (userDets, res) => {
   try {
-  
+    console.log(userDets.body);
 
     User.findOneAndUpdate(
       { _id: userDets.params._id },
@@ -116,8 +116,8 @@ const registerUpdate = async (userDets, res) => {
 const login = async (userCreds, res) => {
   let { username, password } = userCreds;
 
-  const user = await User.findOne({ username }).populate('colaborador');
-  console.log(user)
+  const user = await User.findOne({ username }).populate("colaborador");
+  console.log(user);
   if (!user) {
     return res.status(404).json({
       message: "Usuário não encontrado",
@@ -134,7 +134,7 @@ const login = async (userCreds, res) => {
         role: user.role,
         username: user.username,
         email: user.email,
-        nome: user.nome,    
+        nome: user.nome,
       },
       cfg.jwtSecret,
       { expiresIn: "7 days" }
@@ -145,7 +145,7 @@ const login = async (userCreds, res) => {
       role: user.role,
       email: user.email,
       nome: user.nome,
-      colaborador:user.colaborador || '',
+      colaborador: user.colaborador || "",
       token: `Bearer ${token}`,
       expiresIn: 168,
     };
@@ -250,10 +250,10 @@ const serializeUser = (user) => {
 
 const readUsers = (req, res) => {
   const user = User.find()
-  .populate('colaborador')
-  .then((user) => {
-    return res.status(200).json(user);
-  });
+    .populate("colaborador.colaborador")
+    .then((user) => {
+      return res.status(200).json(user);
+    });
   // console.log(user)
 };
 

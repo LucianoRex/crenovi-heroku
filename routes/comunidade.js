@@ -11,8 +11,8 @@ router.get("/comunidade", function (req, res, next) {
 router.post("/comunidade", async (req, res, next) => {
   let data = {
     ...req.body,
-  }; 
-  let c = await comunidade.find();  
+  };
+  let c = await comunidade.find();
   if (c.length == 0) {
     comunidade
       .create(new comunidade(data))
@@ -24,7 +24,7 @@ router.post("/comunidade", async (req, res, next) => {
       });
   } else {
     comunidade
-      .update({}, { $set: data })
+      .update({}, { $set: data, $currentDate: { lastModified: true } })
       .then((comunidade) => {
         res.status(200).json(comunidade);
       })

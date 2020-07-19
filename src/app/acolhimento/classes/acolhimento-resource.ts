@@ -18,25 +18,25 @@ export class AcolhimentoResource extends DynamicFormTableResource {
   @Input() _id: string = undefined;
   @Output() saved = new EventEmitter<boolean>();
   protected acolhimentoService: AcolhimentoService;
-  private toastr: ToastrService;
+ // private toastr: ToastrService;
   constructor(protected injector: Injector) {
     super(injector);
     this.acolhimentoService = injector.get(AcolhimentoService);
-    this.toastr = injector.get(ToastrService);
+    //this.toastr = injector.get(ToastrService);
   }
   save() {
     //console.log(this.form.value);
     this.acolhimentoService.save(this.form.value).subscribe(
       (res) => {
         this.toastr.success('Salvo');
-      //  console.log(res);
+        //  console.log(res);
         this.selectedRow.emit(res);
         /*  this.socket.emit(
           this.form.get('path').value,
           this.form.get('path').value,
           res
         );*/
-      //  this.acolhimentoService.emitSocket(this.form.value, res);
+        //  this.acolhimentoService.emitSocket(this.form.value, res);
         this.saved.emit(true);
       },
       (err) => {
@@ -47,5 +47,9 @@ export class AcolhimentoResource extends DynamicFormTableResource {
 
   remove(path) {
     this.acolhimentoService.remove(path);
+  }
+
+  comparaData(dataI, dataF) {
+    return dataI < dataF
   }
 }

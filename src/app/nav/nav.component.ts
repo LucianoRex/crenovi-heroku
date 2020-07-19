@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -15,54 +15,9 @@ import { AcolhimentoRelatorioService } from '../acolhimento/relatorio/acolhiment
 interface FoodNode {
   name: string;
   link?: string;
+  show?: boolean;
   children?: FoodNode[];
 }
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Programa de Acolhimento',
-    children: [
-      { name: 'Prontuários - PAS', link: '/acolhimento/prontuario' },
-      { name: 'Acolhidos', link: '/acolhimento/acolhido' },
-      { name: 'Grupos Terapêuticos', link: '/acolhimento/grupo-terapeutico' },
-      { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
-      { name: 'Normas', link: '/acolhimento/norma' },
-      { name: 'Rotina Diária', link: '/acolhimento/rotina-diaria' },
-      { name: 'Relatórios', link: '/acolhimento/relatorio' },
-    ],
-  },
-  {
-    name: 'Comunidade',
-    children: [
-      {
-        name: 'Dados da Entidade',
-        link: '/comunidade/comunidade',
-      },
-      {
-        name: 'Colaboradores',
-        link: '/colaborador/colaborador',
-      },
-    ],
-  },
-  {
-    name: 'Colaborador',
-    children: [
-      {
-        name: 'Colaboradores',
-        link: '/colaborador/colaborador',
-      },
-    ],
-  },
-  {
-    name: 'Admin',
-    children: [
-      {
-        name: 'Usuários',
-        link: '/admin/user',
-      },
-    ],
-  },
-];
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {
@@ -76,13 +31,15 @@ interface ExampleFlatNode {
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css'],
 })
-export class NavComponent {
+export class NavComponent implements AfterViewInit {
+  TREE_DATA: FoodNode[];
   private _transformer = (node: FoodNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       link: node.link,
       level: level,
+      show:node.show
     };
   };
 
@@ -105,13 +62,68 @@ export class NavComponent {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private breakpointObserver: BreakpointObserver,
-    private acolhimentoRelatorioService: AcolhimentoRelatorioService
+    private breakpointObserver: BreakpointObserver,    
   ) {
     this.authenticationService.currentUser.subscribe(
       (x) => (this.currentUser = x)
     );
-    this.dataSource.data = TREE_DATA;
+   
+  }
+  ngAfterViewInit(): void {
+    
+    this.TREE_DATA = [
+      {
+        name: 'Programa de Acolhimento',
+        children: [
+          { name: 'Prontuários - PAS', link: '/acolhimento/prontuario' },
+          { name: 'Acolhidos', link: '/acolhimento/acolhido' },
+          /*{
+            name: 'Grupos Terapêuticos',
+            link: '/acolhimento/grupo-terapeutico',
+          },*/
+          { name: 'Livro Diário', link: '/acolhimento/livro-diario' },
+          { name: 'Normas', link: '/acolhimento/norma' },
+          { name: 'Rotina Diária', link: '/acolhimento/rotina-diaria' },
+          { name: 'Relatórios/Documentos', link: '/acolhimento/relatorio' },
+        ],
+      },
+      {
+        name: 'Comunidade',
+        children: [
+          {
+            name: 'Dados da Entidade',
+            link: '/comunidade/comunidade',
+            show: this.currentUser.role == 'admin',
+          },
+          {
+            name: 'Colaboradores',
+            link: '/colaborador/colaborador',
+            show: this.currentUser.role == 'admin',
+          },
+        ],
+      },
+      {
+        name: 'Colaborador',
+        children: [
+          {
+            name: 'Colaboradores',
+            link: '/colaborador/colaborador',
+            show: this.currentUser.role == 'admin',
+          },
+        ],
+      },
+      {
+        name: 'Admin',
+        children: [
+          {
+            name: 'Usuários',
+            link: '/admin/user',
+            show: this.currentUser.role == 'admin',
+          },
+        ],
+      },
+    ];
+    this.dataSource.data = this.TREE_DATA;
   }
 
   logout() {

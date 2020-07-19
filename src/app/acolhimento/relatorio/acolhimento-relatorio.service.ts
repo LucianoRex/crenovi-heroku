@@ -52,6 +52,7 @@ export class AcolhimentoRelatorioService {
   sabado;
   domingo;
   constructor(private _http: HttpClient) {}
+
   rotinaDiaria() {
     this._http
       .get(`${this.apiBaseUrl}/acolhimento/rotinadiaria`)
@@ -195,13 +196,7 @@ export class AcolhimentoRelatorioService {
         });
         let domingoArr: any[] = [];
         Array.from(this.domingo).forEach((e: any) => {
-          domingoArr.push([
-            { text: e.Atividade, border: [false, false, false, false] },
-            [
-              { text: e.Inicio, border: [false, false, false, false] },
-              { text: e.Final, border: [false, false, false, false] },
-            ],
-          ]);
+          domingoArr.push([e.Atividade, [e.Inicio, e.Final]]);
         });
         console.log(segundaArr);
         console.log(this.segunda);
@@ -219,7 +214,6 @@ export class AcolhimentoRelatorioService {
               defaultBorder: false,
               table: {
                 widths: ['*', '*', '*', '*', '*', '*', '*'],
-                border: [false, false, false, false],
                 body: [
                   [
                     'Segunda-Feira',
@@ -237,6 +231,7 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: segundaArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                     [
@@ -244,6 +239,7 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: tercaArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                     [
@@ -251,6 +247,7 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: quartaArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                     [
@@ -258,6 +255,7 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: quintaArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                     [
@@ -265,6 +263,7 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: sextaArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                     [
@@ -272,6 +271,7 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: sabadoArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                     [
@@ -279,11 +279,35 @@ export class AcolhimentoRelatorioService {
                         table: {
                           body: domingoArr,
                         },
+                        layout: 'noBorders',
                       },
                     ],
                   ],
                 ],
               },
+           //   layout: 'noBorders',
+            },
+          ],
+        };
+        pdfMake.createPdf(documentDefinition).open();
+      });
+  }
+  normaComunidade() {
+    this._http
+      .get(`${this.apiBaseUrl}/acolhimento/norma`)
+      .subscribe((res: any) => {
+        console.log(res);
+
+        const documentDefinition = {
+          pageSize: 'A4',
+          pageOrientation: 'portrait',
+          pageMargins: [30, 20, 20, 30],
+
+          content: [
+            new new Relatorio().logo(545, 'center', 50).image,
+            new new Relatorio().titulo('Normas'),
+            {
+              text: res.texto,
             },
           ],
         };
