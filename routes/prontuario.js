@@ -11,8 +11,7 @@ const {
   chekRole,
 } = require("./../utils/auth");
 
-
-router.post("/:_id/concluir",userAuth, async(req,res,next)=>{
+router.post("/:_id/concluir", userAuth, async (req, res, next) => {
   try {
     let prontuario = await Prontuario.findOne(
       { _id: req.params._id },
@@ -46,15 +45,15 @@ router.post("/:_id/concluir",userAuth, async(req,res,next)=>{
           res.status(200).json(prontuario);
         })
         .catch((error) => {
-          res.status(500).json({ message: error.message });
+          res.status(500).json({ error: true, message: error.message });
         });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-})
+});
 
-router.get("/declaracaopertence/:_id",userAuth, (req, res, next) => {
+router.get("/declaracaopertence/:_id", userAuth, (req, res, next) => {
   Prontuario.findOne({ _id: req.params._id }, { pertence: 1, identificacao: 1 })
     .populate("identificacao.acolhido")
     .then((pertence) => {
@@ -62,126 +61,117 @@ router.get("/declaracaopertence/:_id",userAuth, (req, res, next) => {
     });
 });
 
-router.post("/:_id/evolucaoPsicologica/relatorio",userAuth, (req, res, next) => {
-  Prontuario.aggregate([
-    { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
-    {
-      $lookup: {
-        from: "acolhido",
-        localField: "identificacao.acolhido",
-        foreignField: "_id",
-        as: "acolhido",
+router.post(
+  "/:_id/evolucaoPsicologica/relatorio",
+  userAuth,
+  (req, res, next) => {
+    Prontuario.aggregate([
+      { $match: { _id: mongoose.Types.ObjectId(req.params._id) } },
+      {
+        $lookup: {
+          from: "acolhido",
+          localField: "identificacao.acolhido",
+          foreignField: "_id",
+          as: "acolhido",
+        },
       },
-    },
 
-    {
-      $project: {
-        _id: 1,
-        acolhido: 1,
-        procedimentos: 1,
-        consultas: 1,
-        identificacao: 1,
-        psicoterapia: {
-          $filter: {
-            input: "$psicoterapia",
-            as: "psicoterapia",
-            cond: {
-              /* $and: [
-                { $eq: [{ $month: "$$evolucaoPsicologica.data" }, 5] },
-                { $eq: [{ $year: "$$evolucaoPsicologica.data" }, 2020] },
-              ],
-              */
+      {
+        $project: {
+          _id: 1,
+          acolhido: 1,
+          procedimentos: 1,
+          consultas: 1,
+          identificacao: 1,
+          psicoterapia: {
+            $filter: {
+              input: "$psicoterapia",
+              as: "psicoterapia",
+              cond: {
+                $and: [
+                  { $gte: ["$$psicoterapia.data", new Date(req.body.dataI)] },
+                  { $lte: ["$$psicoterapia.data", new Date(req.body.dataF)] },
+                ],
+              },
+            },
+          },
+          consulta: {
+            $filter: {
+              input: "$agendamentoconsulta",
 
-              $and: [
-                { $gte: ["$$psicoterapia.data", new Date(req.body.dataI)] },
-                { $lte: ["$$psicoterapia.data", new Date(req.body.dataF)] },
-              ],
+              as: "consulta",
+              cond: {
+                $and: [
+                  { $gte: ["$$consulta.data", new Date(req.body.dataI)] },
+                  { $lte: ["$$consulta.data", new Date(req.body.dataF)] },
+                  { $eq: ["$$consulta.consultaEfetuada", true] },
+                ],
+              },
+            },
+          },
+          avaliacao: {
+            $filter: {
+              input: "$avaliacao",
+              as: "avaliacao",
+              cond: {
+                $and: [
+                  { $gte: ["$$avaliacao.data", new Date(req.body.dataI)] },
+                  { $lte: ["$$avaliacao.data", new Date(req.body.dataF)] },
+                ],
+              },
             },
           },
         },
-
-        consulta: {
-          $filter: {
-            input: "$agendamentoconsulta",
-
-            as: "consulta",
-            cond: {
-              $and: [
-                { $gte: ["$$consulta.data", new Date(req.body.dataI)] },
-                { $lte: ["$$consulta.data", new Date(req.body.dataF)] },
-                { $eq: ["$$consulta.consultaEfetuada", true] },
-              ],
-            },
-          },
-        },
-        avaliacao: {
-          $filter: {
-            input: "$avaliacao",
-            as: "avaliacao",
-            cond: {
-              $and: [
-                { $gte: ["$$avaliacao.data", new Date(req.body.dataI)] },
-                { $lte: ["$$avaliacao.data", new Date(req.body.dataF)] },
-              ],
-            },
-          },
+      },
+      {
+        $lookup: {
+          from: "procedimentoPsicologico",
+          localField: "psicoterapia.procedimento",
+          foreignField: "_id",
+          as: "procedimentos",
         },
       },
-    },
-
-    //{ $unwind: "$avaliacao" },
-    //{ $unwind: "$consulta" },
-
-    /* {
-      $group: {
-        _id: "$psicoterapia",
-        allValues: { $push: "$procedimento.procedimento" },
-      },
-    },
-*/
-    {
-      $lookup: {
-        from: "procedimentoPsicologico",
-        localField: "psicoterapia.procedimento",
-        foreignField: "_id",
-        as: "procedimentos",
-      },
-    },
-    {
-      $lookup: {
-        from: "tipoConsulta",
-        localField: "consulta.tipo",
-        foreignField: "_id",
-        as: "consultas",
-      },
-    },
-    {
-      $group: {
-        _id: {
-          consultas: "$consultas.tipo",
-          psicoterapia: "$psicoterapia",
-          procedimentos: "$procedimentos.procedimento",
-          avaliacoes: {
-            disciplina: { $trunc: [{ $avg: "$avaliacao.disciplina" }, 1] },
-            autoestima: { $trunc: [{ $avg: "$avaliacao.autoestima" }, 1] },
-            reunioes: { $trunc: [{ $avg: "$avaliacao.reunioes" }, 1] },
-            espiritualidade: {
-              $trunc: [{ $avg: "$avaliacao.espiritualidade" }, 1],
-            },
-            higiene: { $trunc: [{ $avg: "$avaliacao.higiene" }, 1] },
-            criatividade: { $trunc: [{ $avg: "$avaliacao.criatividade" }, 1] },
-          },
-          acolhido: { nome: "$acolhido.nome", dataNasc: "$acolhido.dataNasc" },
-          identificacao: "$identificacao",
+      {
+        $lookup: {
+          from: "tipoConsulta",
+          localField: "consulta.tipo",
+          foreignField: "_id",
+          as: "consultas",
         },
       },
-    },
-  ]).then((relatorio) => {
-    res.status(200).json(relatorio);
-  });
-});
+      {
+        $group: {
+          _id: {
+            consultas: "$consultas.tipo",
+            psicoterapia: "$psicoterapia",
+            procedimentos: "$procedimentos.procedimento",
+            avaliacoes: {
+              disciplina: { $trunc: [{ $avg: "$avaliacao.disciplina" }] },
+              autoestima: { $trunc: [{ $avg: "$avaliacao.autoestima" }] },
+              reunioes: { $trunc: [{ $avg: "$avaliacao.reunioes" }] },
+              espiritualidade: {
+                $trunc: [{ $avg: "$avaliacao.espiritualidade" }],
+              },
+              higiene: { $trunc: [{ $avg: "$avaliacao.higiene" }] },
+              criatividade: {
+                $trunc: [{ $avg: "$avaliacao.criatividade" }],
+              },
+            },
+            acolhido: {
+              nome: "$acolhido.nome",
+              dataNasc: "$acolhido.dataNasc",
+            },
+            identificacao: "$identificacao",
+          },
+        },
+      },
+    ]).then((relatorio) => {
+      res.status(200).json(relatorio);
+    });
+  }
+);
 
-router.get("/relatorio/:_id", userAuth,(req, res, next) => {
+router.get("/relatorio/:_id", userAuth, (req, res, next) => {
   Prontuario.findOne(
     { _id: req.params._id },
     { identificacao: 1, responsavel: 1 }
@@ -192,7 +182,7 @@ router.get("/relatorio/:_id", userAuth,(req, res, next) => {
     });
 });
 //retorna a lista de prontuarios
-router.get("/",userAuth, (req, res, next) => {
+router.get("/", userAuth, (req, res, next) => {
   Prontuario.find({}, { identificacao: 1, ativo: 1 })
     .populate("identificacao.acolhido")
     .then((prontuario) => {
@@ -203,7 +193,7 @@ router.get("/",userAuth, (req, res, next) => {
     });
 });
 
-router.get("/:_id/*",userAuth, (req, res, next) => {
+router.get("/:_id/*", userAuth, (req, res, next) => {
   if (req.params[0].split("/")[1] == undefined) {
     Prontuario.findOne(
       {
@@ -247,7 +237,7 @@ router.get("/:_id/*",userAuth, (req, res, next) => {
   }
 });
 
-router.put("/:_id/*", userAuth,(req, res, next) => {
+router.put("/:_id/*", userAuth, (req, res, next) => {
   console.log(req.body);
   if (req.body.array != true) {
     Prontuario.findOneAndUpdate(
@@ -311,34 +301,35 @@ router.put("/:_id/*", userAuth,(req, res, next) => {
   }
 });
 
-router.post("/identificacao", userAuth,async (req, res, next) => {
-  console.log(req.body.identificacao);
-  let confereAcolhido = await Prontuario.findOne({
-    "identificacao.acolhido": req.body.identificacao.acolhido._id,
-    ativo: true,
-  });
+router.post("/identificacao", userAuth, async (req, res, next) => {
+  try {
+    let confereAcolhido = await Prontuario.findOne({
+      "identificacao.acolhido": req.body.identificacao.acolhido._id,
+      ativo: true,
+    });
 
-  if (confereAcolhido) {
-    res.status(500).json({ message: "Acolhido está em acolhimento" });
-  } else {
-    let data = {
-      ...req.body,
-    };
-    //  delete data._id;
-    console.log(data.convenio);
-    Prontuario.create(new Prontuario(data))
-      .then((prontuario) => {
-        res.status(200).json(prontuario);
-      })
-      .catch((error) => {
-        res.status(500).json({
-          message: error.message,
+    if (confereAcolhido) {
+      res.status(500).json({ message: "Acolhido está em acolhimento" });
+    } else {
+      let data = {
+        ...req.body,
+      };
+      Prontuario.create(new Prontuario(data))
+        .then((prontuario) => {
+          res.status(200).json(prontuario);
+        })
+        .catch((error) => {
+          res.status(500).json({
+            message: error.message,
+          });
         });
-      });
+    }
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
   }
 });
 
-router.delete("/:_id",userAuth, (req, res, next) => {
+router.delete("/:_id", userAuth, (req, res, next) => {
   Prontuario.findOneAndRemove({ _id: req.params._id })
     .then((prontuario) => {
       res.status(200).json(prontuario);
@@ -349,7 +340,7 @@ router.delete("/:_id",userAuth, (req, res, next) => {
       });
     });
 });
-router.delete("/:_id/*", userAuth,(req, res, next) => {
+router.delete("/:_id/*", userAuth, (req, res, next) => {
   console.log(req.params);
 
   let data = {
