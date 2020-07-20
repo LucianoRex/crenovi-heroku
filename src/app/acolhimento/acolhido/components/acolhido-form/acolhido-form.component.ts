@@ -116,17 +116,12 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
     console.log(cep);
     return this.acolhidoService
       .buscaApi(`https://viacep.com.br/ws/${cep}/json/`)
-      .subscribe(
-        (res) => {
-          if (res.erro) {
-            this.toastr.error('CEP Não encontrado');
-          }
-          this.form.get('acolhido').get('endereco').patchValue(res);
-          console.log(this.form.value);
+      .subscribe((res) => {
+        if (res.erro) {
+          this.toastr.error('CEP Não encontrado');
         }
-
-        // (data) => (this.resultado = this.converterRespostaParaCep(data))
-      );
+        this.form.get('acolhido').get('endereco').patchValue(res);
+      });
   }
 
   buscaProfissao() {
