@@ -100,6 +100,7 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
           .readById('acolhido', this._id)
           .subscribe((res: any) => {
             this.form.get('acolhido').patchValue(res);
+            console.log(res.acolhidoImage)
             this.url = res.acolhidoImage;
           })
       : null;
