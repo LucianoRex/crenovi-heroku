@@ -9,12 +9,19 @@ router.get("/", (req, res, next) => {
   });
 });
 
-router.get("/:_id", (req, res, next) => {
-  Acolhido.findOne({ _id: req.params._id })
-    .populate("ocupacao")
-    .then((acolhido) => {
-      res.status(200).json(acolhido);
+router.get("/:_id", async (req, res, next) => {
+  try {
+    await Acolhido.findOne({ _id: req.params._id })
+      .populate("ocupacao")
+      .then((acolhido) => {
+        res.status(200).json(acolhido);
+      });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: error.message,
     });
+  }
 });
 
 router.put("/:_id", async (req, res, next) => {
@@ -64,12 +71,11 @@ router.post("/", (req, res, next) => {
 });
 
 router.delete("/:_id", (req, res, next) => {
-
   let data = {
     ...req.body.acolhido,
   };
 
- /* Acolhido.findOneAndRemove({ _id: req.params._id })
+  /* Acolhido.findOneAndRemove({ _id: req.params._id })
     .then((acolhido) => {
       res.status(200).json(acolhido);
     })
