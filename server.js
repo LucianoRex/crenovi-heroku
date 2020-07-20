@@ -44,6 +44,7 @@ require("./models/ocupacao");
 require("./models/grupoTerapeutico");
 require("./models/livroDiario");
 require("./models/rotinaDiaria");
+require("./models/motivoSaida");
 require("./models/norma");
 require("./seed");
 

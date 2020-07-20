@@ -26,7 +26,7 @@ export interface IDynamicFormTable {
   title?: string;
   enableRemove?: boolean;
 }
-export class DynamicFormTableResource {
+export abstract class DynamicFormTableResource {
   protected resolver: ComponentFactoryResolver;
   protected viewContainerRef: ViewContainerRef;
   protected dynamicListService: DynamicListService;

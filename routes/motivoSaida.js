@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const MotivoSaida = require("../models/MotivoSaida");
+const MotivoSaida = require("../models/motivoSaida");
 
 router.get("/", function (req, res, next) {
   MotivoSaida.find().then((motivoSaida) => {
