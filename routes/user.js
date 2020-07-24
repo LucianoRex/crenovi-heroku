@@ -137,8 +137,7 @@ router.post("/recover", function (req, res, next) {
             } else {
               res.status(200).json({
                 message: "Um e-mail foi enviado para\n " + user.email + ".",
-              });
-              console.log("mail enviado com sucesso.");
+              });              
             }
           });
         })
@@ -167,8 +166,7 @@ router.post("/resetpassword/:_id", async function (req, res, next) {
     });
 });
 
-router.get("/reset/:token", function (req, res) {
-  console.log(req.params.token);
+router.get("/reset/:token", function (req, res) {  
   User.findOne({
     resetPasswordToken: req.params.token,
     resetPasswordExpires: { $gt: Date.now() },

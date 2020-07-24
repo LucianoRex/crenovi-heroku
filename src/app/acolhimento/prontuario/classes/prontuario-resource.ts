@@ -39,8 +39,7 @@ export class ProntuarioResource extends DynamicFormTableResource
     this.prontuarioService
       .save(this.form.value, this._id, this.concatenatedPath)
       .subscribe(
-        (res) => {
-          console.log(res);
+        (res) => {          
           this.toastr.success('Salvo');
           this.createdDoc.emit(res);
           //   this.socket.emit(this.form.get('path').value, res);
@@ -55,8 +54,7 @@ export class ProntuarioResource extends DynamicFormTableResource
   }
   remove(path) {
     this.prontuarioService.remove(path).subscribe(
-      (res) => {
-        console.log(res);
+      (res) => {        
         this.toastr.warning('Deletado');
       },
       (err) => {

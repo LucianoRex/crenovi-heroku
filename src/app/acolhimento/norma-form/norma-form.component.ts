@@ -18,8 +18,7 @@ export class NormaFormComponent extends AcolhimentoResource implements OnInit {
       texto: [''],
     });
 
-    this.acolhimentoService.read('norma').subscribe((res: any) => {
-      console.log(res);
+    this.acolhimentoService.read('norma').subscribe((res: any) => {      
       this.form.patchValue(res);
       this.form.patchValue({ _id: undefined });
     });

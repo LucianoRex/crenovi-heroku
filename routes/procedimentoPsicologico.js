@@ -31,8 +31,7 @@ router.post("/", (req, res, next) => {
 router.put("/:_id", (req, res, next) => {
   let data = {
     ...req.body,
-  };
-  console.log(req.body);
+  };  
   procedimentoPSicologico
     .findOneAndUpdate(
       {

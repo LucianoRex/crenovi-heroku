@@ -8,9 +8,7 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs';
 export class ProntuarioSocketService {
   socket = io(environment.SOCKET_ENDPOINT + '/prontuario');
   constructor() {}
-  emitSocket(form, value) {
-    console.log(form);
-    console.log(value);
+  emitSocket(form, value) {    
    // this.socket.emit(form.path, form.path, value);
     this.subject.next({ form: form.path, form2: form.path, value: value });
   }

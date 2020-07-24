@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +25,7 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
 import { HomeComponent } from './home/home.component';
 import { ChartsModule } from 'ng2-charts';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 registerLocaleData(localePtBr);
@@ -45,7 +46,8 @@ registerLocaleData(localePtBr);
     NgxMaskModule.forRoot(),
     ReactiveFormsModule,
     AngularMaterialModule,
-    ChartsModule
+    ChartsModule,
+    NgxSpinnerModule
     //UtilsModule
   ],
   providers: [
@@ -58,6 +60,7 @@ registerLocaleData(localePtBr);
     },
    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

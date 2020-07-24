@@ -498,8 +498,7 @@ export class RelatorioService {
 
   evolucaoPsicologica(_id: string, form) {
     let user;
-    this.authenticationService.currentUser.subscribe((res) => {
-      console.log(res);
+    this.authenticationService.currentUser.subscribe((res) => {      
       user = res;
     });
 
@@ -524,9 +523,7 @@ export class RelatorioService {
           consultas3 += a[0] + ':' + a[1] + '\t';
         }
 
-        let avaliacoes = relatorio[0]._id['avaliacoes'];
-        console.log(avaliacoes);
-        console.log(consultas3);
+        let avaliacoes = relatorio[0]._id['avaliacoes'];       
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -1024,8 +1021,7 @@ export class RelatorioService {
                 ]
               },
             }
-          ],)*/
-    console.log(nome);
+          ],)*/    
     return nome;
   }
   gerarDias(): Array<any> {

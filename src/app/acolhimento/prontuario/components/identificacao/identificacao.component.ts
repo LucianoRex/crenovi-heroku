@@ -22,16 +22,7 @@ import { AcolhidoFormComponent } from 'src/app/acolhimento/acolhido/components/a
 })
 export class IdentificacaoComponent extends ProntuarioResource
   implements OnInit {
-  convenios: any[] = [
-    {
-      _id: 'SUS',
-      nome: 'SUS',
-    },
-    {
-      _id: 'SENAD',
-      nome: 'SENAD',
-    },
-  ];
+  convenios: any;
 
   encaminhado: any[] = [
     {
@@ -59,15 +50,15 @@ export class IdentificacaoComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    this.selectedRow.subscribe((res) => {
-      //    console.log(res);
+    this.prontuarioService.convenio().subscribe((res) => {
+      this.convenios = res;
     });
     this.form = this.fb.group({
       path: 'identificacao',
       identificacao: this.fb.group({
         _id: 'identificacao',
         dataIngresso: ['', Validators.required],
-        dataEgresso: [''],
+        dataEgresso: [{value: '', disabled: true}],
         convenio: ['', Validators.required],
         encaminhado: ['', Validators.required],
         periodo: ['', Validators.required],
@@ -83,6 +74,10 @@ export class IdentificacaoComponent extends ProntuarioResource
           .subscribe((res: any) => {
             console.log(res);
             this.form.patchValue(res);
+           /* this.form
+              .get('identificacao')
+              .get('convenio')
+              .patchValue(res.identificacao.convenio._id);*/
           })
       : this.form.get('identificacao').get('dataEgresso').disable();
 
@@ -105,17 +100,19 @@ export class IdentificacaoComponent extends ProntuarioResource
   }
 
   editAcolhido() {
-    let _id = this.form.get('identificacao').get('acolhido').get('_id').value
+    let _id = this.form.get('identificacao').get('acolhido').get('_id').value;
     const dialogRef = this.dialog.open(DialogDynamicTableLoaderComponent, {
       maxWidth: '90vw',
       width: '90vw',
-      maxHeight:'70vh',
+      maxHeight: '70vh',
       panelClass: 'app-full-bleed-dialog',
-      data: { component: AcolhidoFormComponent, title: 'Acolhidos',_id:_id },
+      data: { component: AcolhidoFormComponent, title: 'Acolhidos', _id: _id },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      console.log(res)
-      this.form.get('identificacao').get('acolhido').patchValue(res/*,{emitEvent: false, onlySelf: true}*/);
+      this.form
+        .get('identificacao')
+        .get('acolhido')
+        .patchValue(res /*,{emitEvent: false, onlySelf: true}*/);
     });
   }
 

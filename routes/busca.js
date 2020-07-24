@@ -34,6 +34,15 @@ router.get("/medicamento/:field", function (req, res, next) {
     });
 });
 
+router.get("/ocupacao/:field", function (req, res, next) {
+  const Model = require(`../models/ocupacao`);
+  Model.find({ TITULO: { $regex: req.params.field, $options: "i" } })
+    // .limit(100)
+    .then((medicamento) => {
+      res.status(200).json(medicamento);
+    });
+});
+
 router.get("/doenca/:field", function (req, res, next) {
   const Model = require(`../models/doenca`);
   Model.find({

@@ -122,8 +122,7 @@ export class DoencaFormComponent extends ProntuarioResource implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      console.log(res);
+    dialogRef.afterClosed().subscribe((res) => {      
       this.form.get('doenca').get('doenca').patchValue(res);
     });
   }

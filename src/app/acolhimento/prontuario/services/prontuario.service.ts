@@ -26,7 +26,6 @@ export class ProntuarioService {
       .get(`${this.apiBaseUrl}/busca/medicamento/${filter.medicamento}`)
       .pipe(
         tap((response: any[]) => {
-          console.log(response);
           response.map((medicamento) => medicamento);
           // Not filtering in the server since in-memory-web-api has somewhat restricted api
           // .filter((user) => user.modelo.includes(filter.modelo));
@@ -43,6 +42,12 @@ export class ProntuarioService {
   }
   tipoConsulta(): Observable<any> {
     return this._http.get(`${this.apiBaseUrl}/tipoconsulta`);
+  }
+  pertenceAcolhido(): Observable<any> {
+    return this._http.get(`${this.apiBaseUrl}/pertenceacolhido`);
+  }
+  convenio() {
+    return this._http.get(`${this.apiBaseUrl}/convenio`);
   }
   buscaDoenca(
     filter: { doenca: string } = { doenca: '' },
@@ -106,7 +111,6 @@ export class ProntuarioService {
       motivo: string;
     }
   ): Observable<any> {
-    console.log(path);
     return this._http.post(`${this.apiBaseUrl}/${path}/concluir`, conclusao);
   }
 

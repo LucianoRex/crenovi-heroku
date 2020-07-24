@@ -113,8 +113,7 @@ export class MedicamentoFormComponent extends ProntuarioResource
     });
   }
 
-  updateForm(ev: any, option: any) {
-    console.log(option);
+  updateForm(ev: any, option: any) {    
     this.form.get('medicamento').get('medicamento').patchValue(option);
     /*if (ev.isUserInput) {
       if (componentid === 'country_id') {

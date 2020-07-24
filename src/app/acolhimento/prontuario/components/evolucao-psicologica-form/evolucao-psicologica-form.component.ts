@@ -78,8 +78,7 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
         this.concatenatedPath,
         this.form.get('evolucaoPsicologica').value
       )
-      .subscribe((res) => {
-        console.log(res);
+      .subscribe((res) => {        
         if (res[0]) {
           this.procedimentos = new Set(res[0]._id.procedimentos);
           this.consultas = new Set(res[0]._id.consultas);
@@ -135,7 +134,6 @@ export class EvolucaoPsicologicaFormComponent extends ProntuarioResource
       }
       newtext += '\n' + line;
     }
-    control = newtext;
-    console.log(control);
+    control = newtext;    
   }
 }

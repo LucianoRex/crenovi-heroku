@@ -69,8 +69,7 @@ export class RotinaDiariaFormComponent extends AcolhimentoResource
     this._id !== undefined
       ? this.acolhimentoService
           .readById('rotinadiaria', this._id)
-          .subscribe((res: any) => {
-            console.log(res);
+          .subscribe((res: any) => {            
             this.form.patchValue(res);
           })
       : null;

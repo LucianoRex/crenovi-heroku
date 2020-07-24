@@ -8,15 +8,7 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
 })
 export class PsicoterapiaFormComponent extends ProntuarioResource
   implements OnInit {
-  procedimentos; /*: any[] = [
-    'aplicação teste psicológico',
-    'desenhos/brincadeiras',
-    'escuta/acolhimento',
-    'entrevista com o responsável',
-    'devolutiva',
-    'orientação profissional',
-  ];
-*/
+  procedimentos: any[];
   constructor(protected injector: Injector) {
     super(injector);
   }
@@ -43,7 +35,7 @@ export class PsicoterapiaFormComponent extends ProntuarioResource
             this.form.get('psicoterapia').patchValue(res);
             //, { emitEvent: false, onlySelf: true }
           })
-      : null;
+      : this.form.get('psicoterapia').get('data').patchValue(new Date());
 
     //this.form.statusChanges.subscribe();
   }

@@ -93,7 +93,7 @@
       [_id]="_id"
     ></app-pertence-list>
   </mat-step>
-  
+
   <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Avaliações</ng-template>
     <app-avaliacao-list
@@ -119,19 +119,19 @@
   </mat-step>
 
   <mat-step [completed]="false" [stepControl]="">
-    <ng-template matStepLabel>Evolução psicológica</ng-template>
-    <app-evolucao-psicologica-list
-      [concatenatedPath]="caminho + '/' + _id"
-      [_id]="_id"
-    ></app-evolucao-psicologica-list>
-  </mat-step>
-
-  <mat-step [completed]="false" [stepControl]="">
     <ng-template matStepLabel>Psicoterapia</ng-template>
     <app-psicoterapia-list
       [concatenatedPath]="caminho + '/' + _id"
       [_id]="_id"
     ></app-psicoterapia-list>
+  </mat-step>
+
+  <mat-step [completed]="false" [stepControl]="">
+    <ng-template matStepLabel>Evolução psicológica</ng-template>
+    <app-evolucao-psicologica-list
+      [concatenatedPath]="caminho + '/' + _id"
+      [_id]="_id"
+    ></app-evolucao-psicologica-list>
   </mat-step>
 
   <mat-step [completed]="false" [stepControl]="">
@@ -156,5 +156,4 @@
       </div>
     </div>
   </mat-step>
-
 </mat-vertical-stepper>

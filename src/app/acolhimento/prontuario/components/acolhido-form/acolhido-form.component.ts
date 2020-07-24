@@ -118,14 +118,12 @@ export class AcolhidoFormComponent extends ProntuarioResource
     );
   }
 
-  buscaCep(cep: string) {
-    console.log(cep);
+  buscaCep(cep: string) {    
     return this.prontuarioService
       .buscaApi(`https://viacep.com.br/ws/${cep}/json/`)
       .subscribe(
         (res) => {
-          this.form.get('acolhido').get('endereco').patchValue(res);
-          console.log(this.form.value);
+          this.form.get('acolhido').get('endereco').patchValue(res);          
         }
 
         // (data) => (this.resultado = this.converterRespostaParaCep(data))
@@ -225,8 +223,7 @@ export class AcolhidoFormComponent extends ProntuarioResource
     this.webcamImage = webcamImage;
   }
 
-  public cameraWasSwitched(deviceId: string): void {
-    console.log('active device: ' + deviceId);
+  public cameraWasSwitched(deviceId: string): void {    
     this.deviceId = deviceId;
   }
 

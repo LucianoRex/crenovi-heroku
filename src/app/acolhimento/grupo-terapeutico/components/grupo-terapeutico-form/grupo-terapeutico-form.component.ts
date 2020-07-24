@@ -26,8 +26,7 @@ export class GrupoTerapeuticoFormComponent extends GrupoTerapeuticoResource
     this._id !== undefined
       ? this.grupoTerapeuticoService
           .readById(this._id)
-          .subscribe((res: any) => {
-        //    console.log(res);
+          .subscribe((res: any) => {        
             this.form.patchValue(res);
           })
       : null;

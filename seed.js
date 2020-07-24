@@ -14,9 +14,7 @@ User.findOne({ role: "superadmin" }).then(async (user) => {
         username: "luciano.rex",
       })
     );
-  } else {
-    console.log("user");
-  }
+  } 
 });
 
 Colaborador.findOne({ nome: "Padrão" }).then(async (user) => {

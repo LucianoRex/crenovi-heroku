@@ -27,7 +27,7 @@ export class AvaliacaoFormComponent extends ProntuarioResource
   }
 
   ngOnInit(): void {
-    console.log(this._id)
+    
     this.form = this.fb.group({
       path: 'avaliacao',
       array:true,
@@ -49,10 +49,10 @@ export class AvaliacaoFormComponent extends ProntuarioResource
           .subscribe((res: any) => {
             this.form.get('avaliacao').patchValue(res);
           })
-      : null;
-    this.form.valueChanges.subscribe((e) => {
+      : this.form.get('avaliacao').get('data').patchValue(new Date());
+    /*this.form.valueChanges.subscribe((e) => {
       this.formChange.emit(true);
-    });
+    });*/
   }
 
   getSliderTickInterval(): number | 'auto' {

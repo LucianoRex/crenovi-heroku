@@ -41,8 +41,7 @@ export class UserComponent implements OnInit {
     });
     this.adminService.readUsers().subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);
-      this.dataSource.paginator = this.paginator;
-      console.log(res);
+      this.dataSource.paginator = this.paginator;      
     });
   }
   openDialog(row): void {
@@ -53,13 +52,10 @@ export class UserComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(this.formulario, {
-      width: '80vw',
-      //   data: {name: this.name, animal: this.animal}
+      width: '80vw',      
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      //    this.animal = result;
+    dialogRef.afterClosed().subscribe((result) => {            
     });
   }
   resetPassword(row) {

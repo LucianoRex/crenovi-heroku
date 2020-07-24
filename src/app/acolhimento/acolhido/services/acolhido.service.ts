@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpBackend } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AcolhidoService {
   apiBaseUrl = environment.apiBaseUrl;
+  private apiExterna: HttpClient;
 
   // pas_id: string;
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient,handler: HttpBackend) {this.apiExterna = new HttpClient(handler)}
 
   buscaApi(api): Observable<any> {
     let headers = new HttpHeaders();
@@ -18,6 +20,10 @@ export class AcolhidoService {
     return this._http.get(api);
   }
 
+  buscaCep(cep): Observable<any> {  
+    return this.apiExterna.get(`https://viacep.com.br/ws/${cep.cep}/json/`);
+  }
+  
   read(path = '') {
     return this._http.get(`${this.apiBaseUrl}/acolhido/${path}`);
   }
@@ -54,11 +60,26 @@ export class AcolhidoService {
       motivo: string;
     }
   ): Observable<any> {
-    console.log(path);
     return this._http.post(`${this.apiBaseUrl}/${path}/concluir`, conclusao);
   }
 
   carregaDadosPsicoterapia(path, form: any): Observable<any> {
     return this._http.post(`${this.apiBaseUrl}/${path}/procedimentos`, form);
+  }
+  buscaOcupacao(
+    filter: { ocupacao: string } = { ocupacao: '' },
+    page = 1
+  ): Observable<any> {
+    return this._http
+      .get(`${this.apiBaseUrl}/busca/ocupacao/${filter.ocupacao}`)
+      .pipe(
+        tap((response: any[]) => {
+          response.map((ocupcao) => ocupcao);
+          // Not filtering in the server since in-memory-web-api has somewhat restricted api
+          // .filter((user) => user.modelo.includes(filter.modelo));
+
+          return response;
+        })
+      );
   }
 }

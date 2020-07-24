@@ -5,17 +5,13 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DynamicTableBuilderComponent } from '../components/dynamic-table-builder/dynamic-table-builder.component';
 import { DialogDynamicTableLoaderComponent } from '../components/dialog-dynamic-table-loader/dialog-dynamic-table-loader.component';
-import { ProntuarioSocketService } from 'src/app/acolhimento/prontuario/services/prontuario-socket.service';
-import { environment } from 'src/environments/environment';
-import * as io from 'socket.io-client';
-import { take } from 'rxjs/operators';
 import { DynamicListService } from '../services/dynamic-list.service';
-import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 export interface IDynamicFormTable {
   columns: Array<any>;
@@ -32,6 +28,7 @@ export abstract class DynamicFormTableResource {
   protected dynamicListService: DynamicListService;
   protected dialog: MatDialog;
   protected toastr: ToastrService;
+  protected spinner: NgxSpinnerService;
   //socket = io(environment.SOCKET_ENDPOINT);
   // saved: boolean = false;
   //componentOpened;
@@ -52,9 +49,10 @@ export abstract class DynamicFormTableResource {
     this.fb = injector.get(FormBuilder);
     this.dynamicListService = injector.get(DynamicListService);
     this.toastr = injector.get(ToastrService);
+    this.spinner = injector.get(NgxSpinnerService);
   }
 
-  remove(data): void {}
+  remove(): void {}
 
   montaTabela(data: IDynamicFormTable) {
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
@@ -72,42 +70,48 @@ export abstract class DynamicFormTableResource {
     });
 
     componentRef.instance.create.subscribe(() => {
-      this.dialog.open(DialogDynamicTableLoaderComponent, {
-        data: {
-          component: data.component,
-          _id: undefined,
-          caminho: data.caminho,
-          title: data.title,
-        },
-        maxWidth: '90vw',
-        width: '90vw',
-        height: '90vh',
-        hasBackdrop: false,
-        panelClass: 'app-full-bleed-dialog',
-      });
+      setTimeout(() => {
+        this.dialog.open(DialogDynamicTableLoaderComponent, {
+          data: {
+            component: data.component,
+            _id: undefined,
+            caminho: data.caminho,
+            title: data.title,
+          },
+          maxWidth: '90vw',
+          width: '90vw',
+          height: '90vh',
+          hasBackdrop: false,
+          panelClass: 'app-full-bleed-dialog',
+        });
+        componentRef.instance.loadDialog(false);
+      }, 500);
+      componentRef.instance.loadDialog(true);
     });
 
-    componentRef.instance.update.subscribe(async (res) => {
-      this.formChange.emit(false);
-      this.dialog.open(DialogDynamicTableLoaderComponent, {
-        data: {
-          component: data.component,
-          _id: res._id,
-          caminho: data.caminho,
-          title: data.title,
-        },
-        maxWidth: '90vw',
-        width: '90vw',
-        height: '90vh',
-        hasBackdrop: false,
-        panelClass: 'app-full-bleed-dialog',
-      });
+    componentRef.instance.update.subscribe((res) => {
+      setTimeout(() => {
+        this.dialog.open(DialogDynamicTableLoaderComponent, {
+          data: {
+            component: data.component,
+            _id: res._id,
+            caminho: data.caminho,
+            title: data.title,
+          },
+          maxWidth: '90vw',
+          width: '90vw',
+          height: '90vh',
+          hasBackdrop: false,
+          panelClass: 'app-full-bleed-dialog',
+        });
+        componentRef.instance.loadDialog(false);
+      }, 500);
+      componentRef.instance.loadDialog(true);
     });
 
     componentRef.instance.delete.subscribe((res) => {
-      console.log(data.caminho + '/' + res);
       let confirma = confirm('Deseja Realmente Excluir?');
-      confirma ? this.remove(data.caminho + '/' + res) : null;
+      confirma ? this.remove() : null;
     });
   }
 }

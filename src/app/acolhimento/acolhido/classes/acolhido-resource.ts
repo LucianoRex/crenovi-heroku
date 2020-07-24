@@ -9,6 +9,7 @@ import {
 import { AcolhidoService } from '../services/acolhido.service';
 import { DynamicListService } from 'src/app/shared/utils/services/dynamic-list.service';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 
 export class AcolhidoResource extends DynamicFormTableResource
   implements OnDestroy {
@@ -49,7 +50,8 @@ export class AcolhidoResource extends DynamicFormTableResource
       );
   }
 
-  remove(path) {
+  /*remove(path) {
     this.acolhidoService.remove(path);
-  }
+  }*/
+ 
 }

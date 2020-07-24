@@ -11,8 +11,7 @@ export class DynamicListService {
   //socket = io(environment.SOCKET_ENDPOINT);
   constructor() {}
 
-  send(form: any, value: any) {
-    console.log('SOCKET');
+  send(form: any, value: any) {    
    // this.socket.emit('avaliacao', value);  
     //this.data$.next({ form: form.path, form2: form.path, value: value })
   }

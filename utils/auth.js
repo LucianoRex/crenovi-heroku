@@ -34,8 +34,7 @@ const userRegister = async (userDets, role, res) => {
       message: "Usuário Criado",
       success: true,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error) {    
     return res.status(500).json({
       message: "Erro",
       success: false,
@@ -43,8 +42,7 @@ const userRegister = async (userDets, role, res) => {
   }
 };
 
-const register = async (userDets, res) => {
-  console.log(userDets);
+const register = async (userDets, res) => {  
   try {
     let usernameNotTaken = await validateUserName(userDets.username);
     if (!usernameNotTaken) {
@@ -73,8 +71,7 @@ const register = async (userDets, res) => {
       message: "Usuário Criado",
       success: true,
     });
-  } catch (error) {
-    console.log("Error" + error);
+  } catch (error) {    
     return res.status(500).json({
       message: "Erro",
       success: false,
@@ -83,9 +80,7 @@ const register = async (userDets, res) => {
 };
 
 const registerUpdate = async (userDets, res) => {
-  try {
-    console.log(userDets.body);
-
+  try {    
     User.findOneAndUpdate(
       { _id: userDets.params._id },
       {
@@ -104,8 +99,7 @@ const registerUpdate = async (userDets, res) => {
           success: false,
         });
       });
-  } catch (error) {
-    console.log("Error" + error);
+  } catch (error) {    
     return res.status(500).json({
       message: "Erro",
       success: false,
@@ -116,8 +110,7 @@ const registerUpdate = async (userDets, res) => {
 const login = async (userCreds, res) => {
   let { username, password } = userCreds;
 
-  const user = await User.findOne({ username }).populate("colaborador");
-  console.log(user);
+  const user = await User.findOne({ username }).populate("colaborador");  
   if (!user) {
     return res.status(404).json({
       message: "Usuário não encontrado",
@@ -216,8 +209,7 @@ const userLogin = async (userCreds, role, res) => {
 };
 
 const validateUserName = async (username) => {
-  let user = await User.findOne({ username });
-  console.log(user);
+  let user = await User.findOne({ username });  
   return user ? false : true;
 };
 

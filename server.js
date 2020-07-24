@@ -34,10 +34,11 @@ mongoose.connect(
 );
 
 mongoose.connection.on("connected", () => {
-  console.log("Mongoose is connected!!!!");
+ // console.log("Mongoose is connected!!!!");
 });
 
 require("./models/doenca");
+require("./models/pertenceAcolhido");
 require("./models/medicamento");
 require("./models/user");
 require("./models/ocupacao");
@@ -50,13 +51,14 @@ require("./seed");
 
 var server = app.listen(process.env.PORT || 8080, function () {
   var port = server.address().port;
-  console.log("App now running on port", port);
+ // console.log("App now running on port", port);
 });
 
 var io = require("socket.io")(server);
 
 const routes = require("./routes/convenio");
 const acolhimento = require("./routes/acolhimento");
+const pertenceAcolhido = require("./routes/pertenceAcolhido");
 const prontuario = require("./routes/prontuario");
 const acolhido = require("./routes/acolhido");
 const grupoTerapeutico = require("./routes/grupoTerapeutico");
@@ -91,6 +93,7 @@ app.use("/api/livrodiario", livroDiario);
 app.use("/api/procedimentopsicologico", procedimentoPsicologico);
 app.use("/api/motivosaida", motivoSaida);
 app.use("/api/tipoconsulta", tipoConsulta);
+app.use("/api/pertenceacolhido", pertenceAcolhido);
 app.use("/api/rotinadiaria", rotinaDiaria);
 app.use("/api/comunidade", comunidade);
 //app.use("/api/medicamento", medicamento);

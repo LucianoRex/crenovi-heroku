@@ -28,8 +28,7 @@ export class ColaboradorFormComponent extends ColaboradorResource
     this._id !== undefined
       ? this.colaboradorService
           .readById('colaborador', this._id)
-          .subscribe((res: any) => {
-            console.log(res);
+          .subscribe((res: any) => {            
             this.form.patchValue(res);
           })
       : null;

@@ -43,8 +43,7 @@ export class SaidaFormComponent extends ProntuarioResource implements OnInit {
           .subscribe((res: any) => {
             this.form.get('saida').patchValue(res);
           })
-      : null;
-    this.notify.emit(this.form);  
-   
-  } 
+      : this.form.get('saida').get('dataSaida').patchValue(new Date());
+    this.notify.emit(this.form);
+  }
 }

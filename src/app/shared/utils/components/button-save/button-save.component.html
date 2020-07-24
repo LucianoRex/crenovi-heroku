@@ -1,17 +1,22 @@
-<div>
-  <button
-    mat-raised-button
-    [ngClass]="{ blink: changeColor }"
-    [color]="!changeColor ? 'primary' : 'warn'"
-    [disabled]="!form.valid"
-    [changeColor]="changeColor"
-    (click)="save.emit()"
-    appSaveButton
-  >
-    <span
-      *ngIf="changeColor"
-      class="spinner-border spinner-border-sm mr-1"
-    ></span>
-    Salvar
-  </button>
+<div class="row">
+  <div class="col-md-2">
+    <button
+      mat-raised-button
+      [color]="!changeColor ? 'primary' : 'warn'"
+      [disabled]="!form.valid"
+      [changeColor]="changeColor"
+      (click)="save.emit();changeColor=false"
+      appSaveButton
+    >
+      Salvar
+    </button>
+    <!--
+  <span
+    *ngIf="changeColor"
+    class="spinner-grow text-primary spinner-border-sm mr-1"
+  ></span>
+  --></div>  
+</div>
+<div *ngIf="changeColor" class="col-md-10 alert alert-danger" role="alert">
+  Dados foram alterados, salve antes de sair.
 </div>

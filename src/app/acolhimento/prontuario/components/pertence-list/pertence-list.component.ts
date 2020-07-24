@@ -17,7 +17,7 @@ export class PertenceListComponent extends ProntuarioResource
   ngOnInit(): void {
     let columns:IDynamicTableBuilder[] = [
       {
-        name: 'item',
+        name: 'pertence.pertence',
         label: 'Item',
       },
       {

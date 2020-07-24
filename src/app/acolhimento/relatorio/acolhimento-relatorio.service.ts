@@ -56,8 +56,7 @@ export class AcolhimentoRelatorioService {
   rotinaDiaria() {
     this._http
       .get(`${this.apiBaseUrl}/acolhimento/rotinadiaria`)
-      .subscribe((res: any) => {
-        console.log(res);
+      .subscribe((res: any) => {        
         this.segunda = res
           .filter((e) => e.diaSemana.includes('Segunda'))
           .map((e) => {
@@ -197,9 +196,7 @@ export class AcolhimentoRelatorioService {
         let domingoArr: any[] = [];
         Array.from(this.domingo).forEach((e: any) => {
           domingoArr.push([e.Atividade, [e.Inicio, e.Final]]);
-        });
-        console.log(segundaArr);
-        console.log(this.segunda);
+        });               
         const documentDefinition = {
           pageSize: 'A4',
           pageOrientation: 'landscape',
@@ -295,8 +292,7 @@ export class AcolhimentoRelatorioService {
   normaComunidade() {
     this._http
       .get(`${this.apiBaseUrl}/acolhimento/norma`)
-      .subscribe((res: any) => {
-        console.log(res);
+      .subscribe((res: any) => {        
 
         const documentDefinition = {
           pageSize: 'A4',

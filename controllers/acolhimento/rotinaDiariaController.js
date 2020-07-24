@@ -12,8 +12,7 @@ let getById = (req, res, next) => {
   });
 };
 
-let put = (req, res, next) => {
-  console.log("Atualizar rotina");
+let put = (req, res, next) => {  
   let data = {
     ...req.body,
   };

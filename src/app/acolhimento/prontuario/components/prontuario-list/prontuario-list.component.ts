@@ -36,7 +36,7 @@ export class ProntuarioListComponent extends ProntuarioResource
         type: FieldType.date,
       },
       {
-        name: 'identificacao.convenio',
+        name: 'identificacao.convenio.nome',
         label: 'Convênio',
       },
       {

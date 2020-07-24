@@ -19,7 +19,7 @@ router.post("/", (req, res, next) => {
     ...req.body,
   };
   delete data._id;
-  LivroDiario.create(new LivroDiario(data)).then((livroDiario) => {   
+  LivroDiario.create(new LivroDiario(data)).then((livroDiario) => {
     res.status(200).json(livroDiario);
   });
 });
@@ -28,7 +28,6 @@ router.put("/:_id", (req, res, next) => {
   let data = {
     ...req.body,
   };
-  console.log(req.body)
   LivroDiario.findOneAndUpdate(
     {
       _id: req.params._id,
@@ -38,8 +37,7 @@ router.put("/:_id", (req, res, next) => {
     }
   )
     .then((livroDiario) => {
-     
-   //   io.emit("livrodiario", { data: res });
+      //   io.emit("livrodiario", { data: res });
       res.status(200).json(livroDiario);
     })
     .catch((err) => {

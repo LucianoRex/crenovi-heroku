@@ -62,8 +62,7 @@ export class RotinaDiariaListComponent extends AcolhimentoResource
     super(injector);
   }
 
-  ngOnInit(): void {
-    console.log(this.lista);
+  ngOnInit(): void {    
     let columns = [
       {
         name: 'horarioInicial',

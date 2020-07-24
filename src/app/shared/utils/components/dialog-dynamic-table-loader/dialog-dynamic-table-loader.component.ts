@@ -11,8 +11,6 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
-import * as io from 'socket.io-client';
 
 @Component({
   selector: 'app-dialog-dynamic-table-loader',
@@ -21,7 +19,7 @@ import * as io from 'socket.io-client';
 })
 export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
   isDirty: boolean = false;
-  
+
   //socket = io(environment.SOCKET_ENDPOINT);
   constructor(
     public dialogRef: MatDialogRef<DialogDynamicTableLoaderComponent>,
@@ -34,12 +32,11 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
     //this.socket.emit('disconnect', {});
   }
 
-  ngOnInit(): void {    
-    console.log(this.data);
+  ngOnInit(): void {
     let component = this.componentFactoryResolver.resolveComponentFactory(
       this.data.component
     );
-    let componentRef = this.viewContainerRef.createComponent(component);    
+    let componentRef = this.viewContainerRef.createComponent(component);
     //componentRef.changeDetectorRef.detectChanges();
     componentRef.instance['_id'] = this.data._id;
     componentRef.instance['concatenatedPath'] = this.data.caminho;
@@ -57,7 +54,7 @@ export class DialogDynamicTableLoaderComponent implements OnInit, OnDestroy {
           this.dialogRef.close();
         }
       });
-    }
+    }    
 
     if (componentRef.instance['formChange']) {
       componentRef.instance['formChange'].subscribe((res) => {

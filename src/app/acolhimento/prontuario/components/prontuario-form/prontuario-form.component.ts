@@ -25,8 +25,7 @@ export class ProntuarioFormComponent extends ProntuarioResource
     protected prontuarioService: ProntuarioService
   ) {
     super(injector);
-    this.selectedRow.subscribe((res) => {
-      console.log(res);
+    this.selectedRow.subscribe((res) => {      
     });
   }
 

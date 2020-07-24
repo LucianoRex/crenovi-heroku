@@ -56,6 +56,7 @@ router.post("/:_id/concluir", userAuth, async (req, res, next) => {
 router.get("/declaracaopertence/:_id", userAuth, (req, res, next) => {
   Prontuario.findOne({ _id: req.params._id }, { pertence: 1, identificacao: 1 })
     .populate("identificacao.acolhido")
+    .populate("identificacao.convenio")
     .then((pertence) => {
       res.status(200).json(pertence);
     });
@@ -185,6 +186,7 @@ router.get("/relatorio/:_id", userAuth, (req, res, next) => {
 router.get("/", userAuth, (req, res, next) => {
   Prontuario.find({}, { identificacao: 1, ativo: 1 })
     .populate("identificacao.acolhido")
+    .populate("identificacao.convenio")
     .then((prontuario) => {
       res.status(200).json(prontuario);
     })
@@ -201,12 +203,13 @@ router.get("/:_id/*", userAuth, (req, res, next) => {
       },
       { [req.params[0]]: 1 }
     )
-      .populate("identificacao.acolhido")
+      .populate("identificacao.acolhido")      
       .populate("medicamento.medicamento")
       .populate("doenca.doenca")
       .populate("historicoQuimico.substancia")
       .populate("saida.motivo")
       .populate("agendamentoconsulta.tipo")
+      .populate("pertence.pertence")
       .then((prontuario) => {
         req.query.array == "false"
           ? res.status(200).json(prontuario)
@@ -238,7 +241,6 @@ router.get("/:_id/*", userAuth, (req, res, next) => {
 });
 
 router.put("/:_id/*", userAuth, (req, res, next) => {
-  console.log(req.body);
   if (req.body.array != true) {
     Prontuario.findOneAndUpdate(
       { _id: req.params._id },
@@ -262,7 +264,6 @@ router.put("/:_id/*", userAuth, (req, res, next) => {
     let data = {
       ...req.body[req.body.path],
     };
-    console.log(data._id);
     if (data._id == null) {
       delete data._id;
       Prontuario.findOneAndUpdate(
@@ -341,15 +342,11 @@ router.delete("/:_id", userAuth, (req, res, next) => {
     });
 });
 router.delete("/:_id/*", userAuth, (req, res, next) => {
-  console.log(req.params);
-
   let data = {
     ...req.body[req.body.path],
   };
-  console.log("Deletar array");
 
   let doc = req.params[0].split("/")[0];
-  console.log(doc);
   Prontuario.findOneAndUpdate(
     { _id: req.params._id },
     {

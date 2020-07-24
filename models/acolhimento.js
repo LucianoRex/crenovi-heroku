@@ -475,8 +475,7 @@ acolhimento.pre("findOneAndUpdate", true, function (next, done) {
   mongoose.models["acolhimento"].findOne(
     self.getQuery(),
     { ativo: 1 },
-    function (err, user) {
-      console.log(self.getQuery());
+    function (err, user) {      
       if (err) {
         done();
       } else if (user && user.ativo == false) {

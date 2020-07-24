@@ -70,20 +70,26 @@
         </mat-form-field>
       </div>
       <div class="col-md-9" formGroupName="ocupacao">
-        <mat-form-field>
+        <mat-form-field class="example-full-width">
           <mat-label>Ocupação</mat-label>
-          <input matInput [readonly]="true" formControlName="TITULO" />
+          <input
+            type="text"
+            placeholder="Digite o nome"
+            aria-label="Number"
+            matInput
+            formControlName="TITULO"
+            [matAutocomplete]="ocupacao"
+          />
+          <mat-autocomplete autoActiveFirstOption #ocupacao="matAutocomplete">
+            <mat-option
+              (onSelectionChange)="updateForm($event, option)"
+              *ngFor="let option of filteredOptions"
+              [value]="option"
+            >
+              {{ option.TITULO }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
-      </div>
-      <div class="col-md-1" style="align-self: center;">
-        <button
-          color="primary"
-          mat-button
-          (click)="buscaProfissao()"
-          style="float: right;"
-        >
-          <mat-icon aria-hidden="false">search</mat-icon>
-        </button>
       </div>
     </div>
 
@@ -93,13 +99,14 @@
         <mat-form-field>
           <mat-label>CEP</mat-label>
           <input
+            type="text"
+            placeholder="Digite o nome"
+            aria-label="Number"
             matInput
             #cep
-            (keyup.enter)="buscaCep(cep.value)"
-            formControlName="cep"
-            mask="00000-000"
+            formControlName="cep"            
           />
-        </mat-form-field>
+        </mat-form-field>        
       </div>
 
       <div class="col-md-4">

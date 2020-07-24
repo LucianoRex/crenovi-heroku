@@ -9,11 +9,11 @@ import { AcolhimentoRelatorioService } from './acolhimento-relatorio.service';
 export class AcolhimentoRelatorioComponent implements OnInit {
   relatorios: any[] = [
     {
-      titulo: 'Rotina diária',
+      titulo: 'Rotina Diária',
       function: this.normaDiaria.bind(this),
     },
     {
-      titulo: 'Normas da comunidade',
+      titulo: 'Regimento Interno',
       function: this.normaComunidade.bind(this),
     },
   ];

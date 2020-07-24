@@ -24,18 +24,12 @@ router.get("/:_id", async (req, res, next) => {
   }
 });
 
-router.put("/:_id", async (req, res, next) => {
-  console.log("AtualizandoAcolhido");
+router.put("/:_id", async (req, res, next) => {  
   let data = {
     ...req.body.acolhido,
-  };
-  //console.log(req.body);
+  }; 
   let mensagem = [];
-  /* let conferecpf = await Acolhido.find({
-    $and: [{ _id: { $ne: req.params._id } }, { cpf: req.body.acolhido.cpf }],
-  });*/
-  // console.log("CONFERECPF" + conferecpf);
-
+ 
   Acolhido.findOneAndUpdate(
     {
       _id: req.params._id,

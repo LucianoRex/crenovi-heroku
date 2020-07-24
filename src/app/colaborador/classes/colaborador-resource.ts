@@ -15,12 +15,10 @@ export class ColaboradorResource extends DynamicFormTableResource {
     super(injector);
     this.colaboradorService = injector.get(ColaboradorService);    
   }
-  save() {
-    console.log(this.form.value);
+  save() {    
     this.colaboradorService.save(this.form.value).subscribe(
       (res) => {
-        this.toastr.success('Salvo');
-        console.log(res);
+        this.toastr.success('Salvo');        
         this.selectedRow.emit(res);
         this.socket.emit('updatedata', res);
       },

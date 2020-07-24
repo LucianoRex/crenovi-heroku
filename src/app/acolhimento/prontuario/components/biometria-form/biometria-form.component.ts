@@ -2,7 +2,6 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { Validators } from '@angular/forms';
 
-
 @Component({
   selector: 'app-biometria-form',
   templateUrl: './biometria-form.component.html',
@@ -14,10 +13,10 @@ export class BiometriaFormComponent extends ProntuarioResource
     super(injector);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.form = this.fb.group({
       path: 'biometria',
-      array:true,
+      array: true,
       biometria: this.fb.group({
         _id: undefined,
         data: ['', Validators.required],
@@ -36,10 +35,8 @@ export class BiometriaFormComponent extends ProntuarioResource
       ? this.prontuarioService
           .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
-            this.form
-              .get('biometria')
-              .patchValue(res);
+            this.form.get('biometria').patchValue(res);
           })
-      : null;
+      : this.form.get('biometria').get('data').patchValue(new Date());
   }
 }

@@ -5,19 +5,17 @@ import {
   Input,
   EventEmitter,
   Output,
-  AfterViewInit,
   OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
-import * as io from 'socket.io-client';
-import { environment } from 'src/environments/environment';
-import { ProntuarioSocketService } from 'src/app/acolhimento/prontuario/services/prontuario-socket.service';
-import { take } from 'rxjs/operators';
+import { DialogLoaderService } from '../../services/dialog-loader.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dynamic-table-builder',
@@ -25,7 +23,7 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./dynamic-table-builder.component.css'],
   providers: [DatePipe],
 })
-export class DynamicTableBuilderComponent implements OnInit {
+export class DynamicTableBuilderComponent implements OnInit, OnChanges {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -49,8 +47,14 @@ export class DynamicTableBuilderComponent implements OnInit {
   title: string;
 
   constructor(
-    private datePipe: DatePipe // private socketService: ProntuarioSocketService
-  ) {}
+    private datePipe: DatePipe, // private socketService: ProntuarioSocketService
+    private spinner: NgxSpinnerService  ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    if (changes.update) {
+      this.spinner.show();
+    }
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((s) => s.unsubscribe);
@@ -108,7 +112,6 @@ export class DynamicTableBuilderComponent implements OnInit {
     let cleaned = (
       '' + str.split('.').reduce((o, p) => o && o[p], obj)
     ).replace(/\D/g, '');
-    console.log(cleaned);
     let match = cleaned.match(/^(\d{2})(\d{1})(\d{4})(\d{4})$/);
 
     if (match) {
@@ -123,7 +126,6 @@ export class DynamicTableBuilderComponent implements OnInit {
   }
 
   formatNumberPattern(obj, path) {
-    console.log(path);
     let format = new String(
       path.name.split('.').reduce((o, p) => o && o[p], obj)
     );
@@ -142,5 +144,8 @@ export class DynamicTableBuilderComponent implements OnInit {
     e.stopPropagation();
     e.preventDefault();
     this.create.emit();
+  }
+  loadDialog(show:boolean) {        
+    show? this.spinner.show():this.spinner.hide()      
   }
 }

@@ -26,7 +26,8 @@ let prontuario = new Schema(
         required: [true, "Período requerido"],
       },
       convenio: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "convenio",
         required: [true, "Convênio requerido"],
       },
       acolhido: {
@@ -100,7 +101,7 @@ let prontuario = new Schema(
         },
         data: {
           type: Date,
-          default: Date.now(),        
+          default: Date.now(),
         },
       },
     ],
@@ -422,9 +423,9 @@ let prontuario = new Schema(
     ],
     pertence: [
       {
-        item: {
-          type: String,
-          // unique: true,
+        pertence: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "pertenceAcolhido",
         },
         quantidade: {
           type: String,
@@ -445,37 +446,13 @@ let prontuario = new Schema(
     collection: "prontuario",
   }
 );
-/*acolhimento.index(
-  { ativo: 1, "identificacao.acolhido": 1 },
-  { unique: [true, "Acolhido selecionado já está em acolhimento"] }
-);*/
 
-/*acolhimento.pre("save", true, async function (next, done) {
-  var self = this;
-  
-  mongoose.models["acolhimento"].findOne(
-    { "acolhido.acolhido": self.acolhido, ativo: false },
-    function (err, user) {
-      console.log(self);
-      if (err) {
-        done(new Error("Erro"));
-      } else if (!user) {
-        done(new Error("O acolhido selecionado já está em acolhimento"));
-      } else {
-       done()
-      }
-    }
-  );
-  next();
-});
-*/
 prontuario.pre("findOneAndUpdate", true, function (next, done) {
   var self = this;
   mongoose.models["prontuario"].findOne(
     self.getQuery(),
     { ativo: 1 },
     function (err, user) {
-      console.log(self.getQuery());
       if (err) {
         done();
       } else if (user && user.ativo == false) {

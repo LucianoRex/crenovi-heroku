@@ -9,31 +9,22 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
 export class PertenceFormComponent extends ProntuarioResource
   implements OnInit {
   @Input() _id: string;
-  itens: any[] = [
-    'RG',
-    'CPF',
-    'Carteira de Trabalho',
-    'Carteira de Motorista',
-    'Cueca',
-    'Meia',
-    'Tênis',
-    'Sapato',
-    'Calça',
-    'Camisa',
-    'Camiseta',
-  ];
+  itens: any[];
   constructor(protected injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
-    //  console.log(this._id);
-    this.form = this.fb.group({      
+    this.prontuarioService.pertenceAcolhido().subscribe((res) => {
+      this.itens = res;
+    });
+
+    this.form = this.fb.group({
       path: 'pertence',
       array: true,
       pertence: this.fb.group({
         _id: undefined,
-        item: [''],
+        pertence: [''],
         quantidade: ['1'],
       }),
     });

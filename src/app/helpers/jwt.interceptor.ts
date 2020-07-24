@@ -18,17 +18,13 @@ export class JwtInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let currentUser = this.authenticationService.currentUserValue;
 
-    if (
-      request.url.indexOf('viacep.com.br') == -1 &&
-      currentUser &&
-      currentUser.token
-    ) {
+   
       request = request.clone({
         setHeaders: {
           Authorization: `${currentUser.token}`,
         },
       });
-    }
+  
     return next.handle(request);
   }
 

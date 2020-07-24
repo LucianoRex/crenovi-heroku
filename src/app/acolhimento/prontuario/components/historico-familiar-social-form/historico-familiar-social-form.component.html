@@ -74,8 +74,12 @@
           <mat-option value="mc">Médio - Completo</mat-option>
           <mat-option value="si">Superior - Incompleto</mat-option>
           <mat-option value="sc">Superior - Completo</mat-option>
-          <mat-option value="pgi">Pós-graduação (Lato senso) - Incompleto </mat-option>
-          <mat-option value="pgc">Pós-graduação (Lato senso) - Completo</mat-option>
+          <mat-option value="pgi"
+            >Pós-graduação (Lato senso) - Incompleto
+          </mat-option>
+          <mat-option value="pgc"
+            >Pós-graduação (Lato senso) - Completo</mat-option
+          >
           <mat-option value="pgmi"
             >Pós-graduação (Stricto sensu, nível mestrado) -
             Incompleto</mat-option
@@ -104,8 +108,8 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div>
-      <app-button-save [form]="form" (save)="save()"></app-button-save>
-    </div>
+  </div>
+  <div>
+    <app-button-save [form]="form" (save)="save()"></app-button-save>
   </div>
 </form>

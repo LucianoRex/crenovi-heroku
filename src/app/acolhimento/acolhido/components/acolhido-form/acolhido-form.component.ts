@@ -13,6 +13,15 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DatePipe } from '@angular/common';
 import { DynamicListBuilderComponent } from 'src/app/shared/utils/components/dynamic-list-builder/dynamic-list-builder.component';
+import {
+  startWith,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  tap,
+  switchMap,
+  finalize,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-acolhido-form',
@@ -22,6 +31,9 @@ import { DynamicListBuilderComponent } from 'src/app/shared/utils/components/dyn
 })
 export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
   apiUrl = environment.apiBaseUrl;
+  filteredOptions;
+  filteredCepOptions;
+  isLoading = false;
   // toggle webcam on/off
   public showWebcam = true;
   public allowCameraSwitch = true;
@@ -81,8 +93,9 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
         telefone: [''],
         acolhidoImage: [''],
         ocupacao: this.fb.group({
-          _id: '5eca6bc7f9a0f116187451a7',
-          TITULO: ['Empregado  doméstico  nos serviços gerais'],
+          _id: [''],
+          CODIGO: [''],
+          TITULO: [''],
         }),
         endereco: this.fb.group({
           n: [''],
@@ -99,12 +112,47 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
       ? this.acolhidoService
           .readById('acolhido', this._id)
           .subscribe((res: any) => {
-            console.log(res.acolhidoImage)
             this.url = res.acolhidoImage;
-            this.form.get('acolhido').patchValue(res);           
+            this.form.get('acolhido').patchValue(res);
           })
       : null;
     this.notify.emit(this.form);
+
+    this.form
+      .get('acolhido')
+      .get('ocupacao')
+      .get('TITULO')
+      .valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((query: string) => query?.length > 1),
+        tap(() => (this.isLoading = true)),
+        switchMap((value) =>
+          this.acolhidoService
+            .buscaOcupacao({ ocupacao: value }, 1)
+            .pipe(finalize(() => (this.isLoading = false)))
+        )
+      )
+      .subscribe((users) => (this.filteredOptions = users));
+
+    this.form
+      .get('acolhido')
+      .get('endereco')
+      .get('cep')
+      .valueChanges.pipe(
+        startWith(''),
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((query: string) => query?.length == 8),
+        tap(() => (this.isLoading = true)),
+        switchMap((value) =>
+          this.acolhidoService
+            .buscaCep({ cep: value })
+            .pipe(finalize(() => (this.isLoading = false)))
+        )
+      )
+      .subscribe((users) => this.buscaCep(users));
 
     WebcamUtil.getAvailableVideoInputs().then(
       (mediaDevices: MediaDeviceInfo[]) => {
@@ -113,16 +161,8 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
     );
   }
 
-  buscaCep(cep: string) {
-    console.log(cep);
-    return this.acolhidoService
-      .buscaApi(`https://viacep.com.br/ws/${cep}/json/`)
-      .subscribe((res) => {
-        if (res.erro) {
-          this.toastr.error('CEP Não encontrado');
-        }
-        this.form.get('acolhido').get('endereco').patchValue(res);
-      });
+  buscaCep(option: any) {
+    this.form.get('acolhido').get('endereco').patchValue(option);
   }
 
   buscaProfissao() {
@@ -166,6 +206,18 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
+  }
+
+  updateForm(ev: any, option: any) {
+    this.form.get('acolhido').get('ocupacao').patchValue(option);
+    /*if (ev.isUserInput) {
+      if (componentid === 'country_id') {
+        this.countryid = idd;
+        this.registerUserForm['controls']['country_id'].setValue(ev.source.value);
+      }  else {
+        console.log('ooops');
+      }
+    }*/
   }
 
   AtivarCam() {
@@ -219,7 +271,6 @@ export class AcolhidoFormComponent extends AcolhidoResource implements OnInit {
   }
 
   public cameraWasSwitched(deviceId: string): void {
-    console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
   }
 
