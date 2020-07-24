@@ -52,7 +52,7 @@ export abstract class DynamicFormTableResource {
     this.spinner = injector.get(NgxSpinnerService);
   }
 
-  remove(): void {}
+  remove(path): void {}
 
   montaTabela(data: IDynamicFormTable) {
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
@@ -111,7 +111,7 @@ export abstract class DynamicFormTableResource {
 
     componentRef.instance.delete.subscribe((res) => {
       let confirma = confirm('Deseja Realmente Excluir?');
-      confirma ? this.remove() : null;
+      confirma ? this.remove(res) : null;
     });
   }
 }
