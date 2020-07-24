@@ -48,7 +48,8 @@ export class DynamicTableBuilderComponent implements OnInit, OnChanges {
 
   constructor(
     private datePipe: DatePipe, // private socketService: ProntuarioSocketService
-    private spinner: NgxSpinnerService  ) {}
+    private spinner: NgxSpinnerService
+  ) {}
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes);
     if (changes.update) {
@@ -77,7 +78,9 @@ export class DynamicTableBuilderComponent implements OnInit, OnChanges {
     this.getData();
   }
   getData() {
+    this.spinner.show();
     this.data.subscribe((res) => {
+      this.spinner.hide();
       this.dados = res;
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.sortingDataAccessor = (obj, property) =>
@@ -145,7 +148,7 @@ export class DynamicTableBuilderComponent implements OnInit, OnChanges {
     e.preventDefault();
     this.create.emit();
   }
-  loadDialog(show:boolean) {        
-    show? this.spinner.show():this.spinner.hide()      
+  loadDialog(show: boolean) {
+    show ? this.spinner.show() : this.spinner.hide();
   }
 }

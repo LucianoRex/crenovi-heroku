@@ -32,10 +32,10 @@ export class LivroDiarioFormComponent extends AcolhimentoResource
     this._id !== undefined
       ? this.acolhimentoService
           .readById('livrodiario', this._id)
-          .subscribe((res: any) => {            
+          .subscribe((res: any) => {
             this.form.patchValue(res);
           })
-      : null;
+      : this.form.get('data').patchValue(new Date());
     this.form.get('anotacoes').patchValue(this.diario);
   }
 }

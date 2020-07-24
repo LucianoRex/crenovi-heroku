@@ -24,7 +24,7 @@ let acolhido = new Schema(
       default: "",
     },
     ocupacao: {
-      type: mongoose.SchemaTypes.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "ocupacao",
     },
     telefone: {
