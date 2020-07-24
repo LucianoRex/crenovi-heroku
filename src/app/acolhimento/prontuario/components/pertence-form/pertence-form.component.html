@@ -4,9 +4,9 @@
       <div class="col-md-3">
         <mat-form-field>
           <mat-label>Pertence</mat-label>
-          <mat-select formControlName="pertence">
-            <mat-option *ngFor="let item of itens" [value]="item._id">
-              {{ item.pertence }}
+          <mat-select formControlName="item">
+            <mat-option *ngFor="let i of itens" [value]="i._id">
+              {{ i.pertence }}
             </mat-option>
           </mat-select>
         </mat-form-field>

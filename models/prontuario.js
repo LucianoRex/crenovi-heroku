@@ -423,7 +423,7 @@ let prontuario = new Schema(
     ],
     pertence: [
       {
-        pertence: {
+        item: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "pertenceAcolhido",
         },

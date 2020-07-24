@@ -9,13 +9,14 @@ import { ProntuarioResource } from '../../classes/prontuario-resource';
 export class PertenceFormComponent extends ProntuarioResource
   implements OnInit {
   @Input() _id: string;
-  itens: any[];
+  itens: any;
   constructor(protected injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
     this.prontuarioService.pertenceAcolhido().subscribe((res) => {
+      console.log(res);
       this.itens = res;
     });
 
@@ -24,7 +25,7 @@ export class PertenceFormComponent extends ProntuarioResource
       array: true,
       pertence: this.fb.group({
         _id: undefined,
-        pertence: [''],
+        item: [''],
         quantidade: ['1'],
       }),
     });
@@ -32,6 +33,7 @@ export class PertenceFormComponent extends ProntuarioResource
       ? this.prontuarioService
           .readById(this.concatenatedPath, this._id)
           .subscribe((res: any) => {
+            console.log(res);
             this.form.get('pertence').patchValue(res);
           })
       : null;

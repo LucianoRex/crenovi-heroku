@@ -85,7 +85,7 @@ export abstract class DynamicFormTableResource {
           panelClass: 'app-full-bleed-dialog',
         });
         componentRef.instance.loadDialog(false);
-      }, 500);
+      }, 50);
       componentRef.instance.loadDialog(true);
     });
 
@@ -105,7 +105,7 @@ export abstract class DynamicFormTableResource {
           panelClass: 'app-full-bleed-dialog',
         });
         componentRef.instance.loadDialog(false);
-      }, 500);
+      }, 50);
       componentRef.instance.loadDialog(true);
     });
 

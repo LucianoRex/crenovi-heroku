@@ -209,7 +209,7 @@ router.get("/:_id/*", userAuth, (req, res, next) => {
       .populate("historicoQuimico.substancia")
       .populate("saida.motivo")
       .populate("agendamentoconsulta.tipo")
-      .populate("pertence.pertence")
+      .populate("pertence.item")
       .then((prontuario) => {
         req.query.array == "false"
           ? res.status(200).json(prontuario)
