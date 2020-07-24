@@ -99,8 +99,7 @@ export class RelatorioService {
               text: [
                 `Neste ato, eu, ${prontuario.identificacao.acolhido.nome
                   .trim()
-                  .toLocaleUpperCase()}, portador da Cédula de
-                  Identidade nº ${
+                  .toLocaleUpperCase()}, portador da Cédula de Identidade nº ${
                     prontuario.identificacao.acolhido.rg
                   }, inscrito no CPF sob nº ${
                   prontuario.identificacao.acolhido.cpf
