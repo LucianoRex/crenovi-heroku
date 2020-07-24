@@ -18,22 +18,13 @@ export class JwtInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let currentUser = this.authenticationService.currentUserValue;
 
-   
+    if (currentUser && currentUser.token) {
       request = request.clone({
         setHeaders: {
           Authorization: `${currentUser.token}`,
         },
       });
-  
-    return next.handle(request);
-  }
-
-  isHeaderNeeded(url: string) {
-    if (url === 'other.api.com') {
-      // this condition is up to you, it could be an exact match or how ever you like
-      return false;
-    } else {
-      return true;
     }
+    return next.handle(request);
   }
 }

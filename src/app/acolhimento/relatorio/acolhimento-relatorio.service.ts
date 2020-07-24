@@ -298,7 +298,6 @@ export class AcolhimentoRelatorioService {
           pageSize: 'A4',
           pageOrientation: 'portrait',
           pageMargins: [30, 20, 20, 30],
-
           content: [
             new new Relatorio().logo(545, 'center', 50).image,
             new new Relatorio().titulo('Normas'),
