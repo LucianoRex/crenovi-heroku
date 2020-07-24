@@ -105,7 +105,7 @@ export class RelatorioService {
                   prontuario.identificacao.acolhido.cpf
                 } `,
                 { text: 'AUTORIZO', fontSize: 15, bold: true },
-                ` o uso de minha imagem em todo e qualquer material entre fotos e documentos, para ser utilizadas em divulgação, E outros movimentos da entidade Centro de Reabilitação Nova Vida-CRENOVI. Por  ser a expressão da minha vontade declaro e autorizo o uso acima descrito sem que nada haja a ser reclamado a título de direitos conexos à minha imagem ou a qualquer outro, e assino a presente autorização.
+                ` o uso de minha imagem em todo e qualquer material entre fotos e documentos, para ser utilizadas em divulgação, e outros movimentos da entidade Centro de Reabilitação Nova Vida-CRENOVI. Por  ser a expressão da minha vontade declaro e autorizo o uso acima descrito sem que nada haja a ser reclamado a título de direitos conexos à minha imagem ou a qualquer outro, e assino a presente autorização.
           `,
               ],
               fontSize: 14,
