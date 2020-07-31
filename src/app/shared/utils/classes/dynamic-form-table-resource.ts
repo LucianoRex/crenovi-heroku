@@ -21,6 +21,7 @@ export interface IDynamicFormTable {
   caminho?: string;
   title?: string;
   enableRemove?: boolean;
+  dados?: any;
 }
 export abstract class DynamicFormTableResource {
   protected resolver: ComponentFactoryResolver;
@@ -30,7 +31,7 @@ export abstract class DynamicFormTableResource {
   protected toastr: ToastrService;
   protected spinner: NgxSpinnerService;
   //socket = io(environment.SOCKET_ENDPOINT);
-  // saved: boolean = false;
+  @Output() saved = new EventEmitter<any>();
   //componentOpened;
   //isDirty: boolean = false;
   //mudouForm: boolean = false;
@@ -53,7 +54,7 @@ export abstract class DynamicFormTableResource {
   }
 
   remove(path): void {}
-
+  update(doc): void {}
   montaTabela(data: IDynamicFormTable) {
     let dynamicTableBuilder = this.resolver.resolveComponentFactory(
       DynamicTableBuilderComponent
@@ -64,6 +65,9 @@ export abstract class DynamicFormTableResource {
     componentRef.instance.columns = data.columns;
     componentRef.instance.data = data.service;
     componentRef.instance.enableRemove = data.enableRemove;
+
+    componentRef.instance.dados = data.dados;
+
     //  componentRef.instance.socketioPath = socketioPath;
     componentRef.instance.selectedRow.subscribe((res) => {
       this.selectedRow.emit(res);
@@ -90,11 +94,12 @@ export abstract class DynamicFormTableResource {
     });
 
     componentRef.instance.update.subscribe((res) => {
+      this.update(res)
       setTimeout(() => {
         this.dialog.open(DialogDynamicTableLoaderComponent, {
           data: {
             component: data.component,
-            _id: res._id,
+           // _id: res._id,
             caminho: data.caminho,
             title: data.title,
           },
@@ -103,15 +108,17 @@ export abstract class DynamicFormTableResource {
           height: '90vh',
           hasBackdrop: false,
           panelClass: 'app-full-bleed-dialog',
-        });
+        })
         componentRef.instance.loadDialog(false);
+       
       }, 50);
       componentRef.instance.loadDialog(true);
     });
 
     componentRef.instance.delete.subscribe((res) => {
+      console.log(data.caminho);
       let confirma = confirm('Deseja Realmente Excluir?');
-      confirma ? this.remove(res) : null;
+      confirma ? this.remove(data.caminho + res) : null;
     });
   }
 }

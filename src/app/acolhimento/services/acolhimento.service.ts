@@ -12,6 +12,9 @@ export class AcolhimentoService {
   pas_id: string;
   constructor(private _http: HttpClient) {}
 
+
+
+  
   read(model) {
     return this._http.get(`${this.apiBaseUrl}/acolhimento/${model}`);
   }

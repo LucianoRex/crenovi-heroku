@@ -2,6 +2,11 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ProntuarioResource } from '../../classes/prontuario-resource';
 import { ProntuarioService } from '../../services/prontuario.service';
+import { Store } from '@ngrx/store';
+import * as prontuarioActions from "../../state/prontuario.actions";
+import * as fromProntuario from "../../state/prontuario.reducer";
+import { Observable } from 'rxjs';
+import { Prontuario } from '../../models/prontuario';
 
 @Component({
   selector: 'app-prontuario-form',
@@ -22,7 +27,8 @@ export class ProntuarioFormComponent extends ProntuarioResource
   
   constructor(
     protected injector: Injector,
-    protected prontuarioService: ProntuarioService
+    protected prontuarioService: ProntuarioService,
+    private store: Store<fromProntuario.AppState>
   ) {
     super(injector);
     this.selectedRow.subscribe((res) => {      
@@ -30,8 +36,26 @@ export class ProntuarioFormComponent extends ProntuarioResource
   }
 
   ngOnInit() {
+    const customer$: Observable<Prontuario> = this.store.select(
+      fromProntuario.getCurrentProntuario
+    )
+
+    customer$.subscribe(currentCustomer => {
+      if (currentCustomer) {
+        console.log(currentCustomer)
+        /*this.customerForm.patchValue({
+          name: currentCustomer.name,
+          phone: currentCustomer.phone,
+          address: currentCustomer.address,
+          membership: currentCustomer.membership,
+          id: currentCustomer.id
+        });
+        */
+      }
+    })
+
     this.concatenatedPath = 'acolhimento';    
-    this._id != undefined ? (this.isLinear = false) : (this.isLinear = true);
+   // this._id != undefined ? (this.isLinear = false) : (this.isLinear = true);
   }
 
   identificacao(formGroup: FormGroup): void {
@@ -64,6 +88,7 @@ export class ProntuarioFormComponent extends ProntuarioResource
   quadroClinico(formGroup: FormGroup): void {
     this.quadroClinicoForm = formGroup;
   }
+  
   criado(doc) {
     this._id = doc._id;
     this.isLinear = false;

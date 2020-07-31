@@ -39,7 +39,7 @@ export class NavComponent implements AfterViewInit {
       name: node.name,
       link: node.link,
       level: level,
-      show:node.show
+      show: node.show,
     };
   };
 
@@ -62,15 +62,13 @@ export class NavComponent implements AfterViewInit {
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private breakpointObserver: BreakpointObserver,    
+    private breakpointObserver: BreakpointObserver
   ) {
     this.authenticationService.currentUser.subscribe(
       (x) => (this.currentUser = x)
     );
-   
   }
   ngAfterViewInit(): void {
-    
     this.TREE_DATA = [
       {
         name: 'Programa de Acolhimento',
@@ -85,6 +83,31 @@ export class NavComponent implements AfterViewInit {
           { name: 'Normas', link: '/acolhimento/norma' },
           { name: 'Rotina Diária', link: '/acolhimento/rotina-diaria' },
           { name: 'Relatórios/Documentos', link: '/acolhimento/relatorio' },
+          /* {
+            name: 'Parametrizações',
+            children: [
+              {
+                name: 'Itens do Acolhido',
+                link: '/acolhimento/parametrizacao/itemacolhido',
+              },
+              {
+                name: 'Tipos de Consulta',
+                link: '/acolhimento/parametrizacao/tipoconsulta',
+              },
+              {
+                name: 'Tipos de Procedimentos Psicológicos',
+                link: '/acolhimento/parametrizacao/tipoprocedimentopsicologico',
+              },
+              {
+                name: 'Tipos de SPA',
+                link: '/acolhimento/parametrizacao/tipospa',
+              },
+              {
+                name: 'Tipos de Convênio',
+                link: '/acolhimento/parametrizacao/tipoconvenio',
+              },
+            ],
+          },*/
         ],
       },
       {
@@ -112,6 +135,7 @@ export class NavComponent implements AfterViewInit {
           },
         ],
       },
+
       {
         name: 'Admin',
         children: [

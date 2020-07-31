@@ -26,8 +26,7 @@ export class AvaliacaoFormComponent extends ProntuarioResource
     super(injector);
   }
 
-  ngOnInit(): void {
-    
+  ngOnInit(): void {    
     this.form = this.fb.group({
       path: 'avaliacao',
       array:true,

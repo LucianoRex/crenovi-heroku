@@ -58,6 +58,7 @@ export class BiometriaListComponent extends ProntuarioResource
       _id: this._id,
       //socketioPath: 'biometria',
       caminho: this.concatenatedPath + '/biometria',
+      title:'Biometrias'
     });
   }
 }

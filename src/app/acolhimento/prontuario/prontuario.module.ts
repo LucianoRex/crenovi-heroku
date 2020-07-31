@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-
 import { UtilsModule } from 'src/app/shared/utils/utils.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AngularMaterialModule } from 'src/app/angular-material/angular-material.module';
@@ -45,8 +44,12 @@ import { ProntuarioListComponent } from './components/prontuario-list/prontuario
 import { ProntuarioFormComponent } from './components/prontuario-form/prontuario-form.component';
 import { AgendamentoConsultaListaComponent } from './components/agendamento-consulta-list/agendamento-consulta-list.component';
 import { AgendamentoConsultaFormComponent } from './components/agendamento-consulta-form/agendamento-consulta-form.component';
-import { ChartsModule } from 'ng2-charts';
 
+import { ChartsModule } from 'ng2-charts';
+import { StoreModule } from '@ngrx/store';
+import {ProntuarioEffect} from  './state/prontuario.effects'
+import { ProntuarioReducer } from './state/prontuario.reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 
@@ -85,7 +88,7 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     PsicoterapiaListComponent,
     PsicoterapiaFormComponent,
     AgendamentoConsultaListaComponent,
-    AgendamentoConsultaFormComponent
+    AgendamentoConsultaFormComponent,
   ],
   imports: [
     CommonModule,
@@ -96,7 +99,9 @@ export let options: Partial<IConfig> | (() => Partial<IConfig>);
     FormsModule,
     AngularMaterialModule,
     WebcamModule,
-    ChartsModule
+    ChartsModule,
+    StoreModule.forFeature('prontuarios', ProntuarioReducer),
+    EffectsModule.forFeature([ProntuarioEffect])
   ],
   exports: [],
 })

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Acolhido } from 'src/app/acolhimento/prontuario/models/prontuario';
+import { Colaborador } from '../models/colaborador';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +13,35 @@ export class ColaboradorService {
   pas_id: string;
   constructor(private _http: HttpClient) {}
 
+  getColaboradores(): Observable<Colaborador[]> {
+    return this._http.get<Colaborador[]>(
+      `${this.apiBaseUrl}/colaborador/colaborador/`
+    );
+  }
+
+  getColaboradorById(payload: any): Observable<Colaborador> {
+    return this._http.get<Colaborador>(
+      `${this.apiBaseUrl}/colaborador/colaborador/${payload}`
+    );
+  }
+
+  createColaborador(payload: Colaborador): Observable<Colaborador> {
+    return this._http.post<Colaborador>(
+      `${this.apiBaseUrl}/colaborador/colaborador/`,
+      payload
+    );
+  }
+
+  updateColaborador(colaborador: Colaborador): Observable<Colaborador> {
+    return this._http.put<Colaborador>(
+      `${this.apiBaseUrl}/colaborador/colaborador/${colaborador['_id']}`,
+      colaborador
+    );
+  }
+  deleteColaborador(payload: any) {
+    return this._http.delete(`${this.apiBaseUrl}/colaborador/${payload}`);
+  }
+  /*
   read(model) {
     return this._http.get(`${this.apiBaseUrl}/colaborador/${model}`);
   }
@@ -36,4 +67,5 @@ export class ColaboradorService {
   remove() {
     alert('Vamos remover?');
   }
+  */
 }

@@ -464,5 +464,12 @@ prontuario.pre("findOneAndUpdate", true, function (next, done) {
   );
   next();
 });
+prontuario.set("toObject", { virtuals: true });
+prontuario.virtual("id").get(function () {
+  return this._id.toHexString();
+});
 
+prontuario.set("toJSON", {
+  virtuals: true,
+});
 module.exports = mongoose.model("prontuario", prontuario);

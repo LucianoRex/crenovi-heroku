@@ -10,9 +10,13 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localePtBr from '@angular/common/locales/pt';
-import { registerLocaleData, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import {
+  registerLocaleData,
+  LocationStrategy,
+  HashLocationStrategy,
+} from '@angular/common';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { ToastrModule } from 'ngx-toastr';
 import { WebcamModule } from 'ngx-webcam';
@@ -27,19 +31,28 @@ import { ChartsModule } from 'ng2-charts';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+
 export let options: Partial<IConfig> | (() => Partial<IConfig>);
 registerLocaleData(localePtBr);
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, LoginComponent, HomeComponent, NotAuthorizedComponent],
+  declarations: [
+    AppComponent,
+    NavComponent,
+    LoginComponent,
+    HomeComponent,
+    NotAuthorizedComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     LayoutModule,
-    //AngularMaterialModule,
     HttpClientModule,
-    ToastrModule.forRoot(),   
+    ToastrModule.forRoot(),
     FormsModule,
     WebcamModule,
     ModalModule.forRoot(),
@@ -47,8 +60,10 @@ registerLocaleData(localePtBr);
     ReactiveFormsModule,
     AngularMaterialModule,
     ChartsModule,
-    NgxSpinnerModule
-    //UtilsModule
+    NgxSpinnerModule,
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([]),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -58,7 +73,7 @@ registerLocaleData(localePtBr);
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
-   { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],

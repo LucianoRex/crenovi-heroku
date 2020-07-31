@@ -41,6 +41,7 @@ export class EvolucaoPsicologicaListComponent extends ProntuarioResource
       _id: this._id,
       //socketioPath: 'evolucaoPsicologica',
       caminho: this.concatenatedPath + '/evolucaoPsicologica',
+      title:'Evolução Psicológica'
     });
   }
 }

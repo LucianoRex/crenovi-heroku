@@ -32,6 +32,7 @@ export class DoencaListComponent extends ProntuarioResource implements OnInit {
       _id: this._id,
      // socketioPath: 'doenca',
       caminho: this.concatenatedPath + '/doenca',
+      title:'Doenças'
     });
   }
 }

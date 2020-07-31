@@ -44,6 +44,7 @@ export class SaidaListComponent extends ProntuarioResource implements OnInit {
       _id: this._id,
       // socketioPath: 'saida',
       caminho: this.concatenatedPath + '/saida',
+      title:'Saídas e Retornos'
     });
   }
 }

@@ -18,17 +18,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ProntuarioResource extends DynamicFormTableResource
   implements OnDestroy {
   //socket = io(environment.SOCKET_ENDPOINT);
-  @Input() concatenatedPath: string;
-  socketdata: string;
-  @Input() _id: string = undefined;
-  @Output() saved = new EventEmitter<boolean>();
-  protected prontuarioService: ProntuarioService;
-  protected dynamicListService: DynamicListService;
- 
+  @Input() concatenatedPath: string;  
+  @Input() _id: string = undefined;  
+  protected prontuarioService: ProntuarioService;  
+
   constructor(protected injector: Injector) {
     super(injector);
     this.prontuarioService = injector.get(ProntuarioService);
-    this.dynamicListService = injector.get(DynamicListService);    
+    this.dynamicListService = injector.get(DynamicListService);
   }
 
   ngOnDestroy(): void {
@@ -39,27 +36,23 @@ export class ProntuarioResource extends DynamicFormTableResource
     this.prontuarioService
       .save(this.form.value, this._id, this.concatenatedPath)
       .subscribe(
-        (res) => {          
+        (res) => {
           this.toastr.success('Salvo');
           this.createdDoc.emit(res);
-          //   this.socket.emit(this.form.get('path').value, res);
-          //   this.socket.disconnect();
-          this.saved.emit(true);
+          this.saved.emit(true)
         },
         (err) => {
           this.toastr.error(err);
-          this.saved.emit(false);
         }
       );
   }
   remove(path) {
     this.prontuarioService.remove(path).subscribe(
-      (res) => {        
+      (res) => {
         this.toastr.warning('Deletado');
       },
       (err) => {
         this.toastr.error(err);
-        this.saved.emit(false);
       }
     );
   }
@@ -93,13 +86,7 @@ export class ProntuarioResource extends DynamicFormTableResource
           .subscribe(
             (res) => {
               this.toastr.success('Tratamento concluído');
-              this.selectedRow.emit(res);
-              /*            this.socket.emit(
-              this.form.get('path').value,
-              this.form.get('path').value,
-              res
-            );
-            */
+              this.selectedRow.emit(res);             
             },
             (err) => {
               this.toastr.error(err);

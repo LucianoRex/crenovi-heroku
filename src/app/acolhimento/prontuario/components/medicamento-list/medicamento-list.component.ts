@@ -40,6 +40,7 @@ export class MedicamentoListComponent extends ProntuarioResource
       _id: this._id,
       // socketioPath: 'medicamento',
       caminho: this.concatenatedPath + '/medicamento',
+      title: 'Medicamentos',
     });
   }
 }

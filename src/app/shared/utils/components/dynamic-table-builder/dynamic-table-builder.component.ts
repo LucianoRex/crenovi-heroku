@@ -32,7 +32,7 @@ export class DynamicTableBuilderComponent implements OnInit, OnChanges {
   @Output() create = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() selectedRow = new EventEmitter<any>();
-  dados;
+  dados: Observable<any>;
   observer$: Observable<any>;
   private subscriptions: Subscription[] = [];
   data: Observable<any>;
@@ -63,6 +63,27 @@ export class DynamicTableBuilderComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
+    this.dados.subscribe((res) => {
+      console.log(res)
+      this.spinner.hide();
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.sortingDataAccessor = (obj, property) =>
+        this.getProperty(obj, property);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+      this.spinner.hide();
+    });
+    /* this.dados.subscribe((res) => {
+      this.spinner.hide();
+      this.dados = res;
+      this.dataSource = new MatTableDataSource(res);
+      this.dataSource.sortingDataAccessor = (obj, property) =>
+        this.getProperty(obj, property);
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    });
+    */
     // console.log(this.socketioPath);
     /* this.socket.on(
       this.socketioPath,
@@ -78,16 +99,7 @@ export class DynamicTableBuilderComponent implements OnInit, OnChanges {
     this.getData();
   }
   getData() {
-    this.spinner.show();
-    this.data.subscribe((res) => {
-      this.spinner.hide();
-      this.dados = res;
-      this.dataSource = new MatTableDataSource(res);
-      this.dataSource.sortingDataAccessor = (obj, property) =>
-        this.getProperty(obj, property);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    });
+   
   }
 
   getProperty = (obj, path) => path.split('.').reduce((o, p) => o && o[p], obj);

@@ -3,15 +3,25 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
+import { Prontuario } from '../models/prontuario';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProntuarioService {
   apiBaseUrl = environment.apiBaseUrl;
-
-  // pas_id: string;
+  
   constructor(private _http: HttpClient) {}
+
+  getProntuarios(): Observable<Prontuario[]> {
+    return this._http.get<Prontuario[]>(`${this.apiBaseUrl}/prontuario`)
+  }
+
+  getProntuarioById(payload:number): Observable<any>{
+    return this._http.get<Prontuario>(
+      `${this.apiBaseUrl}/prontuario/${payload}`
+    );
+  }
 
   buscaApi(api): Observable<any> {
     let headers = new HttpHeaders();

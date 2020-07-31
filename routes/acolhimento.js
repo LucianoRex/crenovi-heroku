@@ -1,5 +1,4 @@
 var express = require("express");
-const mongoose = require("mongoose");
 var router = express.Router();
 const {
   userRegister,
@@ -9,7 +8,6 @@ const {
   chekRole,
 } = require("./../utils/auth");
 
-const Acolhimento = require("../models/acolhimento");
 const Acolhido = require("../models/acolhido");
 
 const livroDiarioController = require("../controllers/acolhimento/livroDiarioController");
@@ -27,7 +25,7 @@ router.get("/livrodiario/:_id", livroDiarioController.getById);
 router.post("/livrodiario", livroDiarioController.post);
 router.put("/livrodiario/:_id", livroDiarioController.put);
 
-/**rotins diario Controller */
+/**rotina diaria Controller */
 router.get("/rotinadiaria", rotinaDiariaController.get);
 router.get("/rotinadiaria/:_id", rotinaDiariaController.getById);
 router.post("/rotinadiaria", rotinaDiariaController.post);

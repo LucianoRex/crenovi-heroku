@@ -12,6 +12,7 @@ const {
 } = require("./../utils/auth");
 
 router.get("/colaborador", function (req, res, next) {
+  console.log("buscar colabradores");
   Colaborador.find().then((colaborador) => {
     res.status(200).json(colaborador);
   });
@@ -53,6 +54,11 @@ router.put(
       },
       {
         $set: data,
+
+      },
+      {
+        new:true,
+        useFindAndModify:true
       }
     )
       .then((colaborador) => {

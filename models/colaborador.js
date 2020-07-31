@@ -23,4 +23,12 @@ let colaborador = new Schema(
     collection: "colaborador",
   }
 );
+colaborador.set('toObject', { virtuals: true }) 
+colaborador.virtual('id').get(function(){
+  return this._id.toHexString();
+});
+
+colaborador.set('toJSON', {
+  virtuals: true
+});
 module.exports = mongoose.model("colaborador", colaborador);

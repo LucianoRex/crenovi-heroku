@@ -36,6 +36,7 @@ export class PertenceListComponent extends ProntuarioResource
       _id: this._id,
       // socketioPath: 'pertence',
       caminho: this.concatenatedPath + '/pertence',
+      title:'Pertences'
     });
   }
 }

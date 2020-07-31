@@ -76,11 +76,20 @@ router.post(
           as: "acolhido",
         },
       },
+      {
+        $lookup: {
+          from: "convenio",
+          localField: "identificacao.convenio",
+          foreignField: "_id",
+          as: "convenio",
+        },
+      },
 
       {
         $project: {
           _id: 1,
           acolhido: 1,
+          convenio: 1,
           procedimentos: 1,
           consultas: 1,
           identificacao: 1,
@@ -162,6 +171,7 @@ router.post(
               nome: "$acolhido.nome",
               dataNasc: "$acolhido.dataNasc",
             },
+            convenio: "$convenio.nome",
             identificacao: "$identificacao",
           },
         },
@@ -182,6 +192,7 @@ router.get("/relatorio/:_id", userAuth, (req, res, next) => {
       res.status(200).json(prontuario);
     });
 });
+
 //retorna a lista de prontuarios
 router.get("/", userAuth, (req, res, next) => {
   Prontuario.find({}, { identificacao: 1, ativo: 1 })
@@ -195,6 +206,27 @@ router.get("/", userAuth, (req, res, next) => {
     });
 });
 
+router.get("/:_id", userAuth, (req, res, next) => {
+  Prontuario.findOne(
+    {
+      _id: req.params._id,
+    }
+    // { [req.params[0]]: 1 }
+  )
+    .populate("identificacao.acolhido")
+    .populate("medicamento.medicamento")
+    .populate("doenca.doenca")
+    .populate("historicoQuimico.substancia")
+    .populate("saida.motivo")
+    .populate("agendamentoconsulta.tipo")
+    .populate("pertence.item")
+    .then((prontuario) => {
+      res.status(200).json(prontuario);
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error.message });
+    })  
+});
 router.get("/:_id/*", userAuth, (req, res, next) => {
   if (req.params[0].split("/")[1] == undefined) {
     Prontuario.findOne(
@@ -203,7 +235,7 @@ router.get("/:_id/*", userAuth, (req, res, next) => {
       },
       { [req.params[0]]: 1 }
     )
-      .populate("identificacao.acolhido")      
+      .populate("identificacao.acolhido")
       .populate("medicamento.medicamento")
       .populate("doenca.doenca")
       .populate("historicoQuimico.substancia")
@@ -255,7 +287,7 @@ router.put("/:_id/*", userAuth, (req, res, next) => {
       }
     )
       .then((prontuario) => {
-        res.status(200).json(prontuario);
+        res.status(200).json(prontuario[req.body.path]);
       })
       .catch((error) => {
         res.status(500).json({ message: error.message });
@@ -273,6 +305,7 @@ router.put("/:_id/*", userAuth, (req, res, next) => {
             [req.body.path]: data,
           },
           new: true,
+          upsert: true,
         }
       )
         .then((prontuario) => {

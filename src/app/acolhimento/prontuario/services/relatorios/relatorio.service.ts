@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { newArray } from '@angular/compiler/src/util';
-import { Pas } from '../../models/pas';
+import { Prontuario } from '../../models/prontuario';
 import { Relatorio } from '../../models/relatorio';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -58,7 +58,7 @@ export class RelatorioService {
     });
     this.http
       .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
-      .subscribe((prontuario: Pas) => {
+      .subscribe((prontuario: Prontuario) => {
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -132,7 +132,7 @@ export class RelatorioService {
   termoCiencia(_id: string) {
     this.http
       .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
-      .subscribe((prontuario: Pas) => {
+      .subscribe((prontuario: Prontuario) => {
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -206,7 +206,7 @@ export class RelatorioService {
   declaracaoPertence(_id: string) {
     this.http
       .get(`${this.apiBaseUrl}/prontuario/declaracaopertence/${_id}`)
-      .subscribe((prontuario: Pas) => {
+      .subscribe((prontuario: Prontuario) => {
         let user;
 
         this.authenticationService.currentUser.subscribe((res) => {
@@ -296,7 +296,7 @@ export class RelatorioService {
     });
     this.http
       .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
-      .subscribe((prontuario: Pas) => {
+      .subscribe((prontuario: Prontuario) => {
         const texto = this.formatarData();
         const documentDefinition = {
           pageSize: 'A4',
@@ -379,7 +379,7 @@ export class RelatorioService {
     );
     this.http
       .get(`${this.apiBaseUrl}/prontuario/relatorio/${_id}`)
-      .subscribe((prontuario: Pas) => {
+      .subscribe((prontuario: Prontuario) => {
         //   console.log(acolhimento);
         const texto = this.formatarData();
         const documentDefinition = {
@@ -569,7 +569,7 @@ export class RelatorioService {
               )}`,
             },
             {
-              text: `Convênio: ${identificacao.convenio}`,
+              text: `Convênio: ${relatorio[0]._id['convenio']}`,
             },
             {
               text: `Período do acolhimento: ${identificacao.periodo} meses`,

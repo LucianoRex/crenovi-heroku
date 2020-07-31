@@ -32,6 +32,7 @@ export class PsicoterapiaListComponent extends ProntuarioResource
       _id: this._id,
      // socketioPath: 'psicoterapia',
       caminho: this.concatenatedPath + '/psicoterapia',
+      title:'Psicoterapia'
     });
   }
 }

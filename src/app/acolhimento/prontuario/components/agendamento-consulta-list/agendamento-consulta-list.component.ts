@@ -45,6 +45,7 @@ export class AgendamentoConsultaListaComponent extends ProntuarioResource
       _id: this._id,    
       //socketioPath: 'agendamentoconsulta',
       caminho: this.concatenatedPath + '/agendamentoconsulta',
+      title:'Agendamentos e Consultas'
     });
   }
 }

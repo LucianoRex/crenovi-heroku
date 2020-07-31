@@ -6,6 +6,11 @@ import {
   FieldType,
 } from 'src/app/shared/utils/interfaces/dynamic-table-builder';
 import { IDynamicFormTable } from 'src/app/shared/utils/classes/dynamic-form-table-resource';
+import { Store, select } from '@ngrx/store';
+import * as prontuarioActions from '../../state/prontuario.actions';
+import { Observable } from 'rxjs';
+import { Prontuario } from '../../models/prontuario';
+import * as fromProntuario from '../../state/prontuario.reducer';
 
 @Component({
   selector: 'app-prontuario-list',
@@ -14,11 +19,20 @@ import { IDynamicFormTable } from 'src/app/shared/utils/classes/dynamic-form-tab
 })
 export class ProntuarioListComponent extends ProntuarioResource
   implements OnInit {
-  constructor(protected injector: Injector) {
+  lista;
+  prontuarios$: Observable<Prontuario[]>;
+  error$: Observable<String>;
+  constructor(
+    protected injector: Injector,
+    private store: Store<fromProntuario.AppState>
+  ) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.store.dispatch(new prontuarioActions.LoadProntuarios());
+    this.prontuarios$ = this.store.pipe(select(fromProntuario.getProntuarios));
+    this.error$ = this.store.pipe(select(fromProntuario.getError));
     this.concatenatedPath = 'acolhimento';
     let columns: IDynamicTableBuilder[] = [
       {
@@ -45,16 +59,26 @@ export class ProntuarioListComponent extends ProntuarioResource
         complemento: ' Meses',
       },
     ];
-    
+
     let data: IDynamicFormTable = {
       columns: columns,
-      service: this.prontuarioService.read(),
+      service: this.prontuarioService.getProntuarios(),
       component: ProntuarioFormComponent,
-      _id: undefined,      
+      _id: undefined,
       caminho: 'prontuario',
       title: 'Prontuário',
+      dados: this.prontuarios$,
     };
 
     this.montaTabela(data);
+  }
+
+  update(prontuario: Prontuario) {   
+    //debugger 
+    console.log(prontuario)
+    this.store.dispatch(new prontuarioActions.LoadProntuario(prontuario.id));
+  }
+  remove(doc) {
+    //this.store.dispatch(new prontuarioActions.(doc));
   }
 }

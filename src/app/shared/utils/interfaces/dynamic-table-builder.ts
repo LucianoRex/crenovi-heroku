@@ -3,7 +3,7 @@ export interface IDynamicTableBuilder {
   label: string;
   type?: FieldType;
   complemento?: string;
-  pattern?:string;
+  pattern?:string;  
 }
 export enum FieldType {
   date = 'date',

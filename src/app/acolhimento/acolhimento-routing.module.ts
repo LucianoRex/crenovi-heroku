@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AcolhimentoComponent } from './acolhimento/acolhimento.component';
-import { LivroDiarioListComponent } from './livro-diario/livro-diario-list/livro-diario-list.component';
-import { NormaFormComponent } from './norma-form/norma-form.component';
-import { RotinaDiariaListComponent } from './rotina-diaria/rotina-diaria-list/rotina-diaria-list.component';
-import { AcolhimentoRelatorioComponent } from './relatorio/acolhimento-relatorio.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: AcolhimentoComponent,
-  },
+import { AcolhimentoRelatorioComponent } from './relatorio/acolhimento-relatorio.component';
+import { NormaFormComponent } from './components/norma-form/norma-form.component';
+import { LivroDiarioListComponent } from './components/livro-diario/livro-diario-list/livro-diario-list.component';
+import { RotinaDiariaListComponent } from './components/rotina-diaria/rotina-diaria-list/rotina-diaria-list.component';
+
+const routes: Routes = [  
   {
     path: 'prontuario',
     loadChildren: () =>
@@ -38,9 +34,14 @@ const routes: Routes = [
       import('./acolhido/acolhido.module').then((m) => m.AcolhidoModule),
   },
   {
+    path: 'parametrizacao',
+    loadChildren: () =>
+      import('./parametrizacao/parametrizacao.module').then((m) => m.ParametrizacaoModule),
+  },
+  {
     path: 'grupo-terapeutico',
     loadChildren: () =>
-      import('./grupo-terapeutico/grupo-terapeutico.module').then(
+      import('./components/grupo-terapeutico/grupo-terapeutico.module').then(
         (m) => m.GrupoTerapeuticoModule
       ),
   },

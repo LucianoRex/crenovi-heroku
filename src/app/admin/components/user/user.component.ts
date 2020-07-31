@@ -29,7 +29,7 @@ export class UserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.colaboradorService.read('colaborador').subscribe((res) => {
+    this.colaboradorService.getColaboradores().subscribe((res) => {
       this.colaboradores = res;
     });
     this.form = this.fb.group({
@@ -41,9 +41,10 @@ export class UserComponent implements OnInit {
     });
     this.adminService.readUsers().subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);
-      this.dataSource.paginator = this.paginator;      
+      this.dataSource.paginator = this.paginator;
     });
   }
+
   openDialog(row): void {
     if (row != null) {
       this.form.patchValue(row);
@@ -52,27 +53,30 @@ export class UserComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(this.formulario, {
-      width: '80vw',      
+      width: '80vw',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {            
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
+
   resetPassword(row) {
     this.adminService.resetPassword(row).subscribe((res) => {
       this.toastr.success('Senha Alterada');
     });
   }
+
   load() {
     this.adminService.readUsers().subscribe((res) => {
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
     });
   }
+
   save() {
     this.adminService.saveUser(this.form.value).subscribe(
       (res: any) => {
         this.toastr.success('salvo');
+        this.dialog.closeAll()
       },
       (error) => this.toastr.error(error)
     );

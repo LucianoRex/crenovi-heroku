@@ -6,6 +6,7 @@ import { ColaboradorService } from '../services/colaborador.service';
 import { environment } from 'src/environments/environment';
 
 
+
 export class ColaboradorResource extends DynamicFormTableResource {
   socket = io(environment.SOCKET_ENDPOINT);
   socketdata: string;
@@ -15,20 +16,7 @@ export class ColaboradorResource extends DynamicFormTableResource {
     super(injector);
     this.colaboradorService = injector.get(ColaboradorService);    
   }
-  save() {    
-    this.colaboradorService.save(this.form.value).subscribe(
-      (res) => {
-        this.toastr.success('Salvo');        
-        this.selectedRow.emit(res);
-        this.socket.emit('updatedata', res);
-      },
-      (err) => {
-        this.toastr.error(err);
-      }
-    );
-  }
+ 
 
-  remove() {
-   // this.colaboradorService.remove();
-  }
+ 
 }

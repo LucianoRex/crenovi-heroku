@@ -32,6 +32,7 @@ export class HistoricoQuimicoListComponent extends ProntuarioResource
       _id: this._id,
      // socketioPath: 'historicoQuimico',
       caminho: this.concatenatedPath + '/historicoQuimico',
+      title:'Histórico Químico'
     });
   }
 }
