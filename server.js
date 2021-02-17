@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 
-app.use(cors({ credentials: true, origin: "http://localhost:4200" }));
+app.use(cors({ credentials: true, origin: "*" }));
 app.use(passport.initialize());
 
 require("./middlewares/passport")(passport);
